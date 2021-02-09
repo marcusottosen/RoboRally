@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameController {
 
@@ -44,7 +43,7 @@ public class GameController {
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
         // TODO Assignment V1: method should be implemented by the students:
         //   - the current player should be moved to the given space
         //     (if it is free()
@@ -58,7 +57,6 @@ public class GameController {
             int number = board.getPlayerNumber(current);
             board.setCurrentPlayer(board.getPlayer((number + 1) % board.getPlayersNumber()));
             board.setCount(board.getCount() + 1);
-
         }
     }
 
@@ -202,9 +200,29 @@ public class GameController {
         }
     }
 
+    /*
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
+        Player current = board.getCurrentPlayer();
+        if (space.getPlayer() == null && current != null) {
+            current.setSpace(space);
+            int number = board.getPlayerNumber(current);
+            board.setCurrentPlayer(board.getPlayer((number + 1) % board.getPlayersNumber()));
+            board.setCount(board.getCount() + 1);
+        }
+    }
+     */
+
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
-
+        Space current = player.getSpace();
+        if (current != null && player.board == current.board) {
+            //Vi opretter en variable "target", som specificerer hvor spilleren skal rykke sig hen.
+            Space target = board.getNeighbour(current, player.getHeading());
+            //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
+            if (target != null && target.getPlayer() == null) {
+                player.setSpace(target);
+            }
+        }
     }
 
     // TODO Assignment V2
