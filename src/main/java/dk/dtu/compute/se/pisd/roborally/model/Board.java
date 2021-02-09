@@ -211,5 +211,21 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    /**
+     * Counts the number of moves in the game
+     */
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        if (this.count != count) {
+            this.count = count;
+            notifyChange();
+        }
+    }
+
 
 }
