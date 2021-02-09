@@ -208,7 +208,7 @@ public class Board extends Subject {
         // XXX: V2 changed the status so that it shows the phase, the player and the step
         return "Phase: " + getPhase().name() +
                 ", Player = " + getCurrentPlayer().getName() +
-                ", Step: " + getStep();
+                ", Step: " + getCount();
     }
 
     /**
@@ -226,6 +226,8 @@ public class Board extends Subject {
             notifyChange();
         }
     }
+
+
 
 
 }
