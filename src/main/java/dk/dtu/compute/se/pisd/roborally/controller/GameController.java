@@ -200,18 +200,6 @@ public class GameController {
         }
     }
 
-    /*
-    public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        Player current = board.getCurrentPlayer();
-        if (space.getPlayer() == null && current != null) {
-            current.setSpace(space);
-            int number = board.getPlayerNumber(current);
-            board.setCurrentPlayer(board.getPlayer((number + 1) % board.getPlayersNumber()));
-            board.setCount(board.getCount() + 1);
-        }
-    }
-     */
-
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
         Space current = player.getSpace();
@@ -227,17 +215,18 @@ public class GameController {
 
     // TODO Assignment V2
     public void fastForward(@NotNull Player player) {
-
+        moveForward(player);
+        moveForward(player);
     }
 
     // TODO Assignment V2
     public void turnRight(@NotNull Player player) {
-
+        player.setHeading(player.getHeading().next());
     }
 
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
-
+        player.setHeading(player.getHeading().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
