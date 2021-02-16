@@ -149,6 +149,11 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
+                    //Tilføjet i V3 til at afbryde eksekveringsløkken og give spilleren et valg.
+                    if(command.isInteractive()) {
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
                     executeCommand(currentPlayer, command);
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -173,6 +178,31 @@ public class GameController {
             assert false;
         }
     }
+
+    public void executeCommandOptionAndContinue(@NotNull Command option) {
+        Player currentPlayer = board.getCurrentPlayer();
+        if (currentPlayer != null &&
+                board.getPhase() == Phase.PLAYER_INTERACTION &&
+                option != null) {
+            executeCommand(currentPlayer, option);
+
+            int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+            if (nextPlayerNumber < board.getPlayersNumber()) {
+                board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+            } else {
+                int step = board.getStep() + 1;
+                step++;
+                if (step < Player.NO_REGISTERS) {
+                    makeProgramFieldsVisible(step);
+                    board.setStep(step);
+                    board.setCurrentPlayer(board.getPlayer(0));
+                } else {
+                    startProgrammingPhase();
+                }
+            }
+        }
+    }
+
 
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
