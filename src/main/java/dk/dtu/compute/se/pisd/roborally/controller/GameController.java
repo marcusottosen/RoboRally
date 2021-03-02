@@ -184,22 +184,26 @@ public class GameController {
         if (currentPlayer != null &&
                 board.getPhase() == Phase.PLAYER_INTERACTION &&
                 option != null) {
+            board.setPhase(Phase.ACTIVATION);
             executeCommand(currentPlayer, option);
 
             int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+            //Sætter næste spillers tur.
             if (nextPlayerNumber < board.getPlayersNumber()) {
                 board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
             } else {
                 int step = board.getStep() + 1;
-                step++;
+                //Tjekker om der er flere spillere i runden og starter ny runde hvis alle har fået sin tur.
                 if (step < Player.NO_REGISTERS) {
                     makeProgramFieldsVisible(step);
                     board.setStep(step);
                     board.setCurrentPlayer(board.getPlayer(0));
-                } else {
+                } else { //Start ny programmeringsfase når alle runder er færdige.
                     startProgrammingPhase();
                 }
             }
+            //Fortsætter runden til alle kort er spillet, eller til næste interaction kort.
+            continuePrograms();
         }
     }
 
