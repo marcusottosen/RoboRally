@@ -72,6 +72,7 @@ public class BoardView extends VBox implements ViewObserver {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
+                //spaceView.viewLine("NORTH");
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
@@ -80,6 +81,14 @@ public class BoardView extends VBox implements ViewObserver {
 
         board.attach(this);
         update(board);
+
+
+        //Tilføjer en væg til feltet x:5 y:5
+        Space space = board.getSpace(0,0);
+        SpaceView addWall = new SpaceView(space);
+        addWall.viewLine("NORTH");
+        mainBoardPane.add(addWall,5,5);
+
     }
 
     @Override

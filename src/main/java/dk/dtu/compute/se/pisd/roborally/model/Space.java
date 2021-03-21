@@ -70,6 +70,7 @@ public class Space extends Subject {
     }
 
 
+
     public List<Heading> getWalls() {
         List<Heading> walls = null; //This line only to avoid errors
         return walls;
