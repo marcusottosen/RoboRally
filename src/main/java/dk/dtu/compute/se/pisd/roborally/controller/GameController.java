@@ -243,7 +243,7 @@ public class GameController {
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
                 player.setSpace(target);
-            } else {
+            } else { //Hvis der står en spiller på feltet i forvejen.
                 //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
                 Player targetPlayer = target.getPlayer();
 
