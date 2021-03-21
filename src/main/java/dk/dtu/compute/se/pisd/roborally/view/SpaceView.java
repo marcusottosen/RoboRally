@@ -27,9 +27,12 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,6 +74,45 @@ public class SpaceView extends StackPane implements ViewObserver {
         space.attach(this);
         update(space);
     }
+
+    public void viewLine(){
+       /* metode 1
+       Pane pane = new Pane();
+        Rectangle rectangle =
+                new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+        rectangle.setFill(Color.TRANSPARENT);
+        pane.getChildren().add(rectangle);
+
+        //SOUTH
+        Line line =  //grunden til -2, er fordi linjen er 5 tyk, så den bliver derfor justeret.
+                new Line(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
+        line.setStroke(Color.RED);
+        line.setStrokeWidth(5);
+        pane.getChildren().add(line);
+        this.getChildren().add(pane);
+        */
+
+        //metode 2
+        Canvas canvas= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+
+        GraphicsContext gc =
+                canvas.getGraphicsContext2D();
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(5);
+        gc.setLineCap(StrokeLineCap.ROUND);
+
+        //Nedre
+        gc.strokeLine(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
+        this.getChildren().add(canvas);
+
+        //venstre
+
+        //Højre
+
+        //Top
+
+    }
+
 
     private void updatePlayer() {
         this.getChildren().clear();
