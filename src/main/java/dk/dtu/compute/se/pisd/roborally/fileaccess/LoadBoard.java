@@ -38,6 +38,7 @@ import java.io.*;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
+
 public class LoadBoard {
 
     private static final String BOARDSFOLDER = "boards";
