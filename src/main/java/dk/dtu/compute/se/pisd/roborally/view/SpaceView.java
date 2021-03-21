@@ -75,24 +75,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
-    public void viewLine(){
-       /* metode 1
-       Pane pane = new Pane();
-        Rectangle rectangle =
-                new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-        rectangle.setFill(Color.TRANSPARENT);
-        pane.getChildren().add(rectangle);
-
-        //SOUTH
-        Line line =  //grunden til -2, er fordi linjen er 5 tyk, så den bliver derfor justeret.
-                new Line(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
-        line.setStroke(Color.RED);
-        line.setStrokeWidth(5);
-        pane.getChildren().add(line);
-        this.getChildren().add(pane);
-        */
-
-        //metode 2
+    public void viewLine(String direction){
         Canvas canvas= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
 
         GraphicsContext gc =
@@ -101,16 +84,30 @@ public class SpaceView extends StackPane implements ViewObserver {
         gc.setLineWidth(5);
         gc.setLineCap(StrokeLineCap.ROUND);
 
-        //Nedre
-        gc.strokeLine(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
-        this.getChildren().add(canvas);
+        //(startX, startY, endX, endY)
+        //NORTH
+        if (direction.equals("NORTH")){
+            gc.strokeLine(2,0,SPACE_WIDTH-2,0);
+            this.getChildren().add(canvas);
+        } //grunden til -2, er fordi linjen er 5 tyk, så den bliver derfor justeret.
 
-        //venstre
+        //SOUTH
+        else if (direction.equals("SOUTH")){
+            gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+            this.getChildren().add(canvas);
+        }
 
-        //Højre
+        //EAST
+        else if (direction.equals("EAST")){
+            gc.strokeLine(SPACE_WIDTH-2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+            this.getChildren().add(canvas);
+        }
 
-        //Top
-
+        //WEST
+        else if (direction.equals("WEST")){
+            gc.strokeLine(2,SPACE_HEIGHT-2,2,-2);
+            this.getChildren().add(canvas);
+        }
     }
 
 
