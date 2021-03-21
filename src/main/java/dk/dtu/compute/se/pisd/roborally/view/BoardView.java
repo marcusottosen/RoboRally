@@ -83,7 +83,7 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
 
 
-        //Tilføjer en væg til feltet x:5 y:5
+        //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
         Space space = board.getSpace(0,0);
         SpaceView addWall = new SpaceView(space);
         addWall.viewLine("NORTH");
