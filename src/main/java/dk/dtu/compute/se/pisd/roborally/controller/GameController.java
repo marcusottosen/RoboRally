@@ -243,6 +243,18 @@ public class GameController {
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
                 player.setSpace(target);
+            } else {
+                //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
+                Player targetPlayer = target.getPlayer();
+
+                //targetSpace oprettes for at finde ud af hvor targetPlayer står, så vi kan rykke ham.
+                Space targetSpace = targetPlayer.getSpace();
+
+                //Vi rykker targetPlayer ved getNeighbour til targetSpace.
+                targetPlayer.setSpace(board.getNeighbour(targetSpace, player.getHeading()));
+
+                // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
+                player.setSpace(target);
             }
         }
     }
