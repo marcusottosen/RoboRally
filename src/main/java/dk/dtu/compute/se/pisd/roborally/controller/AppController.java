@@ -28,7 +28,9 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -39,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+
 
 /**
  * ...
@@ -65,6 +69,9 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
+
+
+
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
@@ -78,12 +85,18 @@ public class AppController implements Observer {
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
             gameController = new GameController(board);
+
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
+
             }
+
+
+            //Space addWalls = new Space(board, 5, 5);
+            //addWalls.setWalls(board, 5, 5);
 
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
