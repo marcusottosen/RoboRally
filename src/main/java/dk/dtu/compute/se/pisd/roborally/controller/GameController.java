@@ -217,8 +217,14 @@ public class GameController {
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
             switch (command) {
-                case FORWARD:
-                    this.moveForward(player);
+                case FORWARD1:
+                    this.forward1(player);
+                    break;
+                case FORWARD2:
+                    this.forward2(player);
+                    break;
+                case FORWARD3:
+                    this.forward3(player);
                     break;
                 case RIGHT:
                     this.turnRight(player);
@@ -226,8 +232,8 @@ public class GameController {
                 case LEFT:
                     this.turnLeft(player);
                     break;
-                case FAST_FORWARD:
-                    this.fastForward(player);
+                case UTURN:
+                    this.uTurn(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -235,8 +241,8 @@ public class GameController {
         }
     }
 
-    // TODO Assignment V2
-    public void moveForward(@NotNull Player player) {
+
+    public void forward1(@NotNull Player player) {
         Space current = player.getSpace();
         if (current != null && player.board == current.board) {
             //Vi opretter en variable "target", som specificerer hvor spilleren skal rykke sig hen.
@@ -255,23 +261,32 @@ public class GameController {
         }
     }
     public void pushPlayer(@NotNull Player player) {
-        moveForward(player);
+        forward1(player);
     }
 
-    // TODO Assignment V2
-    public void fastForward(@NotNull Player player) {
-        moveForward(player);
-        moveForward(player);
+    public void forward2(@NotNull Player player) {
+        forward1(player);
+        forward1(player);
     }
 
-    // TODO Assignment V2
+    public void forward3(@NotNull Player player) {
+        forward1(player);
+        forward1(player);
+        forward1(player);
+    }
+
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment V2
+
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().next());
+        player.setHeading(player.getHeading().next());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
