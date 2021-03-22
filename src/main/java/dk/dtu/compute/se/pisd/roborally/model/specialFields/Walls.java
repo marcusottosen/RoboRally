@@ -24,6 +24,11 @@ public class Walls{
     }
 
 
+    /**
+     * Laver en mur på spillepladen. I det her tilfælde på den "nordlige" kant i fæltet (5,5)
+     * @param board er spillepladen
+     * @param mainBoardPane er vores valgte felt
+     */
     public void showWalls(@NotNull Board board, @NotNull GridPane mainBoardPane) {
         //vælger et space på board som vi arbejder med
         //Space wallSpace = board.getSpace(x,y);

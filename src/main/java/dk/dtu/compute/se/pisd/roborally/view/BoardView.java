@@ -54,6 +54,11 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+
+    /***
+     * Konstruktøren
+     * @param gameController The GameController of the given game
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -94,6 +99,11 @@ public class BoardView extends VBox implements ViewObserver {
 
     }
 
+
+    /**
+     * Checks to see if subject is equal to board phase
+     * @param subject subject objektet
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -112,6 +122,11 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
+
+        /***
+         *the "event" that happens when the game is initialized
+         * @param event objekt af MouseEvent
+         */
         @Override
         public void handle(MouseEvent event) {
             Object source = event.getSource();
