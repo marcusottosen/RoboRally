@@ -25,7 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Kommandokortobjektet.
+ * Vi tilfølger getName metode til vores programmeringskort, med navnene fra Command.java
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -48,4 +48,6 @@ public class CommandCard extends Subject {
     public String getName() {
         return command.displayName;
     }
+
+
 }

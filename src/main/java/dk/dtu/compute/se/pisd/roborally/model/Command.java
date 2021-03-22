@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ...
+ * Her initialiser de forskellige kommandoer, og vi giver dem et displayName.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *

@@ -24,7 +24,11 @@ public class Checkpoint {
 
     }
 
-
+    /**
+     * Viser et checkpoint på spillepladen
+     * @param board er spillepladen
+     * @param mainBoardPane er vores valgte felt
+     */
     public void showCheckpoint(Board board, GridPane mainBoardPane){
         //Tester at tilføje en grøn cirkel(checkpoint)
         Space checkpoint = board.getSpace(x,y);

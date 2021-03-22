@@ -13,7 +13,11 @@ public class Walls{
 
     }
 
-
+    /**
+     * Laver en mur på spillepladen. I det her tilfælde på den "nordlige" kant i fæltet (5,5)
+     * @param board er spillepladen
+     * @param mainBoardPane er vores valgte felt
+     */
     public void showWalls(Board board, GridPane mainBoardPane) {
         //Disse variable bør være tilfældige tal på spilpladen. 5,5 er valgt for at teste at det virker.
         final int x = 5;
