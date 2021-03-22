@@ -43,7 +43,7 @@ public class Space extends Subject {
     private Player player;
 
     /**
-     * Metode bruges til at bestemme et felt på pladen.
+     * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
      * @param board Sætter boarded fra metoden til det public final board i Space.java.
      * @param x Sætter x-koordinaten til feltet til den public final int x i Space.java.
      * @param y Sætter y-koordinaten til feltet til den public final int y i Space.java.

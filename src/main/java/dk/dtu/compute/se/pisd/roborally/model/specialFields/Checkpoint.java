@@ -7,6 +7,7 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 
 import javafx.scene.layout.GridPane;
+import org.jetbrains.annotations.NotNull;
 
 public class Checkpoint {
 
@@ -14,18 +15,20 @@ public class Checkpoint {
     private Space space;
 
     //x og y koordinaterne bør vælges tilfældigt indenfor spillepladen og ikke som de er nu.
-    final int x = 3;
-    final int y = 3;
+    private int x;
+    private int y;
     private final Space[][] spaces = new Space[x][y];
 
 
-    public Checkpoint(GameController gameController){
+    public Checkpoint(@NotNull GameController gameController, int x, int y){
         board = gameController.board;
-
+        this.x = x;
+        this.y=y;
+        space = board.getSpace(x,y);
     }
 
 
-    public void showCheckpoint(Board board, GridPane mainBoardPane){
+    public void showCheckpoint(@NotNull Board board, @NotNull GridPane mainBoardPane){
         //Tester at tilføje en grøn cirkel(checkpoint)
         Space checkpoint = board.getSpace(x,y);
         SpaceView addCheckpoint = new SpaceView(checkpoint);
@@ -36,17 +39,34 @@ public class Checkpoint {
     }
 
     /**
-     *
-     * @param x x koordinaten af hvor checkpointet er.
-     * @param y y koordinaten af hvor checkpointet er.
+     * Returnerer lokationen af checkpointet.
      * @return Lokationen af checkpointet.
      */
-    public Space getSpace(int x, int y){
-        return spaces[x][y];
+    public Space getSpace(){
+        //return spaces[x][y];
+        return space;
     }
+//bør også laves en setSpace()
 
-    //metode til at teste om den nuværende spiller står på et checkpoint
-    public static void checkCheckpoint(Player player){
+    //Har lavet en "isSpecialSpace" metode i GameController som tjekker for alle specielle felter.
+    //Lavet int score, getScore() og setScore() i Player, så hver spiller har nu en score.
+    //Ændret på konstruktøren så den nu indeholder x og y som parametre,
+    // så dette kan sættes når objektet bliver oprettet. (ligenu oprettet i BoardView)
+
+
+
+    /**
+     * metode til at teste om den nuværende spiller står på et checkpoint
+     * @param player objekt af spilleren
+     * @return true hvis spilleren befinder sig på feltet.
+     */
+    public boolean checkCheckpoint(Player player){
         Space current = player.getSpace();
+        if (current == space && space == null){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

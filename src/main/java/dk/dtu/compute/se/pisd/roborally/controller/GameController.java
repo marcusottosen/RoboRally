@@ -26,7 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Den primære logik af selve spillet findes sted i GameController.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
@@ -45,13 +45,6 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
         Player current = board.getCurrentPlayer();
         if (space.getPlayer() == null && current != null) {
             current.setSpace(space);
@@ -89,7 +82,7 @@ public class GameController {
 
     /**
      * Finder random kort som bliver givet vha. StartProgrammingPhase().
-     * @return
+     * @return nyt random kommandokort
      */
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
@@ -111,7 +104,7 @@ public class GameController {
 
     /**
      * Bliver brugt i bl.a. finishProgrammingPhase til at enten vise (1) eller skjule (0) programming fields.
-     * @param register
+     * @param register int.
      */
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
@@ -162,7 +155,6 @@ public class GameController {
     }
 
     /**
-     * Bliver brugt i executeNextStep().
      * Udfører kommandokortene, så længe der er et næste. Alle kortene bliver kørt igennem ved 1 kort pr. person af gangen.
      * Tjekker bl.a. om et kort kræver interaktion fra spilleren.
      */
@@ -194,6 +186,7 @@ public class GameController {
                         startProgrammingPhase();
                     }
                 }
+
             } else {
                 // this should not happen
                 assert false;
@@ -242,8 +235,8 @@ public class GameController {
 
     /**
      * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
-     * @param player
-     * @param command
+     * @param player Spillerens objekt
+     * @param command Objekt af kommandokortet.
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
@@ -289,6 +282,8 @@ public class GameController {
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
                 player.setSpace(target);
+
+                isSpecialSpace(player); //tjekker player's felt for et specielt felt.
             } else { //Hvis der står en spiller på feltet i forvejen.
                 //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
                 Player targetPlayer = target.getPlayer();
@@ -296,6 +291,8 @@ public class GameController {
                 pushPlayer(targetPlayer);
                 // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
                 player.setSpace(target);
+
+                isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
             }
         }
     }
@@ -369,6 +366,18 @@ public class GameController {
         } else {
             return false;
         }
+    }
+
+
+    public void isSpecialSpace(@NotNull Player player){
+        Space location = player.getSpace();
+
+        //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
+        //if(Checkpoint.checkCheckpoint(currentPlayer))
+        player.setScore(player.getScore() + 1);
+
+
+
     }
 
     /**

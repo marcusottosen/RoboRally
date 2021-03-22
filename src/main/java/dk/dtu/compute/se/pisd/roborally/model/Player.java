@@ -49,6 +49,8 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+    private int score = 0;
+
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -157,6 +159,18 @@ public class Player extends Subject {
                 space.playerChanged();
             }
         }
+    }
+
+    /**
+     * returnerer spillerens score.
+     * @return spillerens score som int.
+     */
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int score){
+        this.score=score;
     }
 
 
