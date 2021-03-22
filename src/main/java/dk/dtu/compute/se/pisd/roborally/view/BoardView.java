@@ -84,10 +84,11 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
 
         //Tilføjer Walls til spillepladen
-        Walls addWalls = new Walls(board, mainBoardPane);
+        Walls addWalls = new Walls();
+        addWalls.showWalls(board, mainBoardPane);
 
         //Tilføjer Checkpoints til spillepladen
-        Checkpoint addCheckpoint = new Checkpoint();
+        Checkpoint addCheckpoint = new Checkpoint(gameController);
         addCheckpoint.showCheckpoint(board, mainBoardPane);
 
     }
