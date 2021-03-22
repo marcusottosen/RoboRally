@@ -18,9 +18,11 @@ public class Walls{
         int x = 5;
         int y = 5;
 
+        //vælger et space på board som vi arbejder med
         Space wallSpace = board.getSpace(x,y);
         SpaceView addWall = new SpaceView(wallSpace);
         addWall.viewLine("NORTH");
+        //vælger samme space på board, for at tilføje væggen.
         mainBoardPane.add(addWall,x,y);
 
     }
