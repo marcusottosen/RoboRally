@@ -25,7 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Kommandokortobjektet.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -34,13 +34,18 @@ public class CommandCard extends Subject {
 
     final public Command command;
 
+    /**
+     * Sætter kommandokortet i parameteren til final public Command command.
+     * @param command kommandokort.
+     */
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
 
+    /**
+     * Finder navnet af kortet og returnerer det.
+     */
     public String getName() {
         return command.displayName;
     }
-
-
 }

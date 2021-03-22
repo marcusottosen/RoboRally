@@ -27,7 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
- * ...
+ * Spillerne af spillet (robotterne).
+ * Viser bl.a. farver, navn, placering og retning.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -48,6 +49,7 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -66,10 +68,18 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Returnerer navnet af spilleren i dette objekt.
+     * @return Navnet som string.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Hvis navnet ønskes ændret bruges denne metode.
+     * @param name String af det navn man ønsker spillerens navn ændret til.
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -80,10 +90,18 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Bruges til at finde spillerens farve.
+     * @return Spillerens farve som String.
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Hvis farven ønskes ændret bruges denne metode.
+     * @param color String af den farve man ønsker spillerens farve ændret til.
+     */
     public void setColor(String color) {
         this.color = color;
         notifyChange();
@@ -92,10 +110,18 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Spillerens placering på kortet.
+     * @return Spillerens placering.
+     */
     public Space getSpace() {
         return space;
     }
 
+    /**
+     * Bruges til at ændre spillerens placering, så længe den placering ikke er null.
+     * @param space Det felt man ønsker spilleren rykket til.
+     */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -111,10 +137,18 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Returnerer retningen som spilleren vender som enten: NORTH, SOUTH, EAST eller WEST.
+     * @return spillerens retning.
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * Skifter spillerens heading til det der er indtastet i parameteren.
+     * @param heading Den ønskede heading.
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
@@ -124,6 +158,7 @@ public class Player extends Subject {
             }
         }
     }
+
 
     public CommandCardField getProgramField(int i) {
         return program[i];

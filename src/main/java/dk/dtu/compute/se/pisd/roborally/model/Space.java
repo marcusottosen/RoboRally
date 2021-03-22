@@ -28,7 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import java.util.List;
 
 /**
- * ...
+ * Indeholder spillets felter.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
