@@ -60,7 +60,10 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Starter programmeringsfasen, sætter antal spiller=0 og steps=0
+     * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
+     */
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -83,14 +86,20 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Finder random kort som bliver givet vha. StartProgrammingPhase().
+     * @return
+     */
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
     }
 
-    // XXX: V2
+    /**
+     * Når programmeringsfasen er færdig gør den program fields usyndlige vha. makeProgramFieldsVisible()
+     * Ænder derudover fasen til ACTIVATION.
+     */
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -99,7 +108,10 @@ public class GameController {
         board.setStep(0);
     }
 
-    // XXX: V2
+    /**
+     * Bliver brugt i bl.a. finishProgrammingPhase til at enten vise (1) eller skjule (0) programming fields.
+     * @param register
+     */
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -110,7 +122,9 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Bliver brugt i bl.a. finishProgrammingPhase til at skjule programming fields.
+     */
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -121,26 +135,36 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Bruges til knappen "execute program" og kører alle programkort igennem automatisk (udover option-kort)
+     */
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Bruges til knappen "execute current register" og kører kun det næste programkort.
+     */
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Bruges ved executeProgram() og executeStep() og tjekker om fasen er ACTIVATION og spillet ikke er stepMode.
+     */
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
-    // XXX: V2
+    /**
+     * Bliver brugt i executeNextStep().
+     * Udfører kommandokortene, så længe der er et næste. Alle kortene bliver kørt igennem ved 1 kort pr. person af gangen.
+     * Tjekker bl.a. om et kort kræver interaktion fra spilleren.
+     */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -179,6 +203,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Sætter næste spillers tur.
+     * Tjekker om der er flere spillere i runden og starter en ny runde hvis alle har fået sin tur.
+     * Runden fortsætter til alle kort er spillet, eller til der kræves en interaktion fra en spiller.
+     * Starter en ny programmeringsfase når alle runder er færdige.
+     * @param option .
+     */
     public void executeCommandOptionAndContinue(@NotNull Command option) {
         Player currentPlayer = board.getCurrentPlayer();
         if (currentPlayer != null &&
@@ -208,7 +239,11 @@ public class GameController {
     }
 
 
-    // XXX: V2
+    /**
+     * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
+     * @param player
+     * @param command
+     */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -240,7 +275,11 @@ public class GameController {
         }
     }
 
-
+    /**
+     * Rykker spilleren et felt frem ved at oprette en variable "target", som specificerer hvor spilleren skal rykke sig hen.
+     * Der bliver tjekket om der står en person på feltet i forvejen, og evt. kalder pushPlayer() metoden hvis dette er true.
+     * @param player Spillerens objekt.
+     */
     public void forward1(@NotNull Player player) {
         Space current = player.getSpace();
         if (current != null && player.board == current.board) {
@@ -259,35 +298,66 @@ public class GameController {
             }
         }
     }
+
+    /**
+     * Når en spiller bliver skubbet.
+     * @param player Spillerens objekt.
+     */
     public void pushPlayer(@NotNull Player player) {
         forward1(player);
     }
 
+    /**
+     * Flytter spilleren frem 2 felter ved at kalde forward1 metoden 2 gange.
+     * @param player Spillerens objekt.
+     */
     public void forward2(@NotNull Player player) {
         forward1(player);
         forward1(player);
     }
 
+    /**
+     * Flytter spilleren frem 3 felter ved at kalde forward1 metoden 3 gange.
+     * @param player Spillerens objekt.
+     */
     public void forward3(@NotNull Player player) {
         forward1(player);
         forward1(player);
         forward1(player);
     }
 
+    /**
+     * Skifter spillerens heading til højre.
+     * @param player Spillerens objekt.
+     */
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
 
 
+    /**
+     * Skifter spilleren heading til venstre.
+     * @param player Spillerens objekt.
+     */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
+    /**
+     * Skifter spillerens heading to gange til højre og altså vender spilleren i den modsatte retning.
+     * @param player Spillerens objekt.
+     */
     public void uTurn(@NotNull Player player){
         player.setHeading(player.getHeading().next());
         player.setHeading(player.getHeading().next());
     }
 
+    /**
+     * Tjekker om kortet er et move card eller ej.
+     * @param source CommandCardField
+     * @param target CommandCardField
+     * @return returnerer true/false
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();
