@@ -106,6 +106,22 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    public void viewCheckpoint(){
+        Canvas checkpoint= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+
+        GraphicsContext gc =
+                checkpoint.getGraphicsContext2D();
+        //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
+        gc.setFill(Color.LIGHTGREEN);
+
+        //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
+        gc.fillOval(SPACE_WIDTH/4,SPACE_WIDTH/4,40,40);
+        this.getChildren().add(checkpoint);
+    }
+
+
+
+
 
     private void updatePlayer() {
         this.getChildren().clear();

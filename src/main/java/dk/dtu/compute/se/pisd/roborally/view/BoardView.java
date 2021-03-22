@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Walls; //Tilføjet
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -82,13 +83,12 @@ public class BoardView extends VBox implements ViewObserver {
         board.attach(this);
         update(board);
 
+        //Tilføjer Walls til spillepladen
         Walls addWalls = new Walls(board, mainBoardPane);
 
-     /*   //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
-        Space wallSpace = board.getSpace(5,5);
-        SpaceView addWall = new SpaceView(wallSpace);
-        addWall.viewLine("NORTH");
-        mainBoardPane.add(addWall,5,5);*/
+        //Tilføjer Checkpoints til spillepladen
+        Checkpoint addCheckpoint = new Checkpoint();
+        addCheckpoint.showCheckpoint(board, mainBoardPane);
 
     }
 
