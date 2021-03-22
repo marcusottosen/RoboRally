@@ -64,6 +64,7 @@ public class BoardView extends VBox implements ViewObserver {
         this.getChildren().add(playersView);
         this.getChildren().add(statusLabel);
 
+
         spaces = new SpaceView[board.width][board.height];
 
         spaceEventHandler = new SpaceEventHandler(gameController);
@@ -84,8 +85,8 @@ public class BoardView extends VBox implements ViewObserver {
 
 
         //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
-        Space space = board.getSpace(0,0);
-        SpaceView addWall = new SpaceView(space);
+        Space wallSpace = board.getSpace(5,5);
+        SpaceView addWall = new SpaceView(wallSpace);
         addWall.viewLine("NORTH");
         mainBoardPane.add(addWall,5,5);
 
