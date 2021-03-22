@@ -33,6 +33,7 @@ import javafx.scene.control.TabPane;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
+
 public class PlayersView extends TabPane implements ViewObserver {
 
     private Board board;

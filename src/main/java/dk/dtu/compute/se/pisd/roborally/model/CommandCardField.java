@@ -43,6 +43,10 @@ public class CommandCardField extends Subject {
         this.visible = true;
     }
 
+    /***
+     *
+     * @return returns the value of the card
+     */
     public CommandCard getCard() {
         return card;
     }
@@ -54,6 +58,10 @@ public class CommandCardField extends Subject {
         }
     }
 
+    /***
+     *
+     * @return Checks if it is visible or not
+     */
     public boolean isVisible() {
         return visible;
     }

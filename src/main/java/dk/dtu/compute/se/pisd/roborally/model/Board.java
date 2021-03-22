@@ -72,6 +72,11 @@ public class Board extends Subject {
         this.stepMode = false;
     }
 
+    /***
+     *
+     * @param width the width of the default board
+     * @param height the height of the default board
+     */
     public Board(int width, int height) {
         this(width, height, "defaultboard");
     }
@@ -90,6 +95,12 @@ public class Board extends Subject {
         }
     }
 
+    /***
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
@@ -104,12 +115,17 @@ public class Board extends Subject {
         return players.size();
     }
 
+    /***
+     *
+     * @param player Identifies/add's player to the game
+     */
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
             players.add(player);
             notifyChange();
         }
     }
+
 
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {

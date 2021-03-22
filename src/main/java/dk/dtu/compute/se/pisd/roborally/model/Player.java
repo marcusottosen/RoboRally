@@ -48,6 +48,12 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+    /***
+     *
+     * @param board Shows player on the board
+     * @param color Shows name of player
+     * @param name Shows color of player
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -115,6 +121,10 @@ public class Player extends Subject {
         return heading;
     }
 
+    /***
+     *
+     * @param heading Shows the heading of player
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;

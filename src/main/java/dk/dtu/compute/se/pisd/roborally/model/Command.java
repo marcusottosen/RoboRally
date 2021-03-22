@@ -35,6 +35,7 @@ public enum Command {
 
     // This is a very simplistic way of realizing different commands.
 
+
     FORWARD("Fwd"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
@@ -51,6 +52,11 @@ public enum Command {
     */
     final private List<Command> options;
 
+    /***
+     *
+     * @param displayName Displays the name
+     * @param options Lists the options
+     */
     Command(String displayName, Command... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));

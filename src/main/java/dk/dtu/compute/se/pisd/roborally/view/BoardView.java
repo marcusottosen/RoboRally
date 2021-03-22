@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
+
 public class BoardView extends VBox implements ViewObserver {
 
     private Board board;
@@ -53,6 +54,10 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+    /***
+     *
+     * @param gameController The GameController of the given game
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -80,6 +85,7 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
+
         board.attach(this);
         update(board);
 
@@ -91,6 +97,11 @@ public class BoardView extends VBox implements ViewObserver {
         mainBoardPane.add(addWall,5,5);
 
     }
+
+    /**
+     *
+     * @param subject Checks to see if subject is equal to board phase
+     */
 
     @Override
     public void updateView(Subject subject) {
@@ -110,6 +121,10 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
+        /***
+         *
+         * @param event the "event" that happens when the game is initialized
+         */
         @Override
         public void handle(MouseEvent event) {
             Object source = event.getSource();
