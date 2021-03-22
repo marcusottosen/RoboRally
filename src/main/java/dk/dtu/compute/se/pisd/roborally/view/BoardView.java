@@ -25,8 +25,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Walls; //Tilføjet
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -73,7 +73,6 @@ public class BoardView extends VBox implements ViewObserver {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
-                //spaceView.viewLine("NORTH");
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
@@ -83,12 +82,13 @@ public class BoardView extends VBox implements ViewObserver {
         board.attach(this);
         update(board);
 
+        Walls addWalls = new Walls(board, mainBoardPane);
 
-        //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
+     /*   //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
         Space wallSpace = board.getSpace(5,5);
         SpaceView addWall = new SpaceView(wallSpace);
         addWall.viewLine("NORTH");
-        mainBoardPane.add(addWall,5,5);
+        mainBoardPane.add(addWall,5,5);*/
 
     }
 
