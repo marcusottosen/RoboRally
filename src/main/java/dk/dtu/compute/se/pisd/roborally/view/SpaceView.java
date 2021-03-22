@@ -83,26 +83,22 @@ public class SpaceView extends StackPane implements ViewObserver {
         gc.setStroke(Color.RED);
         gc.setLineWidth(5);
         gc.setLineCap(StrokeLineCap.ROUND);
-
         //(startX, startY, endX, endY)
         //NORTH
         if (direction.equals("NORTH")){
             gc.strokeLine(2,0,SPACE_WIDTH-2,0);
             this.getChildren().add(canvas);
         } //grunden til -2, er fordi linjen er 5 tyk, så den bliver derfor justeret.
-
         //SOUTH
         else if (direction.equals("SOUTH")){
             gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
             this.getChildren().add(canvas);
         }
-
         //EAST
         else if (direction.equals("EAST")){
             gc.strokeLine(SPACE_WIDTH-2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
             this.getChildren().add(canvas);
         }
-
         //WEST
         else if (direction.equals("WEST")){
             gc.strokeLine(2,SPACE_HEIGHT-2,2,-2);
