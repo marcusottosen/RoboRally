@@ -375,12 +375,11 @@ public class GameController {
         Checkpoint checkpoint = new Checkpoint(board);
         //System.out.println(player.getSpace());
         //System.out.println(checkpoint.getSpace());
-        System.out.println(player.getScore());
+        System.out.println(player.getName() + "'s score: " + player.getScore());
 
         if(location == checkpoint.getSpace()){
             //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
             player.setScore(player.getScore() + 1);
-            System.out.println(player.getName() + "'s score: " + player.getScore());
             if(player.getScore() > 3){
                 //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
             }
