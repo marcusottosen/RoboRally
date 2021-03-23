@@ -1,4 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.model.specialFields;
+import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -8,14 +9,20 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
-public class Checkpoint {
+/**
+ * Til objekt af Checkpoint. Indeholder get og setspace
+ *
+ * @author Victor Kongsbak & Marcus Ottosen
+ */
 
-    private Board board;
+public class Checkpoint extends Subject {
+
+    final public Board board;
     private Space space;
 
     //x og y koordinaterne bør vælges tilfældigt indenfor spillepladen og ikke som de er nu.
-    private final int x = 5;
-    private final int y = 3;
+    private int x;
+    private int y;
     //private final Space[][] spaces = new Space[x][y];
 
 
@@ -26,18 +33,20 @@ public class Checkpoint {
         space = board.getSpace(x,y);
     }
 
+
     /**
      * Viser et checkpoint på spillepladen
      * @param board er spillepladen
      * @param mainBoardPane er vores valgte felt
      */
-    public void showCheckpoint(@NotNull Board board, @NotNull GridPane mainBoardPane){
+    /*public void showCheckpoint(@NotNull Board board, @NotNull GridPane mainBoardPane){
 
         SpaceView addCheckpoint = new SpaceView(space);
         addCheckpoint.viewCheckpoint();
         //vælger samme space på board, for at tilføje checkpoint.
         mainBoardPane.add(addCheckpoint,x,y);
-    }
+    }*/
+
 
     /**
      * Returnerer lokationen af checkpointet.
@@ -48,18 +57,28 @@ public class Checkpoint {
         return space;
     }
 
+    public void setSpace(Space space) {
+        Space oldSpace = this.space;
+        if (space != oldSpace &&
+                (space == null || space.board == this.board)) {
+            this.space = space;
+            if (oldSpace != null) {
+                oldSpace.setCheckpoint(null);
+            }
+            if (space != null) {
+                space.setCheckpoint(this);
+            }
+            notifyChange();
+        }
+    }
+
+
     //bør også laves en setSpace()
     /*public Space setSpace(int x, int y){
         this.x = x;
         this.y = y;
         return space;
     }*/
-
-
-    //Har lavet en "isSpecialSpace" metode i GameController som tjekker for alle specielle felter.
-    //Lavet int score, getScore() og setScore() i Player, så hver spiller har nu en score.
-    //Ændret på konstruktøren så den nu indeholder x og y som parametre,
-    // så dette kan sættes når objektet bliver oprettet. (ligenu oprettet i BoardView)
 
 
 

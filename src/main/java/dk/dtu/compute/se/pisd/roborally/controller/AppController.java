@@ -30,6 +30,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -98,6 +99,16 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
 
             }
+
+            Checkpoint checkpoint1 = new Checkpoint(board);
+            board.addCheckpoint(checkpoint1);
+            //checkpoint1.showCheckpoint(board);
+            checkpoint1.setSpace(board.getSpace(3,5));
+
+            Checkpoint checkpoint2 = new Checkpoint(board);
+            board.addCheckpoint(checkpoint2);
+            //checkpoint1.showCheckpoint(board);
+            checkpoint2.setSpace(board.getSpace(1,0));
 
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));

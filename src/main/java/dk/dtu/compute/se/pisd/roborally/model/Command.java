@@ -37,7 +37,7 @@ public enum Command {
 
     FORWARD1("Move 1"),
     FORWARD2("Move 2"),
-    FORWARD3("move 3"),
+    FORWARD3("Move 3"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     UTURN("U-TURN"),
@@ -64,8 +64,4 @@ public enum Command {
     public List<Command> getOptions() {
         return options;
     }
-
-
-
-
 }

@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -93,42 +94,47 @@ public class SpaceView extends StackPane implements ViewObserver {
         gc.setLineWidth(5);
         gc.setLineCap(StrokeLineCap.ROUND);
         //(startX, startY, endX, endY)
-        //NORTH
-        if (direction.equals("NORTH")){
-            gc.strokeLine(2,0,SPACE_WIDTH-2,0);
-            this.getChildren().add(canvas);
-        } //grunden til -2, er fordi linjen er 5 tyk, så den bliver derfor justeret.
-        //SOUTH
-        else if (direction.equals("SOUTH")){
-            gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-            this.getChildren().add(canvas);
-        }
-        //EAST
-        else if (direction.equals("EAST")){
-            gc.strokeLine(SPACE_WIDTH-2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-            this.getChildren().add(canvas);
-        }
-        //WEST
-        else if (direction.equals("WEST")){
-            gc.strokeLine(2,SPACE_HEIGHT-2,2,-2);
-            this.getChildren().add(canvas);
+        switch (direction) {
+            case "NORTH" -> {
+                gc.strokeLine(2, 0, SPACE_WIDTH - 2, 0);
+                this.getChildren().add(canvas);
+            }
+            case "SOUTH" -> {
+                gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                this.getChildren().add(canvas);
+            }
+            case "EAST" -> {
+                gc.strokeLine(SPACE_WIDTH - 2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                this.getChildren().add(canvas);
+            }
+            case "WEST" -> {
+                gc.strokeLine(2, SPACE_HEIGHT - 2, 2, -2);
+                this.getChildren().add(canvas);
+            }
         }
     }
 
     /**
      * tegner visuelt checkpointet som en cirkel.
      */
-    public void viewCheckpoint(){
-        Canvas checkpoint= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+    public void viewCheckpoint() {
+        //this.getChildren().clear();
 
-        GraphicsContext gc =
-                checkpoint.getGraphicsContext2D();
-        //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
-        gc.setFill(Color.LIGHTGREEN);
+        Checkpoint checkpoint = space.getCheckpoint();
 
-        //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
-        gc.fillOval(SPACE_WIDTH/4,SPACE_WIDTH/4,40,40);
-        this.getChildren().add(checkpoint);
+        if (checkpoint != null) {
+            Canvas circle = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+            GraphicsContext gc =
+                    circle.getGraphicsContext2D();
+            //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
+            gc.setFill(Color.LIGHTGREEN);
+            gc.setGlobalAlpha(0.6); //opacity
+
+            //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
+            gc.fillOval(SPACE_WIDTH / 4, SPACE_WIDTH / 4, 40, 40);
+
+            this.getChildren().add(circle);
+        }
     }
 
 
@@ -136,7 +142,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Tegner spillerens ikon, her en trekant. Bruges primært til at opdatere spillerens lokation.
      */
     private void updatePlayer() {
-        this.getChildren().clear();
+        this.getChildren().clear(); //fjerner den tidligere trekant efter den er rykket.
 
         Player player = space.getPlayer();
         if (player != null) {
@@ -154,6 +160,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+
     /**
      * motoden sikre at der befinder sig et subject på feltet før den eksekverer updatePlayer()
      * @param subject objekt af subject.
@@ -162,6 +169,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == this.space) {
             updatePlayer();
+            viewCheckpoint();
+
         }
     }
 
