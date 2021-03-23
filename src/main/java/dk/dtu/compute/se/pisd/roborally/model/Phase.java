@@ -22,7 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 /**
- * ...
+ * de 4 faser er navngivet her som enum.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *

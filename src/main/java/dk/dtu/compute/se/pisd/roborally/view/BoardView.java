@@ -25,8 +25,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Walls; //Tilføjet
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -40,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-
 public class BoardView extends VBox implements ViewObserver {
 
     private Board board;
@@ -54,8 +54,9 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+
     /***
-     *
+     * Konstruktøren
      * @param gameController The GameController of the given game
      */
     public BoardView(@NotNull GameController gameController) {
@@ -78,31 +79,31 @@ public class BoardView extends VBox implements ViewObserver {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
-                //spaceView.viewLine("NORTH");
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
 
-
         board.attach(this);
         update(board);
 
+        //Tilføjer Walls til spillepladen
+        Walls addWalls = new Walls(gameController, 5,5, "NORTH");
+        addWalls.showWalls(board, mainBoardPane);
 
-        //Tilføjer en væg til feltet x:5 y:5 DETTE BØR IKKE SKRIVES HER, det er blot til at se at det virker
-        Space wallSpace = board.getSpace(5,5);
-        SpaceView addWall = new SpaceView(wallSpace);
-        addWall.viewLine("NORTH");
-        mainBoardPane.add(addWall,5,5);
+        //Tilføjer Checkpoints til spillepladen
+        Checkpoint checkpoint1 = new Checkpoint(gameController,5,2);
+        checkpoint1.showCheckpoint(board, mainBoardPane);
+        System.out.println(checkpoint1.getSpace());
 
     }
 
-    /**
-     *
-     * @param subject Checks to see if subject is equal to board phase
-     */
 
+    /**
+     * Checks to see if subject is equal to board phase
+     * @param subject subject objektet
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -121,9 +122,10 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
+
         /***
-         *
-         * @param event the "event" that happens when the game is initialized
+         *the "event" that happens when the game is initialized
+         * @param event objekt af MouseEvent
          */
         @Override
         public void handle(MouseEvent event) {

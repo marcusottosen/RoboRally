@@ -59,18 +59,23 @@ public class AppController implements Observer {
 
     private GameController gameController;
 
+
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+    /**
+     * Når et nyt spil startes spørger programmet om antal spillere (int) i form at en Choice Dialog.
+     * Opretter ydermere boarded på fx 8x8.
+     * Sætter farverne på spillerne ud fra et array af farverne.
+     * Sætter spillernes navne til hhv. player1, player2, player3 osv.
+     * Sætter spillerne på boarded 1 height felt og 1 width felt fra den tidligere.
+     */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
-
-
-
 
         if (result.isPresent()) {
             if (gameController != null) {
@@ -101,10 +106,16 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * Til at gemme spillet
+     */
     public void saveGame() {
         // XXX needs to be implemented eventually
     }
 
+    /**
+     * Til at loade et tidligere gemt spil.
+     */
     public void loadGame() {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
@@ -135,6 +146,10 @@ public class AppController implements Observer {
         return false;
     }
 
+    /**
+     * Når en bruger ønsker at forlade spillet bliver brugeren spurgt om personen er helt sikker på dette.
+     * Hvis der ikke bliver svaret cancel, vil applikationen exit.
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -154,6 +169,10 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * Hvis gamecontroller kører, er spillet igang.
+     * @return boolean.
+     */
     public boolean isGameRunning() {
         return gameController != null;
     }

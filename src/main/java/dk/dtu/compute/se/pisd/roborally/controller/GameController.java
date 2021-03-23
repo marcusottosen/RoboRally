@@ -22,10 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Den primære logik af selve spillet findes sted i GameController.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
@@ -44,13 +45,6 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
         Player current = board.getCurrentPlayer();
         if (space.getPlayer() == null && current != null) {
             current.setSpace(space);
@@ -60,7 +54,10 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Starter programmeringsfasen, sætter antal spiller=0 og steps=0
+     * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
+     */
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -83,14 +80,20 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Finder random kort som bliver givet vha. StartProgrammingPhase().
+     * @return nyt random kommandokort
+     */
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
     }
 
-    // XXX: V2
+    /**
+     * Når programmeringsfasen er færdig gør den program fields usyndlige vha. makeProgramFieldsVisible()
+     * Ænder derudover fasen til ACTIVATION.
+     */
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -99,7 +102,10 @@ public class GameController {
         board.setStep(0);
     }
 
-    // XXX: V2
+    /**
+     * Bliver brugt i bl.a. finishProgrammingPhase til at enten vise (1) eller skjule (0) programming fields.
+     * @param register int.
+     */
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -110,7 +116,9 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Bliver brugt i bl.a. finishProgrammingPhase til at skjule programming fields.
+     */
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -121,26 +129,35 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Bruges til knappen "execute program" og kører alle programkort igennem automatisk (udover option-kort)
+     */
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Bruges til knappen "execute current register" og kører kun det næste programkort.
+     */
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Bruges ved executeProgram() og executeStep() og tjekker om fasen er ACTIVATION og spillet ikke er stepMode.
+     */
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
-    // XXX: V2
+    /**
+     * Udfører kommandokortene, så længe der er et næste. Alle kortene bliver kørt igennem ved 1 kort pr. person af gangen.
+     * Tjekker bl.a. om et kort kræver interaktion fra spilleren.
+     */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -169,6 +186,7 @@ public class GameController {
                         startProgrammingPhase();
                     }
                 }
+
             } else {
                 // this should not happen
                 assert false;
@@ -179,6 +197,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Sætter næste spillers tur.
+     * Tjekker om der er flere spillere i runden og starter en ny runde hvis alle har fået sin tur.
+     * Runden fortsætter til alle kort er spillet, eller til der kræves en interaktion fra en spiller.
+     * Starter en ny programmeringsfase når alle runder er færdige.
+     * @param option .
+     */
     public void executeCommandOptionAndContinue(@NotNull Command option) {
         Player currentPlayer = board.getCurrentPlayer();
         if (currentPlayer != null &&
@@ -208,7 +233,11 @@ public class GameController {
     }
 
 
-    // XXX: V2
+    /**
+     * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
+     * @param player Spillerens objekt
+     * @param command Objekt af kommandokortet.
+     */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -216,8 +245,14 @@ public class GameController {
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
             switch (command) {
-                case FORWARD:
-                    this.moveForward(player);
+                case FORWARD1:
+                    this.forward1(player);
+                    break;
+                case FORWARD2:
+                    this.forward2(player);
+                    break;
+                case FORWARD3:
+                    this.forward3(player);
                     break;
                 case RIGHT:
                     this.turnRight(player);
@@ -225,8 +260,8 @@ public class GameController {
                 case LEFT:
                     this.turnLeft(player);
                     break;
-                case FAST_FORWARD:
-                    this.fastForward(player);
+                case UTURN:
+                    this.uTurn(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -234,8 +269,12 @@ public class GameController {
         }
     }
 
-    // TODO Assignment V2
-    public void moveForward(@NotNull Player player) {
+    /**
+     * Rykker spilleren et felt frem ved at oprette en variable "target", som specificerer hvor spilleren skal rykke sig hen.
+     * Der bliver tjekket om der står en person på feltet i forvejen, og evt. kalder pushPlayer() metoden hvis dette er true.
+     * @param player Spillerens objekt.
+     */
+    public void forward1(@NotNull Player player) {
         Space current = player.getSpace();
         if (current != null && player.board == current.board) {
             //Vi opretter en variable "target", som specificerer hvor spilleren skal rykke sig hen.
@@ -243,6 +282,8 @@ public class GameController {
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
                 player.setSpace(target);
+
+                isSpecialSpace(player); //tjekker player's felt for et specielt felt.
             } else { //Hvis der står en spiller på feltet i forvejen.
                 //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
                 Player targetPlayer = target.getPlayer();
@@ -250,29 +291,71 @@ public class GameController {
                 pushPlayer(targetPlayer);
                 // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
                 player.setSpace(target);
+
+                isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
             }
         }
     }
+
+    /**
+     * Når en spiller bliver skubbet.
+     * @param player Spillerens objekt.
+     */
     public void pushPlayer(@NotNull Player player) {
-        moveForward(player);
+        forward1(player);
     }
 
-    // TODO Assignment V2
-    public void fastForward(@NotNull Player player) {
-        moveForward(player);
-        moveForward(player);
+    /**
+     * Flytter spilleren frem 2 felter ved at kalde forward1 metoden 2 gange.
+     * @param player Spillerens objekt.
+     */
+    public void forward2(@NotNull Player player) {
+        forward1(player);
+        forward1(player);
     }
 
-    // TODO Assignment V2
+    /**
+     * Flytter spilleren frem 3 felter ved at kalde forward1 metoden 3 gange.
+     * @param player Spillerens objekt.
+     */
+    public void forward3(@NotNull Player player) {
+        forward1(player);
+        forward1(player);
+        forward1(player);
+    }
+
+    /**
+     * Skifter spillerens heading til højre.
+     * @param player Spillerens objekt.
+     */
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment V2
+
+    /**
+     * Skifter spilleren heading til venstre.
+     * @param player Spillerens objekt.
+     */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
+    /**
+     * Skifter spillerens heading to gange til højre og altså vender spilleren i den modsatte retning.
+     * @param player Spillerens objekt.
+     */
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().next());
+        player.setHeading(player.getHeading().next());
+    }
+
+    /**
+     * Tjekker om kortet er et move card eller ej.
+     * @param source CommandCardField
+     * @param target CommandCardField
+     * @return returnerer true/false
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();
@@ -283,6 +366,18 @@ public class GameController {
         } else {
             return false;
         }
+    }
+
+
+    public void isSpecialSpace(@NotNull Player player){
+        Space location = player.getSpace();
+
+        //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
+        //if(Checkpoint.checkCheckpoint(currentPlayer))
+        player.setScore(player.getScore() + 1);
+
+
+
     }
 
     /**

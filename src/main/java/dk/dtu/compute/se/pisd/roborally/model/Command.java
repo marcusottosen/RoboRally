@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ...
+ * Her initialiser de forskellige kommandoer, og vi giver dem et displayName.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -35,12 +35,12 @@ public enum Command {
 
     // This is a very simplistic way of realizing different commands.
 
-
-    FORWARD("Fwd"),
+    FORWARD1("Move 1"),
+    FORWARD2("Move 2"),
+    FORWARD3("move 3"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
-    FAST_FORWARD("Fast Fwd"),
-    //V3 LEFT OR RIGHT kort
+    UTURN("U-TURN"),
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
 
     final public String displayName;
@@ -52,11 +52,6 @@ public enum Command {
     */
     final private List<Command> options;
 
-    /***
-     *
-     * @param displayName Displays the name
-     * @param options Lists the options
-     */
     Command(String displayName, Command... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));

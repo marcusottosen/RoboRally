@@ -72,19 +72,28 @@ public class Board extends Subject {
         this.stepMode = false;
     }
 
-    /***
-     *
-     * @param width the width of the default board
-     * @param height the height of the default board
+    /**
+     * Sætter højden og bredden af pladen.
+     * @param width angivet i antal felter.
+     * @param height angivet i antal felter.
      */
     public Board(int width, int height) {
         this(width, height, "defaultboard");
     }
 
+    /**
+     * returnerer gameID.
+     * @return i form af interger.
+     */
     public Integer getGameId() {
         return gameId;
     }
 
+    /**
+     * Sætter spillets id til det der bliver skrevet i parameteren, hvis den ikke er null.
+     * Bruges til at gemme og loade spillet. gameID kan blive set some primary key.
+     * @param gameId spillets ID som int.
+     */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
@@ -95,11 +104,11 @@ public class Board extends Subject {
         }
     }
 
-    /***
-     *
-     * @param x
-     * @param y
-     * @return
+    /**
+     * bruges til at returnere et felts x og y.
+     * @param x int x-koordinat.
+     * @param y int y-koordinat.
+     * @return feltets x og y koordinater.
      */
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
@@ -110,14 +119,17 @@ public class Board extends Subject {
         }
     }
 
-
+    /**
+     * Bruges til at finde antallet at spillere ved at tjekke størrelsen på arraylisten Players.
+     * @return størrelsen som int.
+     */
     public int getPlayersNumber() {
         return players.size();
     }
 
-    /***
-     *
-     * @param player Identifies/add's player to the game
+    /**
+     * bruges til at tilføje en spiller
+     * @param player player objektet.
      */
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
@@ -125,7 +137,6 @@ public class Board extends Subject {
             notifyChange();
         }
     }
-
 
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {

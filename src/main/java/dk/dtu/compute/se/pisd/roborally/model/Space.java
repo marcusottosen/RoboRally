@@ -28,7 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import java.util.List;
 
 /**
- * ...
+ * Indeholder spillets felter.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -42,7 +42,12 @@ public class Space extends Subject {
 
     private Player player;
 
-
+    /**
+     * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
+     * @param board Sætter boarded fra metoden til det public final board i Space.java.
+     * @param x Sætter x-koordinaten til feltet til den public final int x i Space.java.
+     * @param y Sætter y-koordinaten til feltet til den public final int y i Space.java.
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -50,10 +55,19 @@ public class Space extends Subject {
         player = null;
     }
 
+    /**
+     * Ved brug af denne metode returneres player.
+     * @return returnerer player.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Metoden bruges til, at sammenligne 2 spillere, ved at sætte player lig med oldPlayer igennem en håndfuld tjek:
+     * Hvis player ikke er lig med oldPlayer og ikke er null, bliver this.player sat til = player.
+     * @param player Spillerens objekt.
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
@@ -71,21 +85,30 @@ public class Space extends Subject {
     }
 
 
+    /**
+     *
+     * @return walls.
+     */
     public List<Heading> getWalls() {
         List<Heading> walls = null; //This line only to avoid errors
         return walls;
     }
 
-
+    /**
+     *
+     * @return type af aktion.
+     */
     public List<FieldAction> getActions() {
         List<FieldAction> actions = null; //This line only to avoid errors
         return actions;
     }
 
+    /**
+     * This is a minor hack; since some views that are registered with the space
+     * also need to update when some player attributes change, the player can
+     * notify the space of these changes by calling this method.
+     */
     void playerChanged() {
-        // This is a minor hack; since some views that are registered with the space
-        // also need to update when some player attributes change, the player can
-        // notify the space of these changes by calling this method.
         notifyChange();
     }
 
