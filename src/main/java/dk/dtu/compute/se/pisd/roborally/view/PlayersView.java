@@ -28,7 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.scene.control.TabPane;
 
 /**
- * ...
+ * Spillerens view.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -40,6 +40,10 @@ public class PlayersView extends TabPane implements ViewObserver {
 
     private PlayerView[] playerViews;
 
+    /**
+     * Konstruktøren til PlayersView.
+     * @param gameController GameController objekt
+     */
     public PlayersView(GameController gameController) {
         board = gameController.board;
 
@@ -54,6 +58,10 @@ public class PlayersView extends TabPane implements ViewObserver {
         update(board);
     }
 
+    /**
+     * Opdaterer spillerens view
+     * @param subject opjekt af subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -61,5 +69,4 @@ public class PlayersView extends TabPane implements ViewObserver {
             this.getSelectionModel().select(board.getPlayerNumber(current));
         }
     }
-
 }

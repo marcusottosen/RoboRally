@@ -32,7 +32,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * ...
+ * Sørger for at starte spillet op.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -47,11 +47,20 @@ public class RoboRally extends Application {
 
     // private AppController appController;
 
+    /**
+     * Initialiserer spillet.
+     * @throws Exception hvis en error sker.
+     */
     @Override
     public void init() throws Exception {
         super.init();
     }
 
+    /**
+     * starter spillet ved oprettelse af AppController objektet.
+     * Starter menubaren, og sætter bl.a. titlen af vinduet til "Roborally".
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -78,6 +87,11 @@ public class RoboRally extends Application {
         stage.show();
     }
 
+    /**
+     * Hvis boardRoot findes, fjern den gamle boardview.
+     * Opretter et view for det nye board, og sætter et center.
+     * @param gameController gamercontroller objekt.
+     */
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
@@ -87,10 +101,14 @@ public class RoboRally extends Application {
             BoardView boardView = new BoardView(gameController);
             boardRoot.setCenter(boardView);
         }
-
         stage.sizeToScene();
     }
 
+    /**
+     * Bruges ikke rigtigt da der i stedet bliver brugt exit().
+     * Er dog i stand til at stoppe spillet igennem Application
+     * @throws Exception hvis error.
+     */
     @Override
     public void stop() throws Exception {
         super.stop();
@@ -101,6 +119,11 @@ public class RoboRally extends Application {
         //     so that the AppController can take care of that.
     }
 
+    /**
+     * Spillets main. Kører launch.
+     * Spillet bør kunne køres herfra, men fejler ofte - brug i stedet StartRoboRally dokumentet.
+     * @param args main args.
+     */
     public static void main(String[] args) {
         launch(args);
     }

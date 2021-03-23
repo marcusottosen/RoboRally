@@ -37,7 +37,8 @@ import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Dette dokument sørger for at tegne figurer på spillets felter.
+ * Heriblandt spillerens ikon samt vægge og checkpoints.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -50,6 +51,10 @@ public class SpaceView extends StackPane implements ViewObserver {
     public final Space space;
 
 
+    /**
+     * Denne metode vise selve felterne, her sort og hvid.
+     * @param space placeringen af feltet.
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -75,6 +80,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
+    /**
+     * Viser væggen i form af en linje.
+     * @param direction Retningen af linjen som string (NORTH, SOUTH, EAST, WEST)
+     */
     public void viewLine(String direction){
         Canvas canvas= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
 
@@ -106,6 +115,9 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * tegner visuelt checkpointet som en cirkel.
+     */
     public void viewCheckpoint(){
         Canvas checkpoint= new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
 
@@ -120,9 +132,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
 
-
-
-
+    /**
+     * Tegner spillerens ikon, her en trekant. Bruges primært til at opdatere spillerens lokation.
+     */
     private void updatePlayer() {
         this.getChildren().clear();
 
@@ -142,6 +154,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * motoden sikre at der befinder sig et subject på feltet før den eksekverer updatePlayer()
+     * @param subject objekt af subject.
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {

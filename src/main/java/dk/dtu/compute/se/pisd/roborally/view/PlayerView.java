@@ -33,7 +33,8 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Holder primært styr på de 3 knapper som spilleren kan interagere med under spillet:
+ * "Finish program", "Execute Program", "Execute Current Register".
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -62,6 +63,13 @@ public class PlayerView extends Tab implements ViewObserver {
 
     private GameController gameController;
 
+    /**
+     * Konstruktøren til playerView.
+     * Indeholder knapperne "Finish program", "Execute Program", "Execute Current Register"
+     *
+     * @param gameController gameController objekt.
+     * @param player Objekt af den nuværende spiller.
+     */
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
         this.setStyle("-fx-text-base-color: " + player.getColor() + ";");
@@ -132,6 +140,10 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
+    /**
+     * Holder styr på de 3 faser og dertil hvilke knapper der skal vises ved hver fase.
+     * @param subject subject object.
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {
@@ -199,21 +211,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 playerInteractionPanel.getChildren().clear();
 
                 if (player.board.getCurrentPlayer() == player) {
-                    // TODO Assignment V3: these buttons should be shown only when there is
-                    //      an interactive command card, and the buttons should represent
-                    //      the player's choices of the interactive command card. The
-                    //      following is just a mockup showing two options
-                    /* slettet ved V3
-                    Button optionButton = new Button("Option1");
-                    optionButton.setOnAction( e -> gameController.notImplemented());
-                    optionButton.setDisable(false);
-                    playerInteractionPanel.getChildren().add(optionButton);
-
-                    optionButton = new Button("Option 2");
-                    optionButton.setOnAction( e -> gameController.notImplemented());
-                    optionButton.setDisable(false);
-                    playerInteractionPanel.getChildren().add(optionButton);
-                    */
                     CommandCardField field = player.getProgramField(player.board.getStep());
                     if (field != null) {
                         CommandCard card = field.getCard();
