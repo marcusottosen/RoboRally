@@ -36,7 +36,8 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * BoardView implementere GameController til spillepladen.
+ * Giver spillerene mulighed for at rykke rundt på spillepladen.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
