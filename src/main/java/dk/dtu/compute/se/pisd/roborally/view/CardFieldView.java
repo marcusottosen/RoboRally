@@ -38,7 +38,8 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Kommandokort og deres placering.
+ * Giver spilleren mulighed for at benytte vælge og benytte kommandokort.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -99,6 +100,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
         field.attach(this);
         update(field);
     }
+
+    /**
+     *
+     * @param cardField viser de specifikke kommandokort der kan benyttes af spillere.
+     * @return retunerer det valgte kommandokort.
+     */
 
     private String cardFieldRepresentation(CommandCardField cardField) {
         if (cardField.player != null) {
