@@ -102,9 +102,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     *...
+     *
      * @param cardField viser de specifikke kommandokort der kan benyttes af spillere.
-     * @return retunerer det valgte kommandokort.
+     * @return Retunerer to strings, hvis CommandCardField stemmer overens med cardField.
      */
 
     private String cardFieldRepresentation(CommandCardField cardField) {
@@ -130,9 +130,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     *Registrere om der er kommandokort.
+     * Registrerer om der er kommandokort, og tildeler evt. manglende.
      * @param rep
-     * @return
+     * @return null
      */
     private CommandCardField cardFieldFromRepresentation(String rep) {
         if (rep != null && field.player != null) {
@@ -154,8 +154,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     *
-     * @param subject
+     * Opdaterer view
+     * @param subject objekt af subject.
      */
     @Override
     public void updateView(Subject subject) {
@@ -206,8 +206,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     private class OnDragOverHandler implements EventHandler<DragEvent> {
         /**
-         *Tjekker om der trækkes i kommandokort.
-         * @param event registrere træk i kommandokort med musen.
+         * @param event Tjekker om musen er over kommandokort.
          */
         @Override
         public void handle(DragEvent event) {
@@ -232,7 +231,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
         /**
          *
-         * @param event
+         * @param event Tjekker om der er trykket på et kommandokort.
          */
         @Override
         public void handle(DragEvent event) {
@@ -258,7 +257,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
         /**
          *
-         * @param event
+         * @param event Tjekker om der ikke længere klikkes på et kommandokort.
          */
         @Override
         public void handle(DragEvent event) {
