@@ -138,6 +138,11 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Bruges til at få fat i en bestemt spiller på.
+     * @param i nummeret på spilleren man vil have fat på.
+     * @return player object.
+     */
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {
             return players.get(i);
@@ -146,10 +151,18 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Bruges til at finde den nuværende spiller.
+     * @return player objekt.
+     */
     public Player getCurrentPlayer() {
         return current;
     }
 
+    /**
+     * Sætter en spiller som den nuværende. Bruges når der skal skiftes mellem spillere.
+     * @param player player objekt.
+     */
     public void setCurrentPlayer(Player player) {
         if (player != this.current && players.contains(player)) {
             this.current = player;
@@ -157,10 +170,18 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Bruges til at få fat i den nuværende fase af spillet.
+     * @return spillets fase som objekt.
+     */
     public Phase getPhase() {
         return phase;
     }
 
+    /**
+     * Sætter spillets fase til en af de 4 faser.
+     * @param phase objekt af Phase. Inder kun de 4 faser som enum.
+     */
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
             this.phase = phase;
@@ -168,10 +189,18 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Finder spillets nuværende step. Et step stiger for hvert kort der bliver brugt.
+     * @return nuværende step som int.
+     */
     public int getStep() {
         return step;
     }
 
+    /**
+     * Sætter spillets step til det i parameteren.
+     * @param step den int man ønsker spillets step skal være lig.
+     */
     public void setStep(int step) {
         if (step != this.step) {
             this.step = step;
@@ -179,10 +208,18 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Returnerer hvorvidt om spillet er i step mode eller ej.
+     * @return boolean. TRUE hvis stepMode.
+     */
     public boolean isStepMode() {
         return stepMode;
     }
 
+    /**
+     * Sætter spillets stepmode svarende til den boolean der bliver angivet i parameteren.
+     * @param stepMode boolean af det ønskede stepmode.
+     */
     public void setStepMode(boolean stepMode) {
         if (stepMode != this.stepMode) {
             this.stepMode = stepMode;
@@ -190,6 +227,11 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Returnerer spillerens nummer som int.
+     * @param player objekt af den spiller man ønsker nummeret på.
+     * @return Spillerens nummer som int.
+     */
     public int getPlayerNumber(@NotNull Player player) {
         if (player.board == this) {
             return players.indexOf(player);
@@ -229,6 +271,10 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
+    /**
+     * En kort tekst i bunden af vinduet som angiver: spillets fase, den nuværende spillers navn, steps samt spillerens score.
+     * @return spillets fase, den nuværende spillers navn, steps samt spillerens score som en string.
+     */
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -246,10 +292,18 @@ public class Board extends Subject {
      */
     private int count;
 
+    /**
+     * Returnerer spillets nuværende count.
+     * @return count som int.
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * Sætter spillets count til den i parameteren.
+     * @param count den int man ønsker count skal være lig.
+     */
     public void setCount(int count) {
         if (this.count != count) {
             this.count = count;
