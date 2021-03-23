@@ -38,8 +38,8 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Kommandokort og deres placering.
- * Giver spilleren mulighed for at benytte vælge og benytte kommandokort.
+ * Indeholder kommandokort og deres placering.
+ * Giver spilleren mulighed for at vælge og benytte kommandokort.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -102,7 +102,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     *
+     *...
      * @param cardField viser de specifikke kommandokort der kan benyttes af spillere.
      * @return retunerer det valgte kommandokort.
      */
@@ -120,7 +120,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
             for (int i = 0; i < Player.NO_CARDS; i++) {
                 CommandCardField other = cardField.player.getCardField(i);
                 if (other == cardField) {
-                    return "C," + i;
+                    return "" +
+                            "C," + i;
                 }
             }
         }
@@ -128,6 +129,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     *Registrere om der er kommandokort.
+     * @param rep
+     * @return
+     */
     private CommandCardField cardFieldFromRepresentation(String rep) {
         if (rep != null && field.player != null) {
             String[] strings = rep.split(",");
@@ -147,6 +153,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
         return null;
     }
 
+    /**
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == field && subject != null) {
@@ -159,8 +169,14 @@ public class CardFieldView extends GridPane implements ViewObserver {
         }
     }
 
+
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {
 
+        /**
+         * Giver spillere mulighed for at benytte musen til at trykke og vælge et kommandokort.
+         * Placere også kommandokort i Program og holder kortene fast.
+         * @param event registrere klik på kommandokort med musen.
+         */
         @Override
         public void handle(MouseEvent event) {
             Object t = event.getTarget();
@@ -189,7 +205,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragOverHandler implements EventHandler<DragEvent> {
-
+        /**
+         *Tjekker om der trækkes i kommandokort.
+         * @param event registrere træk i kommandokort med musen.
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -211,7 +230,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
-
+        /**
+         *
+         * @param event
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -234,7 +256,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
-
+        /**
+         *
+         * @param event
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -257,7 +282,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragDroppedHandler implements EventHandler<DragEvent> {
-
+        /**
+         *
+         * @param event
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -296,7 +324,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
-
+        /**
+         *
+         * @param event
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
