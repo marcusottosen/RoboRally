@@ -93,7 +93,7 @@ public class BoardView extends VBox implements ViewObserver {
         addWalls.showWalls(board, mainBoardPane);
 
         //Tilføjer Checkpoints til spillepladen
-        Checkpoint checkpoint1 = new Checkpoint(gameController,5,2);
+        Checkpoint checkpoint1 = new Checkpoint(board);
         checkpoint1.showCheckpoint(board, mainBoardPane);
         System.out.println(checkpoint1.getSpace());
 
