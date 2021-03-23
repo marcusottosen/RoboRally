@@ -8,7 +8,7 @@ Spillet har i denne version:
 - 7 kort (move1, move2, move3, right, left, u-turn og lef/right).
 - En dropdown menu som indeholder: stop, save og exit (Stop og Save virker dog ikke i denne version).
 - 3 knapper som kan bruges til at: færdiggøre programmeringsfasen, execute alle programkort og execute hvert programkort for sig.
-- Et checkpoint felt.
+- Et checkpoint felt som giver en spiller et point når spilleren står på det. Scoren kan ses i bunden af vinduet.
 - Mulighed for at skubbe til andre spillere.
 - Et felt med en væg, som kan sættes til hhv. NORTH, SOUTH, EAST, WEST.
 

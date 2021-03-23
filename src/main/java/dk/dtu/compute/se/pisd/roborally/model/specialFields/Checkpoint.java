@@ -14,7 +14,7 @@ public class Checkpoint {
     private Space space;
 
     //x og y koordinaterne bør vælges tilfældigt indenfor spillepladen og ikke som de er nu.
-    private final int x = 3;
+    private final int x = 5;
     private final int y = 3;
     //private final Space[][] spaces = new Space[x][y];
 
