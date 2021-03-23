@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -371,10 +372,20 @@ public class GameController {
 
     public void isSpecialSpace(@NotNull Player player){
         Space location = player.getSpace();
+        Checkpoint checkpoint = new Checkpoint(board);
+        //System.out.println(player.getSpace());
+        //System.out.println(checkpoint.getSpace());
 
-        //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
-        //if(Checkpoint.checkCheckpoint(currentPlayer))
-        player.setScore(player.getScore() + 1);
+        if(location == checkpoint.getSpace()){
+            //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
+            player.setScore(player.getScore() + 1);
+            System.out.println(player.getName() + "'s score: " + player.getScore());
+            if(player.getScore() > 3){
+                //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
+            }
+        }
+
+
 
 
 

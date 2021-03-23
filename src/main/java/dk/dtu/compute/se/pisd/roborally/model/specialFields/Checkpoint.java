@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
@@ -15,15 +14,15 @@ public class Checkpoint {
     private Space space;
 
     //x og y koordinaterne bør vælges tilfældigt indenfor spillepladen og ikke som de er nu.
-    private int x;
-    private int y;
-    private final Space[][] spaces = new Space[x][y];
+    private final int x = 3;
+    private final int y = 3;
+    //private final Space[][] spaces = new Space[x][y];
 
 
-    public Checkpoint(@NotNull GameController gameController, int x, int y){
-        board = gameController.board;
-        this.x = x;
-        this.y=y;
+    public Checkpoint(@NotNull Board board){
+        this.board = board;
+
+        //Bestemmer hvilket felt vi skal arbejde i (altså hvor checkpointet skal være på brættet.
         space = board.getSpace(x,y);
     }
 
@@ -33,13 +32,11 @@ public class Checkpoint {
      * @param mainBoardPane er vores valgte felt
      */
     public void showCheckpoint(@NotNull Board board, @NotNull GridPane mainBoardPane){
-        //Tester at tilføje en grøn cirkel(checkpoint)
-        Space checkpoint = board.getSpace(x,y);
-        SpaceView addCheckpoint = new SpaceView(checkpoint);
-        addCheckpoint.viewCheckpoint();
-        //vælger samme space på board, for at tilføje væggen.
-        mainBoardPane.add(addCheckpoint,x,y);
 
+        SpaceView addCheckpoint = new SpaceView(space);
+        addCheckpoint.viewCheckpoint();
+        //vælger samme space på board, for at tilføje checkpoint.
+        mainBoardPane.add(addCheckpoint,x,y);
     }
 
     /**
@@ -50,7 +47,14 @@ public class Checkpoint {
         //return spaces[x][y];
         return space;
     }
-//bør også laves en setSpace()
+
+    //bør også laves en setSpace()
+    /*public Space setSpace(int x, int y){
+        this.x = x;
+        this.y = y;
+        return space;
+    }*/
+
 
     //Har lavet en "isSpecialSpace" metode i GameController som tjekker for alle specielle felter.
     //Lavet int score, getScore() og setScore() i Player, så hver spiller har nu en score.
