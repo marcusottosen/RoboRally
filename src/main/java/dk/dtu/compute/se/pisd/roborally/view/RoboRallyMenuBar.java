@@ -27,7 +27,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 /**
- * ...
+ * Spillets menubar. Sørger for knapperne: file, new game, stop game, save game, load game og exit.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -48,6 +48,10 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private MenuItem exitApp;
 
+    /**
+     * Viser alle knapper i menuen.
+     * @param appController objekt af appControlleren.
+     */
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
@@ -79,6 +83,9 @@ public class RoboRallyMenuBar extends MenuBar {
         update();
     }
 
+    /**
+     * Viser og skjuler nødvendige knapper når spillet hhv. viser startmenuen eller er igang.
+     */
     public void update() {
         if (appController.isGameRunning()) {
             newGame.setVisible(false);
