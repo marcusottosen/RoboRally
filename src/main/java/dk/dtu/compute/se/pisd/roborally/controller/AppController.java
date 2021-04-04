@@ -125,7 +125,7 @@ public class AppController implements Observer {
      */
     public void saveGame() {
         RepositoryAccess save = new RepositoryAccess();
-        RepositoryAccess.getRepository();
+        save.getRepository().createGameInDB(gameController.board);
         System.out.println("save test");
     }
 
@@ -135,9 +135,11 @@ public class AppController implements Observer {
     public void loadGame() {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
-        if (gameController == null) {
+        /*if (gameController == null) {
             newGame();
-        }
+        }*/
+        RepositoryAccess load = new RepositoryAccess();
+        load.getRepository().loadGameFromDB(6);
     }
 
     /**

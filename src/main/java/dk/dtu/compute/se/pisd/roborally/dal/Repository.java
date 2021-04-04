@@ -79,7 +79,8 @@ class Repository implements IRepository {
 				//       for the game and should be then used 
 				//       game.getName();
 				ps.setString(1, "Date: " +  new Date()); // instead of name
-				ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
+				//ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
+				ps.setNull(2, game.getPlayerNumber(game.getCurrentPlayer()));
 				ps.setInt(3, game.getPhase().ordinal());
 				ps.setInt(4, game.getStep());
 

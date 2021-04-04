@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -119,7 +120,8 @@ public class Space extends Subject {
      * @return type af aktion.
      */
     public List<FieldAction> getActions() {
-        List<FieldAction> actions = null; //This line only to avoid errors
+        List<FieldAction> actions = null;
+
         return actions;
     }
 

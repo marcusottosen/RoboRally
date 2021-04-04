@@ -44,9 +44,9 @@ class Connector {
 	
     private static final String HOST     = "localhost";
     private static final int    PORT     = 3306;
-    private static final String DATABASE = "pisu";
+    private static final String DATABASE = "new_schema";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "qjf67xsm";
 
     private static final String DELIMITER = ";;";
     
@@ -55,8 +55,9 @@ class Connector {
     Connector() {
         try {
 			// String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
-			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?serverTimezone=UTC";
+			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?user=root";
 			connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+			
 
 			createDatabaseSchema();
 		} catch (SQLException e) {
