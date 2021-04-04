@@ -24,6 +24,11 @@ package dk.dtu.compute.se.pisd.roborally.dal;
 import com.mysql.cj.util.StringUtils;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.IOUtil;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -40,8 +45,8 @@ class Connector {
     private static final String HOST     = "localhost";
     private static final int    PORT     = 3306;
     private static final String DATABASE = "pisu";
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
 
     private static final String DELIMITER = ";;";
     
@@ -57,6 +62,7 @@ class Connector {
 		} catch (SQLException e) {
 			// TODO we should try to diagnose and fix some problems here and
 			//      exit in a more graceful way
+			e.getSQLState();
 			e.printStackTrace();
 			// Platform.exit();
 		}
@@ -64,8 +70,19 @@ class Connector {
     
     private void createDatabaseSchema() {
 
-    	String createTablesStatement =
-				IOUtil.readResource("schemas/createschema.sql");
+    	String createTablesStatement;
+    	try {
+			ClassLoader classLoader = Connector.class.getClassLoader();
+			URI uri = classLoader.getResource("schemas/createschema.sql").toURI();
+			byte[] bytes = Files.readAllBytes(Paths.get(uri));
+			createTablesStatement = new String(bytes);
+		} catch (URISyntaxException | IOException e){
+    		e.printStackTrace();
+    		return;
+		}
+
+    	//String createTablesStatement =
+		//		IOUtil.readResource("schemas/createschema.sql");
 
     	try {
     		connection.setAutoCommit(false);

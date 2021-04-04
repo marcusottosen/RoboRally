@@ -21,11 +21,14 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+//import dk.dtu.compute.se.pisd.roborally.dal.*;
+
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
+import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -121,7 +124,9 @@ public class AppController implements Observer {
      * Til at gemme spillet
      */
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        RepositoryAccess save = new RepositoryAccess();
+        RepositoryAccess.getRepository();
+        System.out.println("save test");
     }
 
     /**
