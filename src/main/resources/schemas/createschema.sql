@@ -24,7 +24,22 @@ CREATE TABLE IF NOT EXISTS Player (
   positionX int,
   positionY int,
   heading tinyint,
-  
+
+  proKort1 varchar(255),
+  proKort2 varchar(255),
+  proKort3 varchar(255),
+  proKort4 varchar(255),
+  proKort5 varchar(255),
+
+  comKort1 varchar(255),
+  comKort2 varchar(255),
+  comKort3 varchar(255),
+  comKort4 varchar(255),
+  comKort5 varchar(255),
+  comKort6 varchar(255),
+  comKort7 varchar(255),
+  comKort8 varchar(255),
+
   PRIMARY KEY (gameID, playerID),
   FOREIGN KEY (gameID) REFERENCES Game(gameID)
 );;
