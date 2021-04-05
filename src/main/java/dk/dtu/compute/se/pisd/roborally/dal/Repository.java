@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.dal;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 
@@ -216,9 +217,9 @@ class Repository implements IRepository {
 			int playerNo = -1;
 			if (rs.next()) {
 				// TODO the width and height could eventually come from the database
-				// int width = AppController.BOARD_WIDTH;
-				// int height = AppController.BOARD_HEIGHT;
-				// game = new Board(width,height);
+				//int width = AppController.BOARD_WIDTH;
+				//int height = AppController.BOARD_HEIGHT;
+				//game = new Board(width,height);
 				// TODO and we should also store the used game board in the database
 				//      for now, we use the default game board
 				game = LoadBoard.loadBoard(null);
@@ -245,7 +246,7 @@ class Repository implements IRepository {
 				return null;
 			}
 
-			/* TOODO this method needs to be implemented first
+			/* TODO this method needs to be implemented first
 			loadCardFieldsFromDB(game);
 			*/
 
@@ -310,8 +311,8 @@ class Repository implements IRepository {
 				if (player.getProgramField(j-1).getCard() != null)
 				rs.updateString("prokort"+j, player.getProgramField(j-1).getCard().getName());
 			}
-			
-			
+
+
 			rs.insertRow();
 		}
 
@@ -340,6 +341,10 @@ class Repository implements IRepository {
 				player.setHeading(Heading.values()[heading]);
 
 				// TODO  should also load players program and hand here
+				//player.getProgramField();
+				//player.getCardField();
+				//Player cards = new Player(LoadBoard.loadBoard(null), colour, name);
+
 			} else {
 				// TODO error handling
 				System.err.println("Game in DB does not have a player with id " + i +"!");
@@ -347,6 +352,7 @@ class Repository implements IRepository {
 		}
 		rs.close();
 	}
+
 	
 	private void updatePlayersInDB(Board game) throws SQLException {
 		PreparedStatement ps = getSelectPlayersStatementU();

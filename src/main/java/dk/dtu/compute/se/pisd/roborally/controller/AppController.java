@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 //import dk.dtu.compute.se.pisd.roborally.dal.*;
 
+import com.sun.jdi.connect.Connector;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -141,8 +142,12 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
+
         RepositoryAccess load = new RepositoryAccess();
         load.getRepository().loadGameFromDB(6);
+        gameController = new GameController(load.getRepository().loadGameFromDB(6));
+        roboRally.createBoardView(gameController);
+
     }
 
     /**
