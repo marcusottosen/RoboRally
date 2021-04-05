@@ -29,12 +29,14 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
+import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -63,6 +65,7 @@ public class AppController implements Observer {
     final private RoboRally roboRally;
 
     private GameController gameController;
+    private Board board = null;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -136,18 +139,26 @@ public class AppController implements Observer {
     /**
      * Til at loade et tidligere gemt spil.
      */
-    public void loadGame() {
+    public BoardView loadGame() {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
         /*if (gameController == null) {
             newGame();
         }*/
 
-        RepositoryAccess load = new RepositoryAccess();
-        load.getRepository().loadGameFromDB(6);
-        gameController = new GameController(load.getRepository().loadGameFromDB(6));
+        RepositoryAccess loadgame = new RepositoryAccess();
+        List<GameInDB> savegames = loadgame.getRepository().getGames();
+
+        ChoiceDialog load_dialog = new ChoiceDialog();
+        load_dialog.setContentText("Chose savegame to load");
+        load_dialog.getItems().addAll(savegames);
+        load_dialog.showAndWait();
+
+        board = loadgame.getRepository().loadGameFromDB(((GameInDB) load_dialog.getSelectedItem()).id);
+        gameController = new GameController(board);
         roboRally.createBoardView(gameController);
 
+    return null;
     }
 
     /**
