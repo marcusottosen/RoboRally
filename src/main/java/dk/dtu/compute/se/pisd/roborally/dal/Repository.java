@@ -301,13 +301,13 @@ class Repository implements IRepository {
 			rs.updateInt(PLAYER_SCORE, player.getScore());
 
 			// Command cards
-			for (int j = 1; j <= 7 ; j++) {
+			for (int j = 1; j <= 8 ; j++) {
 				if (player.getCardField(j-1).getCard() != null)
-				rs.updateString("comKort"+j, player.getCardField(j-1).getCard().getName());
+					rs.updateString("comKort" + j, player.getCardField(j - 1).getCard().getName());
 			}
 
 			// Programming cards
-			for (int j = 1; j <=4 ; j++) {
+			for (int j = 1; j <=5 ; j++) {
 				if (player.getProgramField(j-1).getCard() != null)
 				rs.updateString("prokort"+j, player.getProgramField(j-1).getCard().getName());
 			}
@@ -344,6 +344,47 @@ class Repository implements IRepository {
 				//player.getProgramField();
 				//player.getCardField();
 				//Player cards = new Player(LoadBoard.loadBoard(null), colour, name);
+
+				//commandskort
+				for (int j = 1; j <= 8; j++) { //8 = antallet af commandcard felter
+					if (rs.getString("comKort"+j) != null) {
+						Command[] commands = Command.values();
+						int proCardIndex = 0;
+
+						String proCard = rs.getString("comKort" + j);
+
+						for (int k = 1; k <= 6; k++) { //6 = mulige kort
+							if (commands[k].displayName.equals(proCard)){
+								proCardIndex = k;
+							}
+						}
+
+						for (int k = 0; k < 8; k++) {
+							player.getCardField(j-1).setCard((new CommandCard(commands[proCardIndex])));
+						}
+					}
+				}
+
+				//Programmeringskort
+				for (int j = 1; j <= 5; j++) { // 5 = antallet af programkortfelter
+					if (rs.getString("proKort"+j) != null) {
+						Command[] commands = Command.values();
+						int comCardIndex = 0;
+
+						String proCard = rs.getString("proKort" + j);
+
+						for (int k = 1; k <= 6; k++) { //6 = mulige kort
+							if (commands[k].displayName.equals(proCard)){
+								comCardIndex = k;
+							}
+						}
+
+						for (int k = 0; k < 5; k++) {
+							player.getProgramField(j-1).setCard((new CommandCard(commands[comCardIndex])));
+						}
+					}
+				}
+
 
 			} else {
 				// TODO error handling
