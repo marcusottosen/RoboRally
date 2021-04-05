@@ -26,8 +26,6 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Walls; //Tilføjet
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -90,8 +88,8 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
 
         //Tilføjer Walls til spillepladen
-        Walls addWalls = new Walls(gameController, 5,5, "NORTH");
-        addWalls.showWalls(board, mainBoardPane);
+        //Walls addWalls = new Walls(gameController, 5,5, "NORTH");
+        //addWalls.showWalls(board, mainBoardPane);
 
         //Tilføjer Checkpoints til spillepladen
         //Checkpoint checkpoint1 = new Checkpoint(board);

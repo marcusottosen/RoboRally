@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Space extends Subject {
 
     private Player player;
     private Checkpoint checkpoint;
+    private Wall wall;
 
     /**
      * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
@@ -92,9 +94,22 @@ public class Space extends Subject {
      *
      * @return walls.
      */
-    public List<Heading> getWalls() {
-        List<Heading> walls = new ArrayList<>(); //This line only to avoid errors
-        return walls;
+    public Wall getWalls() {
+        return wall;
+    }
+
+    public void setWall(Wall wall){
+        Wall oldWall = this.wall;
+        if (wall != oldWall && (wall == null || board == wall.board));{
+            this.wall = wall;
+            if (oldWall != null){
+                oldWall.setSpace(null);
+            }
+            if (wall != null){
+                wall.setSpace(this);
+            }
+            notifyChange();
+        }
     }
 
     public Checkpoint getCheckpoint(){

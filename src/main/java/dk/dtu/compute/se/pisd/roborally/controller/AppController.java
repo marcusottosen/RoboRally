@@ -23,7 +23,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 //import dk.dtu.compute.se.pisd.roborally.dal.*;
 
-import com.sun.jdi.connect.Connector;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -33,11 +32,10 @@ import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -116,6 +114,17 @@ public class AppController implements Observer {
             board.addCheckpoint(checkpoint2);
             //checkpoint1.showCheckpoint(board);
             checkpoint2.setSpace(board.getSpace(1,0));
+
+
+            Wall wall1 = new Wall(board);
+            board.addWall(wall1);
+            wall1.setDirection("NORTH");
+            wall1.setSpace(board.getSpace(3,4));
+
+            Wall wall2 = new Wall(board);
+            board.addWall(wall1);
+            wall2.setDirection("EAST");
+            wall2.setSpace(board.getSpace(2,2));
 
 
             //FieldAction fieldAction = new ConveyorBelt();

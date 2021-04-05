@@ -23,7 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -52,6 +52,7 @@ public class Board extends Subject {
     private final List<Player> players = new ArrayList<>();
 
     private final List<Checkpoint> checkpoints = new ArrayList<>();
+    private final List<Wall> walls = new ArrayList<>();
 
     private Player current;
 
@@ -147,6 +148,15 @@ public class Board extends Subject {
      */
     public void addCheckpoint(@NotNull Checkpoint checkpoint){
         checkpoints.add(checkpoint);
+        notifyChange();
+    }
+
+    /**
+     * Væggen i parameteren bliver tilføjet til arraylisten over walls.
+     * @param wall checkpoint.
+     */
+    public void addWall(@NotNull Wall wall){
+        walls.add(wall);
         notifyChange();
     }
 
