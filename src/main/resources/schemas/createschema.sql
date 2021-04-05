@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS Player (
   positionX int,
   positionY int,
   heading tinyint,
+  score int,
 
   proKort1 varchar(255),
   proKort2 varchar(255),

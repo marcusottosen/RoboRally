@@ -60,7 +60,16 @@ class Repository implements IRepository {
 	private static final String PLAYER_POSITION_Y = "positionY";
 
 	private static final String PLAYER_HEADING = "heading";
+	private static final String PLAYER_SCORE = "score";
 
+	
+	private void makeProKort(){
+		for (int i = 1; i <= 5; i++) {
+			final String PROKORT = "prokort" + i;
+		}
+	}
+	
+	
 	private Connector connector;
 	
 	Repository(Connector connector){
@@ -83,6 +92,7 @@ class Repository implements IRepository {
 				ps.setNull(2, game.getPlayerNumber(game.getCurrentPlayer()));
 				ps.setInt(3, game.getPhase().ordinal());
 				ps.setInt(4, game.getStep());
+
 
 				// If you have a foreign key constraint for current players,
 				// the check would need to be temporarily disabled, since
@@ -287,6 +297,21 @@ class Repository implements IRepository {
 			rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
+			rs.updateInt(PLAYER_SCORE, player.getScore());
+
+			// Command cards
+			for (int j = 1; j <= 7 ; j++) {
+				if (player.getCardField(j-1).getCard() != null)
+				rs.updateString("comKort"+j, player.getCardField(j-1).getCard().getName());
+			}
+
+			// Programming cards
+			for (int j = 1; j <=4 ; j++) {
+				if (player.getProgramField(j-1).getCard() != null)
+				rs.updateString("prokort"+j, player.getProgramField(j-1).getCard().getName());
+			}
+			
+			
 			rs.insertRow();
 		}
 
