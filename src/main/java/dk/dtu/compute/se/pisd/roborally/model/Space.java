@@ -93,7 +93,7 @@ public class Space extends Subject {
      * @return walls.
      */
     public List<Heading> getWalls() {
-        List<Heading> walls = null; //This line only to avoid errors
+        List<Heading> walls = new ArrayList<>(); //This line only to avoid errors
         return walls;
     }
 
@@ -120,7 +120,7 @@ public class Space extends Subject {
      * @return type af aktion.
      */
     public List<FieldAction> getActions() {
-        List<FieldAction> actions = null;
+        List<FieldAction> actions = new ArrayList<>();
 
         return actions;
     }

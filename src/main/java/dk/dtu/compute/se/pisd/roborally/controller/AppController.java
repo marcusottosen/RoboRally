@@ -113,6 +113,9 @@ public class AppController implements Observer {
             //checkpoint1.showCheckpoint(board);
             checkpoint2.setSpace(board.getSpace(1,0));
 
+
+            //FieldAction fieldAction = new ConveyorBelt();
+
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();

@@ -37,6 +37,7 @@ public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
 
+
     public Heading getHeading() {
         return heading;
     }
