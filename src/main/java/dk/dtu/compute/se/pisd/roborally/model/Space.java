@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
@@ -94,10 +95,10 @@ public class Space extends Subject {
      *
      * @return walls.
      */
-    public Wall getWalls() {
+    /*public Wall getWalls() {
         return wall;
     }
-
+*/
     public void setWall(Wall wall){
         Wall oldWall = this.wall;
         if (wall != oldWall && (wall == null || board == wall.board));{
@@ -111,6 +112,22 @@ public class Space extends Subject {
             notifyChange();
         }
     }
+
+    SpaceTemplate spaceTemplate = new SpaceTemplate();
+
+    public void addWall(Heading heading){
+        spaceTemplate.walls.add(heading);
+        notifyChange();
+    }
+    public void deleteWall(Heading heading){
+        spaceTemplate.walls.remove(heading);
+        notifyChange();
+    }
+    public List<Heading> getWalls(){
+        return spaceTemplate.walls;
+    }
+
+
 
     public Checkpoint getCheckpoint(){
         return checkpoint;

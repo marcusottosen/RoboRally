@@ -41,16 +41,16 @@ import java.sql.Statement;
  *
  */
 class Connector {
-	
-    private static final String HOST     = "localhost";
-    private static final int    PORT     = 3306;
-    private static final String DATABASE = "pisu";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "Gce59hgh";
 
-    private static final String DELIMITER = ";;";
-    
-    private Connection connection;
+	private static final String HOST     = "localhost";
+	private static final int    PORT     = 3306;
+	private static final String DATABASE = "new_schema";
+	private static final String USERNAME = "root";
+	private static final String PASSWORD = "qjf67xsm";
+
+	private static final String DELIMITER = ";;";
+
+	private Connection connection;
         
     Connector() {
         try {

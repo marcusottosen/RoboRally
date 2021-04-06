@@ -3,12 +3,16 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Wall extends Subject {
     final public Board board;
@@ -24,6 +28,8 @@ public class Wall extends Subject {
         space = board.getSpace(x,y);
 
     }
+
+
 
     public Space getSpace(){
         return space;

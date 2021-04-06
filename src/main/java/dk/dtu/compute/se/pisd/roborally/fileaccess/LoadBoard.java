@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
@@ -73,6 +74,9 @@ public class LoadBoard {
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
 			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+			    for(Heading wall : spaceTemplate.walls) {
+			        space.addWall(wall);
+                }
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     //space.getWalls().addAll(spaceTemplate.walls);

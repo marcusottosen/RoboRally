@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
@@ -82,33 +84,36 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Viser væggen i form af en linje.
      */
     public void viewWall() {
-        Wall wall = space.getWalls();
+        //Wall wall = space.getWalls();
 
-        if (wall != null) {
+        //SpaceTemplate spaceTemplate = new SpaceTemplate();
+        for(Heading wall : space.getWalls()) {
+            if (wall != null) {
 
-            Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-            GraphicsContext gc =
-                    canvas.getGraphicsContext2D();
-            gc.setStroke(Color.RED);
-            gc.setLineWidth(5);
-            gc.setLineCap(StrokeLineCap.ROUND);
-            //(startX, startY, endX, endY)
-            switch (wall.getDirection()) {
-                case "NORTH" -> {
-                    gc.strokeLine(2, 0, SPACE_WIDTH - 2, 0);
-                    this.getChildren().add(canvas);
-                }
-                case "SOUTH" -> {
-                    gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                    this.getChildren().add(canvas);
-                }
-                case "EAST" -> {
-                    gc.strokeLine(SPACE_WIDTH - 2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                    this.getChildren().add(canvas);
-                }
-                case "WEST" -> {
-                    gc.strokeLine(2, SPACE_HEIGHT - 2, 2, -2);
-                    this.getChildren().add(canvas);
+                Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+                GraphicsContext gc =
+                        canvas.getGraphicsContext2D();
+                gc.setStroke(Color.RED);
+                gc.setLineWidth(5);
+                gc.setLineCap(StrokeLineCap.ROUND);
+                //(startX, startY, endX, endY)
+                switch (wall) {
+                    case NORTH -> {
+                        gc.strokeLine(2, 0, SPACE_WIDTH - 2, 0);
+                        this.getChildren().add(canvas);
+                    }
+                    case SOUTH -> {
+                        gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                        this.getChildren().add(canvas);
+                    }
+                    case EAST -> {
+                        gc.strokeLine(SPACE_WIDTH - 2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                        this.getChildren().add(canvas);
+                    }
+                    case WEST -> {
+                        gc.strokeLine(2, SPACE_HEIGHT - 2, 2, -2);
+                        this.getChildren().add(canvas);
+                    }
                 }
             }
         }
