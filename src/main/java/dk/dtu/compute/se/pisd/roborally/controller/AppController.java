@@ -30,6 +30,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -95,7 +96,8 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
+            Board board = LoadBoard.loadBoard("defaultboard");
+
             gameController = new GameController(board);
 
             int no = result.get();
@@ -117,7 +119,7 @@ public class AppController implements Observer {
             checkpoint2.setSpace(board.getSpace(1,0));
 
 
-            Wall wall1 = new Wall(board);
+            /*Wall wall1 = new Wall(board);
             board.addWall(wall1);
             wall1.setDirection("NORTH");
             wall1.setSpace(board.getSpace(3,4));
@@ -125,7 +127,7 @@ public class AppController implements Observer {
             Wall wall2 = new Wall(board);
             board.addWall(wall1);
             wall2.setDirection("EAST");
-            wall2.setSpace(board.getSpace(2,2));
+            wall2.setSpace(board.getSpace(2,2));*/
 
             ConveyorBelt conveyorBelt1 = new ConveyorBelt(board);
             board.addConveyorBelt(conveyorBelt1);

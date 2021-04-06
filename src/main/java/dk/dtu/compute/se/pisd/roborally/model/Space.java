@@ -101,7 +101,7 @@ public class Space extends Subject {
         return wall;
     }
 */
-    public void setWall(Wall wall){
+    /*public void setWall(Wall wall){
         Wall oldWall = this.wall;
         if (wall != oldWall && (wall == null || board == wall.board));{
             this.wall = wall;
@@ -113,7 +113,7 @@ public class Space extends Subject {
             }
             notifyChange();
         }
-    }
+    }*/
 
     SpaceTemplate spaceTemplate = new SpaceTemplate();
 

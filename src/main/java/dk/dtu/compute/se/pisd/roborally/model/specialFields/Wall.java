@@ -35,7 +35,7 @@ public class Wall extends Subject {
         return space;
     }
 
-    public void setSpace(Space space) {
+    /*public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
                 (space == null || space.board == this.board)) {
@@ -48,7 +48,7 @@ public class Wall extends Subject {
             }
             notifyChange();
         }
-    }
+    }*/
 
     /**
      * Returnerer væggens retning
