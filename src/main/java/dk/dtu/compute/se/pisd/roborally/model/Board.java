@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +54,7 @@ public class Board extends Subject {
 
     private final List<Checkpoint> checkpoints = new ArrayList<>();
     private final List<Wall> walls = new ArrayList<>();
+    private final List<ConveyorBelt> conveyorBelts = new ArrayList<>();
 
     private Player current;
 
@@ -148,6 +150,15 @@ public class Board extends Subject {
      */
     public void addCheckpoint(@NotNull Checkpoint checkpoint){
         checkpoints.add(checkpoint);
+        notifyChange();
+    }
+
+    /**
+     * ConveryorBelt i parameteren bliver tilføjet til arraylisten over converyorBelts.
+     * @param conveyorBelt checkpoint.
+     */
+    public void addConveyorBelt(@NotNull ConveyorBelt conveyorBelt){
+        conveyorBelts.add(conveyorBelt);
         notifyChange();
     }
 

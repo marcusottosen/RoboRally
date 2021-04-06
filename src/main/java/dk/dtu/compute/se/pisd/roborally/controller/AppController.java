@@ -34,6 +34,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import javafx.application.Platform;
@@ -125,6 +126,11 @@ public class AppController implements Observer {
             board.addWall(wall1);
             wall2.setDirection("EAST");
             wall2.setSpace(board.getSpace(2,2));
+
+            ConveyorBelt conveyorBelt1 = new ConveyorBelt(board);
+            board.addConveyorBelt(conveyorBelt1);
+            conveyorBelt1.setDirection("WEST");
+            conveyorBelt1.setSpace(board.getSpace(6,2));
 
 
             //FieldAction fieldAction = new ConveyorBelt();
