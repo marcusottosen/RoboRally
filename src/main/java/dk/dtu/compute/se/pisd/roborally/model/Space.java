@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
@@ -46,6 +47,7 @@ public class Space extends Subject {
     private Player player;
     private Checkpoint checkpoint;
     private Wall wall;
+    private ConveyorBelt conveyorBelt;
 
     /**
      * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
@@ -125,6 +127,24 @@ public class Space extends Subject {
             }
             if (checkpoint != null){
                 checkpoint.setSpace(this);
+            }
+            notifyChange();
+        }
+    }
+
+    public ConveyorBelt getConveyorBelt(){
+        return conveyorBelt;
+    }
+
+    public void setConveyorBelt(ConveyorBelt conveyorBelt){
+        ConveyorBelt oldConveyorBelt = this.conveyorBelt;
+        if (conveyorBelt != oldConveyorBelt && (conveyorBelt == null || board == conveyorBelt.board));{
+            this.conveyorBelt = conveyorBelt;
+            if (oldConveyorBelt != null){
+                oldConveyorBelt.setSpace(null);
+            }
+            if (conveyorBelt != null){
+                conveyorBelt.setSpace(this);
             }
             notifyChange();
         }
