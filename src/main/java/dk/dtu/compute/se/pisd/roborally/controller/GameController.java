@@ -283,27 +283,42 @@ public class GameController {
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
                 player.setSpace(target);
-
                 isSpecialSpace(player); //tjekker player's felt for et specielt felt.
+
             } else { //Hvis der står en spiller på feltet i forvejen.
                 //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
                 Player targetPlayer = target.getPlayer();
                 //pushPlayer bruges til at skubbe den nye spiller
-                pushPlayer(targetPlayer);
+                pushPlayer(targetPlayer, player);
                 // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
                 player.setSpace(target);
 
-                isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
+                //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
             }
         }
     }
 
     /**
      * Når en spiller bliver skubbet.
-     * @param player Spillerens objekt.
+     * @param targetPlayer Spilleren der bliver skubbet til.
+     * @param player spiller der skubber
      */
-    public void pushPlayer(@NotNull Player player) {
-        forward1(player);
+    public void pushPlayer(@NotNull Player targetPlayer, @NotNull Player player) {
+        Space target = board.getNeighbour(targetPlayer.getSpace(), player.getHeading());
+        if (target != null && target.getPlayer() == null) {
+            targetPlayer.setSpace(target);
+            isSpecialSpace(targetPlayer);
+        }else { //Hvis der står en spiller på feltet i forvejen.
+            //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
+            Player newTargetPlayer = target.getPlayer();
+            //pushPlayer bruges til at skubbe den nye spiller
+            pushPlayer(newTargetPlayer, player);
+            // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
+            targetPlayer.setSpace(target);
+
+            //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
+        }
+
     }
 
     /**

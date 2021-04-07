@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Gruppe 5
  */
 
-public class ConveyorBelt extends Subject {
+public class ConveyorBelt1 extends Subject {
 
     final public Board board;
     private Space space;
@@ -25,7 +25,7 @@ public class ConveyorBelt extends Subject {
     private int y;
 
 
-    public ConveyorBelt(@NotNull Board board){
+    public ConveyorBelt1(@NotNull Board board){
         this.board = board;
 
         //Bestemmer hvilket felt vi skal arbejde i (altså hvor ConveryorBelt skal være på brættet.

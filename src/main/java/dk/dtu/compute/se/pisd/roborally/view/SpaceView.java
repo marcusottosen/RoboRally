@@ -23,13 +23,10 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -121,48 +118,52 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     public void viewConveryorBelt() {
-        ConveyorBelt conveyorBelt = space.getConveyorBelt();
+        //ConveyorBelt1 conveyorBelt1 = space.getConveyorBelt();
 
-        if (conveyorBelt != null) {
-            int x1=0; int y1=0;
-            int x2=0; int y2=0;
-            int x3=0; int y3=0;
-            switch (conveyorBelt.getDirection()){
-                case "NORTH" -> {
-                    x1 = SPACE_WIDTH/2; y1 = 0;
-                    x2 = 0; y2 = SPACE_HEIGHT;
-                    x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
+        //ConveyorBelt belt = new ConveyorBelt();
+        for (FieldAction conveyorBelt : space.getActions()){
+            if (conveyorBelt != null) {
+                int x1=0; int y1=0;
+                int x2=0; int y2=0;
+                int x3=0; int y3=0;
+                switch ("NORTH"){
+                    case "NORTH" -> {
+                        x1 = SPACE_WIDTH/2; y1 = 0;
+                        x2 = 0; y2 = SPACE_HEIGHT;
+                        x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
+                    }
+                    case "SOUTH" -> {
+                        x1 = SPACE_WIDTH/2; y1 = SPACE_HEIGHT;
+                        x2 = 0; y2 = 0;
+                        x3 = SPACE_WIDTH; y3 = 0;
+                    }
+                    case "EAST" -> {
+                        x1 = SPACE_WIDTH; y1 = SPACE_HEIGHT/2;
+                        x2 = 0; y2 = 0;
+                        x3 = 0; y3 = SPACE_HEIGHT;
+                    }
+                    case "WEST" -> {
+                        x1 = 0; y1 = SPACE_HEIGHT/2;
+                        x2 = SPACE_WIDTH; y2 = 0;
+                        x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
+                    }
+                    default -> {
+                        System.out.println("Error conveyorBelt1 direction");
+                    }
                 }
-                case "SOUTH" -> {
-                    x1 = SPACE_WIDTH/2; y1 = SPACE_HEIGHT;
-                    x2 = 0; y2 = 0;
-                    x3 = SPACE_WIDTH; y3 = 0;
-                }
-                case "EAST" -> {
-                    x1 = SPACE_WIDTH; y1 = SPACE_HEIGHT/2;
-                    x2 = 0; y2 = 0;
-                    x3 = 0; y3 = SPACE_HEIGHT;
-                }
-                case "WEST" -> {
-                    x1 = 0; y1 = SPACE_HEIGHT/2;
-                    x2 = SPACE_WIDTH; y2 = 0;
-                    x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
-                }
-                default -> {
-                    System.out.println("Error conveyorBelt direction");
-                }
-            }
 
-            Polygon arrow = new Polygon(x1-5, y1-5,
-                    x2-5, y2-5,
-                    x3-5, y3-5);
-            try {
-                arrow.setFill(Color.GRAY);
-            } catch (Exception e) {
-                arrow.setFill(Color.GREY);
+                Polygon arrow = new Polygon(x1-5, y1-5,
+                        x2-5, y2-5,
+                        x3-5, y3-5);
+                try {
+                    arrow.setFill(Color.GRAY);
+                } catch (Exception e) {
+                    arrow.setFill(Color.GREY);
+                }
+                this.getChildren().add(arrow);
             }
-            this.getChildren().add(arrow);
         }
+
 
     }
 

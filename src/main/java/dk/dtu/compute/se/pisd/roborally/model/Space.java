@@ -25,12 +25,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt1;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +46,7 @@ public class Space extends Subject {
     private Player player;
     private Checkpoint checkpoint;
     private Wall wall;
-    private ConveyorBelt conveyorBelt;
+    private ConveyorBelt1 conveyorBelt1;
 
     /**
      * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
@@ -135,7 +132,7 @@ public class Space extends Subject {
         return checkpoint;
     }*/
 
-    public void setCheckpoint(Checkpoint checkpoint){
+    public void setCheckpoint(Checkpoint checkpoint){ //skal slettes
         Checkpoint oldCheckpoint = this.checkpoint;
         if (checkpoint != oldCheckpoint && (checkpoint == null || board == checkpoint.board));{
             this.checkpoint = checkpoint;
@@ -158,20 +155,27 @@ public class Space extends Subject {
         notifyChange();
     }
 
-
-    public ConveyorBelt getConveyorBelt(){
-        return conveyorBelt;
+    public void addConveyorBelt(FieldAction conveyorBelt){
+        spaceTemplate.actions.add(conveyorBelt);
+        notifyChange();
+    }
+    public void deleteConveyorBelt(FieldAction conveyorBelt){
+        spaceTemplate.actions.remove(conveyorBelt);
+        notifyChange();
+    }
+    public ConveyorBelt1 getConveyorBelt(){ //skal ændres
+        return conveyorBelt1;
     }
 
-    public void setConveyorBelt(ConveyorBelt conveyorBelt){
-        ConveyorBelt oldConveyorBelt = this.conveyorBelt;
-        if (conveyorBelt != oldConveyorBelt && (conveyorBelt == null || board == conveyorBelt.board));{
-            this.conveyorBelt = conveyorBelt;
-            if (oldConveyorBelt != null){
-                oldConveyorBelt.setSpace(null);
+    public void setConveyorBelt(ConveyorBelt1 conveyorBelt1){ //skal slettes
+        ConveyorBelt1 oldConveyorBelt1 = this.conveyorBelt1;
+        if (conveyorBelt1 != oldConveyorBelt1 && (conveyorBelt1 == null || board == conveyorBelt1.board));{
+            this.conveyorBelt1 = conveyorBelt1;
+            if (oldConveyorBelt1 != null){
+                oldConveyorBelt1.setSpace(null);
             }
-            if (conveyorBelt != null){
-                conveyorBelt.setSpace(this);
+            if (conveyorBelt1 != null){
+                conveyorBelt1.setSpace(this);
             }
             notifyChange();
         }
