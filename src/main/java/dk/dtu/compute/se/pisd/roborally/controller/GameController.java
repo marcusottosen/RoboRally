@@ -274,7 +274,7 @@ public class GameController {
      * Rykker spilleren et felt frem ved at oprette en variable "target", som specificerer hvor spilleren skal rykke sig hen.
      * Der bliver tjekket om der står en person på feltet i forvejen, og evt. kalder pushPlayer() metoden hvis dette er true.
      * @param player Spillerens objekt.
-     */
+     *//*
     public void forward1(@NotNull Player player) {
         Space current = player.getSpace();
         if (current != null && player.board == current.board) {
@@ -282,27 +282,29 @@ public class GameController {
             Space target = board.getNeighbour(current, player.getHeading());
             //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
             if (target != null && target.getPlayer() == null) {
-                player.setSpace(target);
-                isSpecialSpace(player); //tjekker player's felt for et specielt felt.
+                try {
+                    player.setSpace(target);
+                    isSpecialSpace(player); //tjekker player's felt for et specielt felt.
 
-            } else { //Hvis der står en spiller på feltet i forvejen.
-                //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
-                Player targetPlayer = target.getPlayer();
-                //pushPlayer bruges til at skubbe den nye spiller
-                pushPlayer(targetPlayer, player);
-                // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
-                player.setSpace(target);
+            } catch (ImpossibleMoveException e){ //Hvis der står en spiller på feltet i forvejen.
+                    //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
+                    Player targetPlayer = target.getPlayer();
+                    //pushPlayer bruges til at skubbe den nye spiller
+                    pushPlayer(targetPlayer, player);
+                    // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
+                    player.setSpace(target);
 
-                //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
+                    //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
+                }
             }
         }
     }
 
-    /**
+    *//**
      * Når en spiller bliver skubbet.
-     * @param targetPlayer Spilleren der bliver skubbet til.
+     //* @param targetPlayer Spilleren der bliver skubbet til.
      * @param player spiller der skubber
-     */
+     *//*
     public void pushPlayer(@NotNull Player targetPlayer, @NotNull Player player) {
         Space target = board.getNeighbour(targetPlayer.getSpace(), player.getHeading());
         if (target != null && target.getPlayer() == null) {
@@ -319,6 +321,60 @@ public class GameController {
             //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
         }
 
+    }*/
+
+    public void forward1(@NotNull Player player) {
+        if (player.board == board) {
+            Space space = player.getSpace();
+            Heading heading = player.getHeading();
+
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                try {
+                    moveToSpace(player, target, heading);
+                } catch (ImpossibleMoveException e) {
+                    // we don't do anything here  for now; we just catch the
+                    // exception so that we do no pass it on to the caller
+                    // (which would be very bad style).
+                }
+            }
+        }
+    }
+
+    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+        assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
+        Player other = space.getPlayer();
+        if (other != null){
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                // XXX Note that there might be additional problems with
+                //     infinite recursion here (in some special cases)!
+                //     We will come back to that!
+                moveToSpace(other, target, heading);
+
+                // Note that we do NOT embed the above statement in a try catch block, since
+                // the thrown exception is supposed to be passed on to the caller
+
+                assert target.getPlayer() == null : target; // make sure target is free now
+            } else {
+                throw new ImpossibleMoveException(player, space, heading);
+            }
+        }
+        player.setSpace(space);
+    }
+
+    static class ImpossibleMoveException extends Exception {
+
+        private Player player;
+        private Space space;
+        private Heading heading;
+
+        public ImpossibleMoveException(Player player, Space space, Heading heading) {
+            super("Move impossible");
+            this.player = player;
+            this.space = space;
+            this.heading = heading;
+        }
     }
 
     /**

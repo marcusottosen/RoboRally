@@ -158,8 +158,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                         x3-5, y3-5);
                 try {
                     arrow.setFill(Color.GRAY);
+                    arrow.setOpacity(0.5);
                 } catch (Exception e) {
                     arrow.setFill(Color.GREY);
+                    arrow.setOpacity(0.5);
                 }
                 this.getChildren().add(arrow);
             }
