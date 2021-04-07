@@ -304,6 +304,20 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
+    //PiSU P08.2
+    private Command userChoice = null;
+
+    public Command getUserChoice() {
+        return userChoice;
+    }
+
+    public void setUserChoice(Command userChoice) {
+        if (this.userChoice != userChoice) {
+            this.userChoice = userChoice;
+            notifyChange();
+        }
+    }
+
     /**
      * En kort tekst i bunden af vinduet som angiver: spillets fase, den nuværende spillers navn, steps samt spillerens score.
      * @return spillets fase, den nuværende spillers navn, steps samt spillerens score som en string.

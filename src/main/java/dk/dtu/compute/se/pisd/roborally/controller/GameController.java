@@ -161,19 +161,32 @@ public class GameController {
      */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
-        if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
+        if ((board.getPhase() == Phase.ACTIVATION ||
+                (board.getPhase() == Phase.PLAYER_INTERACTION
+                        && board.getUserChoice() != null))
+                && currentPlayer != null) {
+
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    Command command = card.command;
-                    //Tilføjet i V3 til at afbryde eksekveringsløkken og give spilleren et valg.
-                    if(command.isInteractive()) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                Command userChoice = board.getUserChoice();
+                if (userChoice != null){
+                    board.setUserChoice(null);
+                    board.setPhase(Phase.ACTIVATION);
+                    executeCommand(currentPlayer, userChoice);
+
+                } else {
+                    CommandCard card = currentPlayer.getProgramField(step).getCard();
+                    if (card != null) {
+                        Command command = card.command;
+                        //Afbryder eksekveringsløkken og giver spilleren et valg.
+                        if (command.isInteractive()) {
+                            board.setPhase(Phase.PLAYER_INTERACTION);
+                            return;
+                        }
+                        executeCommand(currentPlayer, command);
                     }
-                    executeCommand(currentPlayer, command);
                 }
+
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
@@ -206,7 +219,12 @@ public class GameController {
      * @param option .
      */
     public void executeCommandOptionAndContinue(@NotNull Command option) {
-        Player currentPlayer = board.getCurrentPlayer();
+        assert board.getPhase() == Phase.PLAYER_INTERACTION;
+        assert board.getCurrentPlayer() != null;
+        board.setUserChoice(option);
+        continuePrograms();
+
+        /* Player currentPlayer = board.getCurrentPlayer();
         if (currentPlayer != null &&
                 board.getPhase() == Phase.PLAYER_INTERACTION &&
                 option != null) {
@@ -229,8 +247,12 @@ public class GameController {
                 }
             }
             //Fortsætter runden til alle kort er spillet, eller til næste interaction kort.
-            continuePrograms();
-        }
+            if (board.getPhase() == Phase.ACTIVATION && !board.isStepMode()) {
+                continuePrograms();
+            }
+        } else {
+            assert false;
+        }*/
     }
 
 

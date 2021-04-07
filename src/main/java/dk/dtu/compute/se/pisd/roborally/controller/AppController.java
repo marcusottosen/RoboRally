@@ -149,7 +149,6 @@ public class AppController implements Observer {
     public void saveGame() {
         RepositoryAccess save = new RepositoryAccess();
         save.getRepository().createGameInDB(gameController.board);
-        System.out.println("save test");
     }
 
     /**
