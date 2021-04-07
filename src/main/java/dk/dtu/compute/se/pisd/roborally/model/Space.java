@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,10 +131,9 @@ public class Space extends Subject {
     }
 
 
-
-    public Checkpoint getCheckpoint(){
+   /* public Checkpoint getCheckpoint(){
         return checkpoint;
-    }
+    }*/
 
     public void setCheckpoint(Checkpoint checkpoint){
         Checkpoint oldCheckpoint = this.checkpoint;
@@ -148,6 +148,16 @@ public class Space extends Subject {
             notifyChange();
         }
     }
+
+    public void addCheckpoint(FieldAction checkpoint){
+        spaceTemplate.actions.add(checkpoint);
+        notifyChange();
+    }
+    public void deleteCheckpoint(FieldAction checkpoint){
+        spaceTemplate.actions.remove(checkpoint);
+        notifyChange();
+    }
+
 
     public ConveyorBelt getConveyorBelt(){
         return conveyorBelt;
@@ -171,11 +181,8 @@ public class Space extends Subject {
      *
      * @return type af aktion.
      */
-    public List<FieldAction> getActions() {
-        List<FieldAction> actions = new ArrayList<>();
+    public List<FieldAction> getActions(){ return spaceTemplate.actions; }
 
-        return actions;
-    }
 
     /**
      * This is a minor hack; since some views that are registered with the space

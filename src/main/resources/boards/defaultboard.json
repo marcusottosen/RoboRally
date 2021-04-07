@@ -197,6 +197,9 @@
           "INSTANCE": {
             "heading": "SOUTH"
           }
+        },
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.fieldaction.Checkpoint"
         }
       ],
       "x": 7,

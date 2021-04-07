@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -87,7 +88,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewWall() {
         //Wall wall = space.getWalls();
 
-        //SpaceTemplate spaceTemplate = new SpaceTemplate();
         for(Heading wall : space.getWalls()) {
             if (wall != null) {
 
@@ -173,21 +173,23 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewCheckpoint() {
         //this.getChildren().clear();
 
-        Checkpoint checkpoint = space.getCheckpoint();
+        //Checkpoint checkpoint = space.getCheckpoint();
+        for(FieldAction checkpoint : space.getActions()){
+            if (checkpoint == null) {
+                Canvas circle = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
+                GraphicsContext gc =
+                        circle.getGraphicsContext2D();
+                //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
+                gc.setFill(Color.LIGHTGREEN);
+                gc.setGlobalAlpha(0.6); //opacity
 
-        if (checkpoint != null) {
-            Canvas circle = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-            GraphicsContext gc =
-                    circle.getGraphicsContext2D();
-            //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
-            gc.setFill(Color.LIGHTGREEN);
-            gc.setGlobalAlpha(0.6); //opacity
+                //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
+                gc.fillOval(SPACE_WIDTH / 4, SPACE_WIDTH / 4, 40, 40);
 
-            //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
-            gc.fillOval(SPACE_WIDTH / 4, SPACE_WIDTH / 4, 40, 40);
-
-            this.getChildren().add(circle);
+                this.getChildren().add(circle);
+            }
         }
+
     }
 
 
