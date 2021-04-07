@@ -107,7 +107,7 @@ public class AppController implements Observer {
 
             }
 
-            Checkpoint checkpoint1 = new Checkpoint(board);
+            /*Checkpoint checkpoint1 = new Checkpoint(board);
             board.addCheckpoint(checkpoint1);
             //checkpoint1.showCheckpoint(board);
             checkpoint1.setSpace(board.getSpace(3,5));
@@ -118,7 +118,7 @@ public class AppController implements Observer {
             checkpoint2.setSpace(board.getSpace(1,0));
 
 
-            /*Wall wall1 = new Wall(board);
+            *//*Wall wall1 = new Wall(board);
             board.addWall(wall1);
             wall1.setDirection("NORTH");
             wall1.setSpace(board.getSpace(3,4));
@@ -126,12 +126,12 @@ public class AppController implements Observer {
             Wall wall2 = new Wall(board);
             board.addWall(wall1);
             wall2.setDirection("EAST");
-            wall2.setSpace(board.getSpace(2,2));*/
+            wall2.setSpace(board.getSpace(2,2));*//*
 
             ConveyorBelt1 conveyorBelt1 = new ConveyorBelt1(board);
             board.addConveyorBelt(conveyorBelt1);
             conveyorBelt1.setDirection("WEST");
-            conveyorBelt1.setSpace(board.getSpace(6,2));
+            conveyorBelt1.setSpace(board.getSpace(6,2));*/
 
 
             //FieldAction fieldAction = new ConveyorBelt1();

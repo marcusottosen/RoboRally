@@ -128,24 +128,6 @@ public class Space extends Subject {
     }
 
 
-   /* public Checkpoint getCheckpoint(){
-        return checkpoint;
-    }*/
-
-    public void setCheckpoint(Checkpoint checkpoint){ //skal slettes
-        Checkpoint oldCheckpoint = this.checkpoint;
-        if (checkpoint != oldCheckpoint && (checkpoint == null || board == checkpoint.board));{
-            this.checkpoint = checkpoint;
-            if (oldCheckpoint != null){
-                oldCheckpoint.setSpace(null);
-            }
-            if (checkpoint != null){
-                checkpoint.setSpace(this);
-            }
-            notifyChange();
-        }
-    }
-
     public void addCheckpoint(FieldAction checkpoint){
         spaceTemplate.actions.add(checkpoint);
         notifyChange();
@@ -163,10 +145,34 @@ public class Space extends Subject {
         spaceTemplate.actions.remove(conveyorBelt);
         notifyChange();
     }
+    /**
+     *
+     * @return type af aktion.
+     */
+    public List<FieldAction> getActions(){ return spaceTemplate.actions; }
+
+
+    /* public Checkpoint getCheckpoint(){
+        return checkpoint;
+    }*/
+
+    /*public void setCheckpoint(Checkpoint checkpoint){ //skal slettes
+        Checkpoint oldCheckpoint = this.checkpoint;
+        if (checkpoint != oldCheckpoint && (checkpoint == null || board == checkpoint.board));{
+            this.checkpoint = checkpoint;
+            if (oldCheckpoint != null){
+                oldCheckpoint.setSpace(null);
+            }
+            if (checkpoint != null){
+                checkpoint.setSpace(this);
+            }
+            notifyChange();
+        }
+    }*/
+    /*
     public ConveyorBelt1 getConveyorBelt(){ //skal ændres
         return conveyorBelt1;
     }
-
     public void setConveyorBelt(ConveyorBelt1 conveyorBelt1){ //skal slettes
         ConveyorBelt1 oldConveyorBelt1 = this.conveyorBelt1;
         if (conveyorBelt1 != oldConveyorBelt1 && (conveyorBelt1 == null || board == conveyorBelt1.board));{
@@ -179,13 +185,9 @@ public class Space extends Subject {
             }
             notifyChange();
         }
-    }
+    }*/
 
-    /**
-     *
-     * @return type af aktion.
-     */
-    public List<FieldAction> getActions(){ return spaceTemplate.actions; }
+
 
 
     /**

@@ -21,9 +21,11 @@
  */
 package dk.dtu.compute.se.pisd.roborally.view;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -120,13 +122,12 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewConveryorBelt() {
         //ConveyorBelt1 conveyorBelt1 = space.getConveyorBelt();
 
-        //ConveyorBelt belt = new ConveyorBelt();
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
                 int x1=0; int y1=0;
                 int x2=0; int y2=0;
                 int x3=0; int y3=0;
-                switch ("NORTH"){
+                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
                     case "NORTH" -> {
                         x1 = SPACE_WIDTH/2; y1 = 0;
                         x2 = 0; y2 = SPACE_HEIGHT;
