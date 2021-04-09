@@ -21,11 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.view;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -34,8 +31,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.Random;
+
 
 /**
  * Dette dokument sørger for at tegne figurer på spillets felter.
@@ -46,11 +48,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 75; // 60; // 75;
-    final public static int SPACE_WIDTH = 75;  // 60; // 75;
+    final public static int SPACE_HEIGHT = 75;
+    final public static int SPACE_WIDTH = 75;
 
     public final Space space;
 
+    final private static String TILE_IMAGE_PATH = "images/tiles/tile.png";
+    final private static String WALL_IMAGE_PATH = "images/tiles/wall.png";
+    final private static String BLUECONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltBlue.png";
+
+    private StackPane playerPane;
+    Random random = new Random();
 
     /**
      * Denne metode vise selve felterne, her sort og hvid.
@@ -58,116 +66,91 @@ public class SpaceView extends StackPane implements ViewObserver {
      */
     public SpaceView(@NotNull Space space) {
         this.space = space;
+        Image image = new Image(TILE_IMAGE_PATH);
 
-        // XXX the following styling should better be done with styles
-        this.setPrefWidth(SPACE_WIDTH);
-        this.setMinWidth(SPACE_WIDTH);
-        this.setMaxWidth(SPACE_WIDTH);
+        ImageView tile = new ImageView();
+        playerPane = new StackPane(); // laver et pane til robotten ovenpå alt andet.
 
-        this.setPrefHeight(SPACE_HEIGHT);
-        this.setMinHeight(SPACE_HEIGHT);
-        this.setMaxHeight(SPACE_HEIGHT);
+        tile.setImage(image);
+        setElementSize(tile);
 
-        if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: #ffffff;");
-        } else {
-            this.setStyle("-fx-background-color: #000000;");
-        }
+        tile.setRotate(random.nextInt(4)*90);
 
-        // updatePlayer();
 
-        // This space view should listen to changes of the space
         space.attach(this);
         update(space);
+        this.getChildren().add(tile);
+        viewBoardElements();
+
+        playerPane = new StackPane();
+        this.getChildren().add(playerPane);
+        updatePlayer();
+    }
+
+
+
+    public void viewBoardElements(){
+        SpecialFieldsView elements = new SpecialFieldsView(space); //Virker ikke!
+        elements.viewConveryorBelt();
+        elements.viewCheckpoint();
+        elements.viewWall();
+
+        viewConveyorbelt();
+        viewCheckpoint();
+        viewWall();
+    }
+
+    public void setElementSize(ImageView imageView){
+        imageView.setFitWidth(SPACE_WIDTH); //Holder billedet samme størrelse som en tile
+        imageView.setFitHeight(SPACE_HEIGHT);
+        imageView.setSmooth(true);
+        imageView.setCache(true); //Loader hurtigere
+
     }
 
     /**
      * Viser væggen i form af en linje.
      */
     public void viewWall() {
-        //Wall wall = space.getWalls();
-
         for(Heading wall : space.getWalls()) {
             if (wall != null) {
+                Image image = new Image(WALL_IMAGE_PATH);
 
-                Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-                GraphicsContext gc =
-                        canvas.getGraphicsContext2D();
-                gc.setStroke(Color.RED);
-                gc.setLineWidth(5);
-                gc.setLineCap(StrokeLineCap.ROUND);
-                //(startX, startY, endX, endY)
+                ImageView wallImg = new ImageView();
+                wallImg.setImage(image);
+                setElementSize(wallImg);
+
                 switch (wall) {
-                    case NORTH -> {
-                        gc.strokeLine(2, 0, SPACE_WIDTH - 2, 0);
-                        this.getChildren().add(canvas);
-                    }
-                    case SOUTH -> {
-                        gc.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                        this.getChildren().add(canvas);
-                    }
-                    case EAST -> {
-                        gc.strokeLine(SPACE_WIDTH - 2, 0, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                        this.getChildren().add(canvas);
-                    }
-                    case WEST -> {
-                        gc.strokeLine(2, SPACE_HEIGHT - 2, 2, -2);
-                        this.getChildren().add(canvas);
-                    }
+                    case NORTH -> wallImg.setRotate(270);
+                    case SOUTH -> wallImg.setRotate(90);
+                    case EAST -> wallImg.setRotate(0);
+                    case WEST -> wallImg.setRotate(180);
+                    default -> System.out.println("Error wall direction");
                 }
+                this.getChildren().add(wallImg);
             }
         }
     }
 
-    public void viewConveryorBelt() {
-        //ConveyorBelt1 conveyorBelt1 = space.getConveyorBelt();
-
+    public void viewConveyorbelt() {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
-                int x1=0; int y1=0;
-                int x2=0; int y2=0;
-                int x3=0; int y3=0;
-                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case "NORTH" -> {
-                        x1 = SPACE_WIDTH/2; y1 = 0;
-                        x2 = 0; y2 = SPACE_HEIGHT;
-                        x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
-                    }
-                    case "SOUTH" -> {
-                        x1 = SPACE_WIDTH/2; y1 = SPACE_HEIGHT;
-                        x2 = 0; y2 = 0;
-                        x3 = SPACE_WIDTH; y3 = 0;
-                    }
-                    case "EAST" -> {
-                        x1 = SPACE_WIDTH; y1 = SPACE_HEIGHT/2;
-                        x2 = 0; y2 = 0;
-                        x3 = 0; y3 = SPACE_HEIGHT;
-                    }
-                    case "WEST" -> {
-                        x1 = 0; y1 = SPACE_HEIGHT/2;
-                        x2 = SPACE_WIDTH; y2 = 0;
-                        x3 = SPACE_WIDTH; y3 = SPACE_HEIGHT;
-                    }
-                    default -> {
-                        System.out.println("Error conveyorBelt1 direction");
-                    }
-                }
+                Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
+                ImageView conveyorBeltImg = new ImageView();
 
-                Polygon arrow = new Polygon(x1-5, y1-5,
-                        x2-5, y2-5,
-                        x3-5, y3-5);
-                try {
-                    arrow.setFill(Color.GRAY);
-                    arrow.setOpacity(0.5);
-                } catch (Exception e) {
-                    arrow.setFill(Color.GREY);
-                    arrow.setOpacity(0.5);
+                conveyorBeltImg.setImage(image);
+                setElementSize(conveyorBeltImg);
+
+                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
+                    case "NORTH" -> conveyorBeltImg.setRotate(180);
+                    case "SOUTH" -> conveyorBeltImg.setRotate(0);
+                    case "EAST" -> conveyorBeltImg.setRotate(270);
+                    case "WEST" -> conveyorBeltImg.setRotate(90);
+                    default -> System.out.println("Error conveyorBelt direction");
                 }
-                this.getChildren().add(arrow);
+                this.getChildren().add(conveyorBeltImg);
             }
         }
-
-
     }
 
 
@@ -193,16 +176,15 @@ public class SpaceView extends StackPane implements ViewObserver {
                 this.getChildren().add(circle);
             }
         }
-
     }
 
 
     /**
      * Tegner spillerens ikon, her en trekant. Bruges primært til at opdatere spillerens lokation.
+     * playerPane er spillernes helt eget pane, som er sat ovenpå alle de andre felter.
      */
     private void updatePlayer() {
-        this.getChildren().clear(); //fjerner den tidligere trekant efter den er rykket.
-
+        playerPane.getChildren().clear();
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -215,7 +197,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
 
             arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
+            playerPane.getChildren().add(arrow);
         }
     }
 
@@ -228,11 +210,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == this.space) {
             updatePlayer();
-            viewCheckpoint();
-            viewWall();
-            viewConveryorBelt();
-
         }
     }
-
 }

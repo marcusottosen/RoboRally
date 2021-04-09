@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import org.jetbrains.annotations.NotNull;
 
+
 /**
  * Den primære logik af selve spillet findes sted i GameController.
  *
@@ -392,7 +393,7 @@ public class GameController {
         private Heading heading;
 
         public ImpossibleMoveException(Player player, Space space, Heading heading) {
-            super("Move impossible");
+            super("Kan sku ikke rykke mig!");
             this.player = player;
             this.space = space;
             this.heading = heading;

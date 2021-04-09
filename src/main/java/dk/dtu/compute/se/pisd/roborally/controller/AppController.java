@@ -48,7 +48,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
+/*
+* TODO Få vægge til at virke!
+* TODO Få conveyorbelts til at virke
+* TODO Få conveyorbelts til at rotere den rette vej ud fra json fil.
+* TODO Få nummer på checkpointsne, så players ved hvilken rækkefølge de skal følge (brug billerne)
+*           (Gør også så samme spiller ikke kan få flere points fra samme checkpoint
+* TODO Flyt gerne special felterne fra SpaceView over i SpecialFieldsView (virker ikke atm.)
+* TODO Add laser samt funktion og spiller health
+*
+ */
 
 /**
  * ...
