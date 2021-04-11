@@ -265,6 +265,7 @@ public class GameController {
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
+            spaceActionInit(player.getSpace());
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -365,7 +366,7 @@ public class GameController {
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){
@@ -385,10 +386,9 @@ public class GameController {
             }
         }
         player.setSpace(space);
-        spaceActionInit(space);
     }
 
-    static class ImpossibleMoveException extends Exception {
+    public static class ImpossibleMoveException extends Exception {
 
         private Player player;
         private Space space;
@@ -466,22 +466,28 @@ public class GameController {
     }
 
 
-    public void spaceActionInit(@NotNull Space space){
+    public void spaceActionInit(@NotNull Space space) {
         //FieldAction conveyorBelt = new ConveyorBelt();
 
-        System.out.println(space.getActions());
 
-        if (space.getActions() instanceof ConveyorBelt){
-            System.out.println("conveyorbelt ay");
-            FieldAction conveyorBelt = new ConveyorBelt();
-            conveyorBelt.doAction(this, space);
-        }
+        if (space.getActions().size() == 1) {
+            FieldAction actionType = space.getActions().get(0);
 
-        if (space.getActions() == null){
-            System.out.println("checkpoint ay");
-            FieldAction checkpoint = new Checkpoint();
-            checkpoint.doAction(this, space);
+
+            if (actionType instanceof ConveyorBelt) {
+                System.out.println("conveyorbelt ay");
+                FieldAction conveyorBelt = new ConveyorBelt();
+                conveyorBelt.doAction(this, space);
+            }
+
+            if (space.getActions().get(0) == null) {
+                System.out.println("checkpoint ay");
+                FieldAction checkpoint = new Checkpoint();
+                checkpoint.doAction(this, space);
+            }
         }
+    }
+
 
 
 
@@ -493,7 +499,7 @@ public class GameController {
                 checkpoint.doAction(this, space);
             }
         }*/
-    }
+
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
