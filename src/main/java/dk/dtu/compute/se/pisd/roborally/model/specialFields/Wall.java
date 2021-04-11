@@ -27,22 +27,32 @@ public class Wall extends Subject {
         direction = player.getHeading();
         otherDirection = direction.next().next(); //finder den omvendte heading, så vi kan sammenligne med nabofeltets evt. wall
         Space space2 = board.getNeighbour(space, direction); //Finder nabofeltet(skal bruges til at finde ud af om der er en væg på nabofeltet.
+
         for (Heading wall : space.getWalls()) {
-            //for (Heading wall2 : space2.getWalls()){
-                if (!space.getWalls().isEmpty() || !space2.getWalls().isEmpty()) {
-                    //Heading wall2 = space2.getWalls().get(0);
-                    if (wall == direction /*|| wall2 == otherDirection*/) {
-                        return true;
-                    }else{
-                        return false;
-                    }
+            if (!space.getWalls().isEmpty()) {
+                if (wall == direction) {
+                    return true;
                 }else{
                     return false;
                 }
+            }else{
+                return false;
             }
-        //}
+        }
+        for (Heading wall : space2.getWalls()){
+            if (!space2.getWalls().isEmpty()) {
+                if (wall == otherDirection) {
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
         return false;
-    }
+        }
+
 
 
 
