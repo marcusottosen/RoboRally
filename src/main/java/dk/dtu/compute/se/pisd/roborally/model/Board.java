@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt1;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,9 +50,9 @@ public class Board extends Subject {
 
     private final List<Player> players = new ArrayList<>();
 
-    private final List<Checkpoint> checkpoints = new ArrayList<>();
+    //private final List<Checkpoint> checkpoints = new ArrayList<>();
     private final List<Wall> walls = new ArrayList<>();
-    private final List<ConveyorBelt1> conveyorBelt1s = new ArrayList<>();
+    //private final List<ConveyorBelt1> conveyorBelt1s = new ArrayList<>();
 
     private Player current;
 
@@ -144,23 +142,7 @@ public class Board extends Subject {
         }
     }
 
-    /**
-     * Checkpointet i parameteren bliver tilføjet til arraylisten over checkpointsne.
-     * @param checkpoint checkpoint.
-     */
-    public void addCheckpoint(@NotNull Checkpoint checkpoint){
-        checkpoints.add(checkpoint);
-        notifyChange();
-    }
 
-    /**
-     * ConveryorBelt i parameteren bliver tilføjet til arraylisten over converyorBelts.
-     * @param conveyorBelt1 checkpoint.
-     */
-    public void addConveyorBelt(@NotNull ConveyorBelt1 conveyorBelt1){
-        conveyorBelt1s.add(conveyorBelt1);
-        notifyChange();
-    }
 
     /**
      * Væggen i parameteren bliver tilføjet til arraylisten over walls.

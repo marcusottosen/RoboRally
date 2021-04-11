@@ -1,4 +1,12 @@
 package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
-public class Gear {
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
+
+public class Gear extends FieldAction {
+    @Override
+    public boolean doAction(GameController gameController, Space space) {
+        return false;
+    }
 }

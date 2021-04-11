@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -464,7 +462,7 @@ public class GameController {
     }
 
 
-    public void isSpecialSpace(@NotNull Player player){
+    /*public void isSpecialSpace(@NotNull Player player){
         Space location = player.getSpace();
         Checkpoint checkpoint = new Checkpoint(board);
         //System.out.println(player.getSpace());
@@ -478,12 +476,7 @@ public class GameController {
                 //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
             }
         }
-
-
-
-
-
-    }
+    }*/
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

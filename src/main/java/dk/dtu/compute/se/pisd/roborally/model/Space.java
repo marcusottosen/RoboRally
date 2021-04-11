@@ -24,8 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt1;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 
 import java.util.List;
@@ -44,9 +42,9 @@ public class Space extends Subject {
     public final int y;
 
     private Player player;
-    private Checkpoint checkpoint;
+   // private Checkpoint checkpoint;
     private Wall wall;
-    private ConveyorBelt1 conveyorBelt1;
+    //private ConveyorBelt1 conveyorBelt1;
 
     /**
      * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
