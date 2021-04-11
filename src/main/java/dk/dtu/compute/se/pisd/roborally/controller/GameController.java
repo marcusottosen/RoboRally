@@ -466,40 +466,31 @@ public class GameController {
     }
 
 
+    /**
+     * tjekker hvorvidt feltet er specielt og initialiserer feltet.
+     * @param space object af feltet
+     */
     public void spaceActionInit(@NotNull Space space) {
         //FieldAction conveyorBelt = new ConveyorBelt();
-
 
         if (space.getActions().size() == 1) {
             FieldAction actionType = space.getActions().get(0);
 
 
+            //Conveyorbelt
             if (actionType instanceof ConveyorBelt) {
-                System.out.println("conveyorbelt ay");
                 FieldAction conveyorBelt = new ConveyorBelt();
                 conveyorBelt.doAction(this, space);
             }
 
-            if (space.getActions().get(0) == null) {
-                System.out.println("checkpoint ay");
+            //Checkpoint
+            else if (space.getActions().get(0) == null) {
                 FieldAction checkpoint = new Checkpoint();
                 checkpoint.doAction(this, space);
+                System.out.println("checkpoint");
             }
         }
     }
-
-
-
-
-        /*System.out.println("1");
-        for(FieldAction checkpoint : space.getActions()){
-            System.out.println("2");
-            if (checkpoint != null) {
-                System.out.println("3");
-                checkpoint.doAction(this, space);
-            }
-        }*/
-
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

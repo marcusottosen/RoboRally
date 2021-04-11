@@ -11,7 +11,7 @@ public class Checkpoint extends FieldAction {
 
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println("doAction i Checkpoint");
+        System.out.println("velkommen til checkpoint, mister");
 
 
         return false;

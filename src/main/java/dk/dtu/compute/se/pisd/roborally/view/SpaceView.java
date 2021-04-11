@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -56,6 +57,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String TILE_IMAGE_PATH = "images/tiles/tile.png";
     final private static String WALL_IMAGE_PATH = "images/tiles/wall.png";
     final private static String BLUECONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltBlue.png";
+
 
     private StackPane playerPane;
     Random random = new Random();
@@ -135,7 +137,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewConveyorbelt() {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
-                System.out.println(space.getActions());
                 Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
                 ImageView conveyorBeltImg = new ImageView();
 
@@ -156,25 +157,27 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
     /**
-     * tegner visuelt checkpointet som en cirkel.
+     * tegner visuelt checkpointet.
      */
     public void viewCheckpoint() {
-        //this.getChildren().clear();
-
-        //Checkpoint checkpoint = space.getCheckpoint();
         for(FieldAction checkpoint : space.getActions()){
             if (checkpoint == null) {
-                Canvas circle = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-                GraphicsContext gc =
-                        circle.getGraphicsContext2D();
-                //Sætter betingelserne for hvad der skal tegnes på canvasset "checkpoint"
-                gc.setFill(Color.LIGHTGREEN);
-                gc.setGlobalAlpha(0.6); //opacity
+                int nr = 1;
+                String PATH ="";
 
-                //Tegner det som er blevet defineret ovenfor på canvasset "checkpoint"
-                gc.fillOval(SPACE_WIDTH / 4, SPACE_WIDTH / 4, 40, 40);
+                    switch (nr) {
+                        case 1 -> PATH="images/tiles/checkpoint1.png";
+                        case 2 -> PATH="images/tiles/checkpoint2.png";
+                        case 3 -> PATH="images/tiles/checkpoint3.png";
+                        default -> System.out.println("Error checkpoint number");
+                    }
+                Image image = new Image(PATH);
 
-                this.getChildren().add(circle);
+                ImageView checkpointImg = new ImageView();
+
+                checkpointImg.setImage(image);
+                setElementSize(checkpointImg);
+                this.getChildren().add(checkpointImg);
             }
         }
     }

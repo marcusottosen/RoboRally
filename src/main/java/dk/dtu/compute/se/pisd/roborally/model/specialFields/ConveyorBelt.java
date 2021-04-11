@@ -52,18 +52,14 @@ public class ConveyorBelt extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println("I am in conveyorbelts motherfucker");
-        //gameController.forward1(space.getPlayer());
 
         try {
-            System.out.println("conveyorbelt player: " + space.getPlayer());
-
             Space target = gameController.board.getNeighbour(space, space.getPlayer().getHeading());
             // TODO Heading skal skiftes til conveyorbelts' heading.
 
             gameController.moveToSpace(space.getPlayer(), target, space.getPlayer().getHeading());
         } catch (GameController.ImpossibleMoveException e){
-            // do nothing
+            // catching exception.
         }
 
         return false;
