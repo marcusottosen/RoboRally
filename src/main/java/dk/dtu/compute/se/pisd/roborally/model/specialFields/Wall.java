@@ -13,6 +13,7 @@ public class Wall extends Subject {
     final public Board board;
     private Space space;
     private Heading direction;
+    private Heading otherDirection;
     private Player player;
 
 
@@ -24,19 +25,22 @@ public class Wall extends Subject {
     public boolean checkForWall(Player player){
         space = player.getSpace();
         direction = player.getHeading();
-        //space.getWalls().get(0);
+        otherDirection = direction.next().next(); //finder den omvendte heading, så vi kan sammenligne med nabofeltets evt. wall
+        Space space2 = board.getNeighbour(space, direction); //Finder nabofeltet(skal bruges til at finde ud af om der er en væg på nabofeltet.
         for (Heading wall : space.getWalls()) {
-            if (!space.getWalls().isEmpty()) {
-                if (wall == direction) {
-                    System.out.println("test");
-                    return true;
+            //for (Heading wall2 : space2.getWalls()){
+                if (!space.getWalls().isEmpty() || !space2.getWalls().isEmpty()) {
+                    //Heading wall2 = space2.getWalls().get(0);
+                    if (wall == direction /*|| wall2 == otherDirection*/) {
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }else{
                     return false;
                 }
-            }else{
-                return false;
             }
-        }
+        //}
         return false;
     }
 
