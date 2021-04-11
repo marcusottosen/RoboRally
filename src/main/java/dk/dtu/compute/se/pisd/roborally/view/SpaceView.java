@@ -135,6 +135,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewConveyorbelt() {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
+                System.out.println(space.getActions());
                 Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
                 ImageView conveyorBeltImg = new ImageView();
 

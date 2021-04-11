@@ -21,7 +21,10 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -382,6 +385,7 @@ public class GameController {
             }
         }
         player.setSpace(space);
+        spaceActionInit(space);
     }
 
     static class ImpossibleMoveException extends Exception {
@@ -462,21 +466,34 @@ public class GameController {
     }
 
 
-    /*public void isSpecialSpace(@NotNull Player player){
-        Space location = player.getSpace();
-        Checkpoint checkpoint = new Checkpoint(board);
-        //System.out.println(player.getSpace());
-        //System.out.println(checkpoint.getSpace());
+    public void spaceActionInit(@NotNull Space space){
+        //FieldAction conveyorBelt = new ConveyorBelt();
 
-        if(location == checkpoint.getSpace()){
-            //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
-            player.setScore(player.getScore() + 1);
-            System.out.println(player.getName() + "'s score: " + player.getScore());
-            if(player.getScore() > 3){
-                //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
-            }
+        System.out.println(space.getActions());
+
+        if (space.getActions() instanceof ConveyorBelt){
+            System.out.println("conveyorbelt ay");
+            FieldAction conveyorBelt = new ConveyorBelt();
+            conveyorBelt.doAction(this, space);
         }
-    }*/
+
+        if (space.getActions() == null){
+            System.out.println("checkpoint ay");
+            FieldAction checkpoint = new Checkpoint();
+            checkpoint.doAction(this, space);
+        }
+
+
+
+        /*System.out.println("1");
+        for(FieldAction checkpoint : space.getActions()){
+            System.out.println("2");
+            if (checkpoint != null) {
+                System.out.println("3");
+                checkpoint.doAction(this, space);
+            }
+        }*/
+    }
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
