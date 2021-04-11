@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -371,6 +372,7 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
+
                 moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
@@ -381,7 +383,12 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-        player.setSpace(space);
+        Wall wall = new Wall(board);
+        if(wall.checkForWall(player) == false){
+            player.setSpace(space);
+        }else if(wall.checkForWall(player) == true){
+            System.out.println("Du kan ikke rykke igennem en væg");
+        }
     }
 
     static class ImpossibleMoveException extends Exception {
