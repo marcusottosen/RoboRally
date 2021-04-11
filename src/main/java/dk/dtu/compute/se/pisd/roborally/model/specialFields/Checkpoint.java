@@ -6,6 +6,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Checkpoint extends FieldAction {
 
+    private int number;
+
     @Override
     public boolean doAction(GameController gameController, Space space) {
         // TODO
