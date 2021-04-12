@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 public class GameController {
 
     final public Board board;
+    private Wall wall;
 
     public GameController(@NotNull Board board) {
         this.board = board;
@@ -344,8 +345,8 @@ public class GameController {
         }
 
     }*/
-
     public void forward1(@NotNull Player player) {
+        wall = new Wall(board);
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
@@ -353,7 +354,19 @@ public class GameController {
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 try {
-                    moveToSpace(player, target, heading);
+                    if(wall.checkForWall(player) == false){
+                        if(target.getPlayer() != null){
+                            if(wall.checkForWall(target.getPlayer()) == false){
+                                moveToSpace(player, target, heading);
+                            }else if(wall.checkForWall(target.getPlayer()) == true){
+                                System.out.println("Der står en spiller i vejen, som ikke kan skubbes");
+                            }
+                        }else{
+                            moveToSpace(player, target, heading);
+                        }
+                    }else if(wall.checkForWall(player) == true){
+                        System.out.println("Du kan ikke rykke igennem en væg");
+                    }
                 } catch (ImpossibleMoveException e) {
                     // we don't do anything here  for now; we just catch the
                     // exception so that we do no pass it on to the caller
@@ -372,8 +385,8 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
+                    moveToSpace(other, target, heading);
 
-                moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
@@ -383,12 +396,8 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-        Wall wall = new Wall(board);
-        if(wall.checkForWall(player) == false){
             player.setSpace(space);
-        }else if(wall.checkForWall(player) == true){
-            System.out.println("Du kan ikke rykke igennem en væg");
-        }
+
     }
 
     static class ImpossibleMoveException extends Exception {
