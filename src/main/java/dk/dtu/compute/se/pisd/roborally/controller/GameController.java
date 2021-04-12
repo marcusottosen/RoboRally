@@ -23,9 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -476,7 +474,7 @@ public class GameController {
      */
     public void spaceActionInit(@NotNull Space space) {
 
-        if (space.getActions().size() == 1) {
+        if (space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
             System.out.println(actionType);
 
@@ -484,14 +482,28 @@ public class GameController {
             if (actionType instanceof ConveyorBelt) {
                 FieldAction conveyorBelt = new ConveyorBelt();
                 conveyorBelt.doAction(this, space);
+                System.out.println("conveyor");
             }
 
-             //Checkpoint
-            else if (space.getActions().get(0) == null) {
+            //Checkpoint
+            if (actionType instanceof Checkpoint) {
                 FieldAction checkpoint = new Checkpoint();
                 checkpoint.doAction(this, space);
-                System.out.println("checkpoint");
+                System.out.println("checkpoint AYY" );
             }
+
+            if (actionType instanceof Gear){
+                FieldAction gear = new Gear();
+                gear.doAction(this, space);
+                System.out.println("gear");
+            }
+
+            if (actionType instanceof Pit){
+                FieldAction pit = new Pit();
+                pit.doAction(this, space);
+                System.out.println("gear");
+            }
+
         }
     }
 
