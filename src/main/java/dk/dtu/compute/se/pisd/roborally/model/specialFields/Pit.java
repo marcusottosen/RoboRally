@@ -7,6 +7,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class Pit extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
+        System.out.println("You fell into the abyss");
+        space.getPlayer().setHealth(0);
         return false;
     }
 }
