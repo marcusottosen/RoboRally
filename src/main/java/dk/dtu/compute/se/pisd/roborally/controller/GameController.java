@@ -21,7 +21,10 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -345,28 +348,19 @@ public class GameController {
         }
 
     }*/
+
     public void forward1(@NotNull Player player) {
         wall = new Wall(board);
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
+            spaceActionInit(player.getSpace());
+
 
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 try {
-                    if(wall.checkForWall(player) == false){
-                        if(target.getPlayer() != null){
-                            if(wall.checkForWall(target.getPlayer()) == false){
-                                moveToSpace(player, target, heading);
-                            }else if(wall.checkForWall(target.getPlayer()) == true){
-                                System.out.println("Der står en spiller i vejen, som ikke kan skubbes");
-                            }
-                        }else{
-                            moveToSpace(player, target, heading);
-                        }
-                    }else if(wall.checkForWall(player) == true){
-                        System.out.println("Du kan ikke rykke igennem en væg");
-                    }
+                    moveToSpace(player, target, heading);
                 } catch (ImpossibleMoveException e) {
                     // we don't do anything here  for now; we just catch the
                     // exception so that we do no pass it on to the caller
@@ -376,7 +370,7 @@ public class GameController {
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){
@@ -385,8 +379,7 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
-                    moveToSpace(other, target, heading);
-
+                moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
@@ -396,11 +389,10 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-            player.setSpace(space);
-
+        player.setSpace(space);
     }
 
-    static class ImpossibleMoveException extends Exception {
+    public static class ImpossibleMoveException extends Exception {
 
         private Player player;
         private Space space;
@@ -478,21 +470,30 @@ public class GameController {
     }
 
 
-    /*public void isSpecialSpace(@NotNull Player player){
-        Space location = player.getSpace();
-        Checkpoint checkpoint = new Checkpoint(board);
-        //System.out.println(player.getSpace());
-        //System.out.println(checkpoint.getSpace());
+    /**
+     * tjekker hvorvidt feltet er specielt og initialiserer feltet.
+     * @param space object af feltet
+     */
+    public void spaceActionInit(@NotNull Space space) {
 
-        if(location == checkpoint.getSpace()){
-            //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
-            player.setScore(player.getScore() + 1);
-            System.out.println(player.getName() + "'s score: " + player.getScore());
-            if(player.getScore() > 3){
-                //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
+        if (space.getActions().size() == 1) {
+            FieldAction actionType = space.getActions().get(0);
+            System.out.println(actionType);
+
+            //Conveyorbelt
+            if (actionType instanceof ConveyorBelt) {
+                FieldAction conveyorBelt = new ConveyorBelt();
+                conveyorBelt.doAction(this, space);
+            }
+
+             //Checkpoint
+            else if (space.getActions().get(0) == null) {
+                FieldAction checkpoint = new Checkpoint();
+                checkpoint.doAction(this, space);
+                System.out.println("checkpoint");
             }
         }
-    }*/
+    }
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

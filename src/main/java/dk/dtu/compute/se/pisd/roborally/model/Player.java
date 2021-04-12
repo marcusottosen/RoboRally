@@ -25,6 +25,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -51,6 +53,7 @@ public class Player extends Subject {
     private CommandCardField[] cards;
 
     private int score = 0;
+    public ArrayList<Integer> checkpointsCompleted = new ArrayList<Integer>();
     private int health = 0;
 
 
@@ -75,7 +78,6 @@ public class Player extends Subject {
 
     /**
      * Returnerer navnet af spilleren i dette objekt.
-     *
      * @return Navnet som string.
      */
     public String getName() {
@@ -84,7 +86,6 @@ public class Player extends Subject {
 
     /**
      * Hvis navnet ønskes ændret bruges denne metode.
-     *
      * @param name String af det navn man ønsker spillerens navn ændret til.
      */
     public void setName(String name) {
@@ -99,7 +100,6 @@ public class Player extends Subject {
 
     /**
      * Bruges til at finde spillerens farve.
-     *
      * @return Spillerens farve som String.
      */
     public String getColor() {
@@ -108,7 +108,6 @@ public class Player extends Subject {
 
     /**
      * Hvis farven ønskes ændret bruges denne metode.
-     *
      * @param color String af den farve man ønsker spillerens farve ændret til.
      */
     public void setColor(String color) {
@@ -121,7 +120,6 @@ public class Player extends Subject {
 
     /**
      * Spillerens placering på kortet.
-     *
      * @return Spillerens placering.
      */
     public Space getSpace() {
@@ -130,7 +128,6 @@ public class Player extends Subject {
 
     /**
      * Bruges til at ændre spillerens placering, så længe den placering ikke er null.
-     *
      * @param space Det felt man ønsker spilleren rykket til.
      */
     public void setSpace(Space space) {
@@ -150,7 +147,6 @@ public class Player extends Subject {
 
     /**
      * Returnerer retningen som spilleren vender som enten: NORTH, SOUTH, EAST eller WEST.
-     *
      * @return spillerens retning.
      */
     public Heading getHeading() {
@@ -159,7 +155,6 @@ public class Player extends Subject {
 
     /**
      * Skifter spillerens heading til det der er indtastet i parameteren.
-     *
      * @param heading Den ønskede heading.
      */
     public void setHeading(@NotNull Heading heading) {
@@ -172,9 +167,17 @@ public class Player extends Subject {
         }
     }
 
+    public ArrayList<Integer> getCheckpointsCompleted() {
+        return checkpointsCompleted;
+    }
+
+    public void addCheckpointsCompleted(int checkpointNumber){
+        checkpointsCompleted.add(checkpointNumber);
+    }
+
+
     /**
      * returnerer spillerens score.
-     *
      * @return spillerens score som int.
      */
     public int getScore() {
