@@ -477,33 +477,7 @@ public class GameController {
         if (space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
             System.out.println(actionType);
-
-            //Conveyorbelt
-            if (actionType instanceof ConveyorBelt) {
-                FieldAction conveyorBelt = new ConveyorBelt();
-                conveyorBelt.doAction(this, space);
-                System.out.println("conveyor");
-            }
-
-            //Checkpoint
-            if (actionType instanceof Checkpoint) {
-                FieldAction checkpoint = new Checkpoint();
-                checkpoint.doAction(this, space);
-                System.out.println("checkpoint AYY" );
-            }
-
-            if (actionType instanceof Gear){
-                FieldAction gear = new Gear();
-                gear.doAction(this, space);
-                System.out.println("gear");
-            }
-
-            if (actionType instanceof Pit){
-                FieldAction pit = new Pit();
-                pit.doAction(this, space);
-                System.out.println("gear");
-            }
-
+            actionType.doAction(this, space);
         }
     }
 
