@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS Player (
   positionY int,
   heading tinyint,
   score int,
+  health int,
+  checkpointsReached int,
 
   proKort1 varchar(255),
   proKort2 varchar(255),

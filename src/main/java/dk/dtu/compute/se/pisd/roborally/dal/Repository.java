@@ -62,6 +62,8 @@ class Repository implements IRepository {
 
 	private static final String PLAYER_HEADING = "heading";
 	private static final String PLAYER_SCORE = "score";
+	private static final String PLAYER_HEALTH = "health";
+	private static final String CHECKPOINTS_REACHED = "checkpointsReached";
 
 	
 	private void makeProKort(){
@@ -299,6 +301,9 @@ class Repository implements IRepository {
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
 			rs.updateInt(PLAYER_SCORE, player.getScore());
+			rs.updateInt(PLAYER_HEALTH, 1); //player.getHealth()
+			rs.updateInt(CHECKPOINTS_REACHED, 1); //player.checkpointsCompleted.size()
+
 
 			// Command cards
 			for (int j = 1; j <= 8 ; j++) {
@@ -340,10 +345,14 @@ class Repository implements IRepository {
 				int heading = rs.getInt(PLAYER_HEADING);
 				player.setHeading(Heading.values()[heading]);
 
-				// TODO  should also load players program and hand here
-				//player.getProgramField();
-				//player.getCardField();
-				//Player cards = new Player(LoadBoard.loadBoard(null), colour, name);
+				player.setScore(rs.getInt(PLAYER_SCORE));
+
+				//TODO when merched, uncomment:
+				player.setHealth(rs.getInt(PLAYER_HEALTH));
+				for (int j = 0; j < rs.getInt(CHECKPOINTS_REACHED); j++) {
+					//player.addCheckpointsCompleted(j+1);
+				}
+
 
 				//commandskort
 				for (int j = 1; j <= 8; j++) { //8 = antallet af commandcard felter
