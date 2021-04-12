@@ -313,7 +313,9 @@ public class Board extends Subject {
         return "Phase: " + getPhase().name() +
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getCount() +
-                ", score: " + getCurrentPlayer().getScore();
+                ", score: " + getCurrentPlayer().getScore() +
+                ", health: " + getCurrentPlayer().getHealth();
+
     }
 
     /**

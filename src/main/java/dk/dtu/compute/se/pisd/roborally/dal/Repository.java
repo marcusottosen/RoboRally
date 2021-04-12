@@ -62,6 +62,8 @@ class Repository implements IRepository {
 
 	private static final String PLAYER_HEADING = "heading";
 	private static final String PLAYER_SCORE = "score";
+	private static final String PLAYER_HEALTH = "health";
+
 
 	
 	private void makeProKort(){
@@ -299,6 +301,8 @@ class Repository implements IRepository {
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
 			rs.updateInt(PLAYER_SCORE, player.getScore());
+			rs.updateInt(PLAYER_HEALTH, player.getHealth());
+
 
 			// Command cards
 			for (int j = 1; j <= 8 ; j++) {
