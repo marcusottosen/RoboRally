@@ -174,11 +174,12 @@ public class AppController implements Observer {
         ChoiceDialog load_dialog = new ChoiceDialog();
         load_dialog.setContentText("Chose savegame to load");
         load_dialog.getItems().addAll(savegames);
-        load_dialog.showAndWait();
 
-        board = loadgame.getRepository().loadGameFromDB(((GameInDB) load_dialog.getSelectedItem()).id);
-        gameController = new GameController(board);
-        roboRally.createBoardView(gameController);
+        if (load_dialog.showAndWait().isPresent()){
+            board = loadgame.getRepository().loadGameFromDB(((GameInDB) load_dialog.getSelectedItem()).id);
+            gameController = new GameController(board);
+            roboRally.createBoardView(gameController);
+        }
 
     return null;
     }
