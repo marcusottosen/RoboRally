@@ -21,7 +21,7 @@ public class Gear extends FieldAction {
     public boolean doAction(GameController gameController, Space space) {
         System.out.println("I will rotate you!");
 
-        if ("EAST".equals(Heading.EAST)){
+        if (direction.equals("LEFT")){
             gameController.turnLeft(space.getPlayer());
         }else{
             gameController.turnRight(space.getPlayer());

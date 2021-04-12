@@ -120,6 +120,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     viewToolbox();
                 }else if(actionType instanceof Laser){
                     viewLaserEmitter(((Laser) actionType).getHeading());
+                }else if(actionType instanceof PushPanel){
+                    viewPushPanel(((PushPanel) actionType).getHeading());
                 }
             }
         }
@@ -273,7 +275,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void viewPushPanel() {
+    public void viewPushPanel(Heading heading) {
         for (FieldAction pushPanel : space.getActions()){
             if (pushPanel != null) {
                 Image image = new Image(PUSHPANEL_IMAGE_PATH);
@@ -282,14 +284,14 @@ public class SpaceView extends StackPane implements ViewObserver {
                 pushPanelImg.setImage(image);
                 setElementSize(pushPanelImg);
 
-                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case "NORTH" -> pushPanelImg.setRotate(180);
-                    case "SOUTH" -> pushPanelImg.setRotate(0);
-                    case "EAST" -> pushPanelImg.setRotate(270);
-                    case "WEST" -> pushPanelImg.setRotate(90);
+                switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
+                    case NORTH -> pushPanelImg.setRotate(180);
+                    case SOUTH -> pushPanelImg.setRotate(0);
+                    case EAST -> pushPanelImg.setRotate(270);
+                    case WEST -> pushPanelImg.setRotate(90);
                     default -> System.out.println("Error pushPanel direction");
                 }
-                this.getChildren().add(pushPanelImg);
+                laserPane.getChildren().add(pushPanelImg);
             }
         }
     }

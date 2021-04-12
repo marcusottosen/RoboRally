@@ -86,6 +86,7 @@
       "x": 1,
       "y": 4
     },
+
     {
       "walls": [],
       "actions": [
@@ -133,9 +134,9 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.PushPanel",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "EAST"
           }
         }
       ],
