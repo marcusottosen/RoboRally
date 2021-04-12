@@ -152,6 +152,12 @@
           "INSTANCE": {
             "heading": "WEST"
           }
+        },
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
+          "INSTANCE": {
+            "heading": "SOUTH"
+          }
         }
       ],
       "x": 4,
@@ -234,7 +240,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
           "INSTANCE": {
-            "heading": null
+            "heading": "WEST"
           }
         }
       ],
