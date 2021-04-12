@@ -28,10 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -65,6 +62,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String PIT_IMAGE_PATH = "images/tiles/pit.png";
     final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
     final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
+    final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
+    final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
 
 
 
@@ -116,7 +115,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                 viewPit();
             }else if (actionType instanceof Gear){
                 viewGear();
+            }else if (actionType instanceof Toolbox){
+                viewToolbox();
             }
+
         }
         viewWall();
     }
@@ -230,6 +232,40 @@ public class SpaceView extends StackPane implements ViewObserver {
                 gearImg.setImage(image);
                 setElementSize(gearImg);
                 this.getChildren().add(gearImg);
+            }
+        }
+    }
+
+    public void viewToolbox() {
+        for (FieldAction toolbox : space.getActions()){
+            if (toolbox != null) {
+                Image image = new Image(TOOLBOX_IMAGE_PATH);
+                ImageView tollboxImg = new ImageView();
+
+                tollboxImg.setImage(image);
+                setElementSize(tollboxImg);
+                this.getChildren().add(tollboxImg);
+            }
+        }
+    }
+
+    public void viewPushPanel() {
+        for (FieldAction pushPanel : space.getActions()){
+            if (pushPanel != null) {
+                Image image = new Image(PUSHPANEL_IMAGE_PATH);
+                ImageView pushPanelImg = new ImageView();
+
+                pushPanelImg.setImage(image);
+                setElementSize(pushPanelImg);
+
+                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
+                    case "NORTH" -> pushPanelImg.setRotate(180);
+                    case "SOUTH" -> pushPanelImg.setRotate(0);
+                    case "EAST" -> pushPanelImg.setRotate(270);
+                    case "WEST" -> pushPanelImg.setRotate(90);
+                    default -> System.out.println("Error pushPanel direction");
+                }
+                this.getChildren().add(pushPanelImg);
             }
         }
     }
