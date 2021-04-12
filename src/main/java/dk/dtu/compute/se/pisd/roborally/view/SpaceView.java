@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -112,6 +113,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                 viewCheckpoint();
             }else if (actionType instanceof Pit){
                 viewPit();
+            }else if (actionType instanceof Gear){
+                viewGear();
             }
         }
         viewWall();

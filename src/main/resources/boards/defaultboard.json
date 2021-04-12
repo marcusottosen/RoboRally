@@ -227,6 +227,19 @@
       ],
       "x": 5,
       "y": 0
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "heading": null
+          }
+        }
+      ],
+      "x": 0,
+      "y": 7
     }
   ]
 }
