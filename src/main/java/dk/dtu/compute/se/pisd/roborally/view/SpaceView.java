@@ -223,9 +223,12 @@ public class SpaceView extends StackPane implements ViewObserver {
                     case WEST -> PATH=LEFT_GEAR_IMAGE_PATH;
                     case EAST -> PATH=RIGHT_GEAR_IMAGE_PATH;
                 }
-                Image image = new Image(LEFT_GEAR_IMAGE_PATH);
+                Image image = new Image(PATH);
                 ImageView gearImg = new ImageView();
 
+                gearImg.setImage(image);
+                setElementSize(gearImg);
+                this.getChildren().add(gearImg);
             }
         }
     }
