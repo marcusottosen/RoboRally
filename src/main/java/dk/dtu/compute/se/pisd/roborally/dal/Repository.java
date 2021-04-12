@@ -301,7 +301,7 @@ class Repository implements IRepository {
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
 			rs.updateInt(PLAYER_SCORE, player.getScore());
-			rs.updateInt(PLAYER_HEALTH, 1); //player.getHealth()
+			rs.updateInt(PLAYER_HEALTH, player.getHealth());
 			rs.updateInt(CHECKPOINTS_REACHED, 1); //player.checkpointsCompleted.size()
 
 
