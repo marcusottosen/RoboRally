@@ -110,7 +110,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             if (actionType instanceof ConveyorBelt) {
                 viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
             }else if (actionType instanceof Checkpoint){
-                viewCheckpoint();
+                viewCheckpoint(((Checkpoint) actionType).getNumber());
             }else if (actionType instanceof Pit){
                 viewPit();
             }else if (actionType instanceof Gear){
@@ -177,13 +177,13 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * tegner visuelt checkpointet.
      */
-    public void viewCheckpoint() {
+    public void viewCheckpoint(int number) {
         for(FieldAction checkpoints : space.getActions()){
             if (checkpoints != null) {
                 Checkpoint checkpoint = new Checkpoint();
                 String PATH ="";
 
-                switch (checkpoint.getNumber()) {
+                switch (number) {
                     case 1 -> PATH="images/tiles/checkpoint1.png";
                     case 2 -> PATH="images/tiles/checkpoint2.png";
                     case 3 -> PATH="images/tiles/checkpoint3.png";

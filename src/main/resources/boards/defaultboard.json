@@ -208,7 +208,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
           "INSTANCE": {
-            "heading": null
+            "number": 1
           }
         }
       ],
@@ -252,6 +252,19 @@
         }
       ],
       "x": 2,
+      "y": 7
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 2
+          }
+        }
+      ],
+      "x": 5,
       "y": 7
     }
   ]

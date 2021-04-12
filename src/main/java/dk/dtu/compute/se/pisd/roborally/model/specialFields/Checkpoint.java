@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Checkpoint extends FieldAction {
 
-    private int number = 1;
+    private int number = 0;
     //TODO Hent number fra json fil.
 
     public int getNumber() {
