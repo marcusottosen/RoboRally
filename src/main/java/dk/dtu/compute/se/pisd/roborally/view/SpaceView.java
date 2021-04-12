@@ -61,6 +61,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String WALL_IMAGE_PATH = "images/tiles/wall.png";
     final private static String BLUECONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltBlue.png";
     final private static String PIT_IMAGE_PATH = "images/tiles/pit.png";
+    final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
+    final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
+
 
 
     private StackPane playerPane;
@@ -172,17 +175,20 @@ public class SpaceView extends StackPane implements ViewObserver {
      * tegner visuelt checkpointet.
      */
     public void viewCheckpoint() {
-        for(FieldAction checkpoint : space.getActions()){
-            if (checkpoint != null) {
-                int nr = 1;
+        for(FieldAction checkpoints : space.getActions()){
+            if (checkpoints != null) {
+                Checkpoint checkpoint = new Checkpoint();
                 String PATH ="";
 
-                    switch (nr) {
-                        case 1 -> PATH="images/tiles/checkpoint1.png";
-                        case 2 -> PATH="images/tiles/checkpoint2.png";
-                        case 3 -> PATH="images/tiles/checkpoint3.png";
-                        default -> System.out.println("Error checkpoint number");
+                switch (checkpoint.getNumber()) {
+                    case 1 -> PATH="images/tiles/checkpoint1.png";
+                    case 2 -> PATH="images/tiles/checkpoint2.png";
+                    case 3 -> PATH="images/tiles/checkpoint3.png";
+                    default -> {
+                        System.out.println("Error checkpoint number");
+                        PATH="images/tiles/checkpoint1.png";
                     }
+                }
                 Image image = new Image(PATH);
 
                 ImageView checkpointImg = new ImageView();
@@ -203,6 +209,23 @@ public class SpaceView extends StackPane implements ViewObserver {
                 pitImg.setImage(image);
                 setElementSize(pitImg);
                 this.getChildren().add(pitImg);
+            }
+        }
+    }
+
+    public void viewGear(){
+        for (FieldAction gear : space.getActions()){
+            if(gear != null){
+                Heading direction = Heading.WEST; //Dette skal ændres, så den læser heading fra JSON (NOTE: vi bruger kun WEST og EAST til Gear
+                String PATH = "";
+
+                switch (direction){
+                    case WEST -> PATH=LEFT_GEAR_IMAGE_PATH;
+                    case EAST -> PATH=RIGHT_GEAR_IMAGE_PATH;
+                }
+                Image image = new Image(LEFT_GEAR_IMAGE_PATH);
+                ImageView gearImg = new ImageView();
+
             }
         }
     }
