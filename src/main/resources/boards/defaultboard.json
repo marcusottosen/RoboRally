@@ -234,7 +234,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
           "INSTANCE": {
-            "heading": null
+            "direction": "LEFT"
           }
         }
       ],
@@ -266,6 +266,19 @@
       ],
       "x": 5,
       "y": 7
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "direction": "RIGHT"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 3
     }
   ]
 }

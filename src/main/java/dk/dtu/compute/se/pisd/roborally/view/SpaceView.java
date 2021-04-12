@@ -114,7 +114,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }else if (actionType instanceof Pit){
                 viewPit();
             }else if (actionType instanceof Gear){
-                viewGear();
+                viewGear(((Gear) actionType).getDirection());
             }else if (actionType instanceof Toolbox){
                 viewToolbox();
             }
@@ -216,15 +216,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void viewGear(){
+    public void viewGear(String direction){
         for (FieldAction gear : space.getActions()){
             if(gear != null){
-                Heading direction = Heading.WEST; //Dette skal ændres, så den læser heading fra JSON (NOTE: vi bruger kun WEST og EAST til Gear
                 String PATH = "";
 
                 switch (direction){
-                    case WEST -> PATH=LEFT_GEAR_IMAGE_PATH;
-                    case EAST -> PATH=RIGHT_GEAR_IMAGE_PATH;
+                    case "LEFT" -> PATH=LEFT_GEAR_IMAGE_PATH;
+                    case "RIGHT" -> PATH=RIGHT_GEAR_IMAGE_PATH;
                 }
                 Image image = new Image(PATH);
                 ImageView gearImg = new ImageView();
