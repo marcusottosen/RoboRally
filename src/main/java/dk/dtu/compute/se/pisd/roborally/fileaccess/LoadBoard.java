@@ -35,6 +35,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
 
 import java.io.*;
+import java.net.URL;
 
 /**
  * ...
@@ -61,8 +62,9 @@ public class LoadBoard {
         }
 
 		// In simple cases, we can create a Gson object with new Gson():
+        Adapter adapter = new Adapter<FieldAction>();
         GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+                registerTypeAdapter(FieldAction.class, adapter);
         Gson gson = simpleBuilder.create();
 
 		Board result;

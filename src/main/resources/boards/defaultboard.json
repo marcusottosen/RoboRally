@@ -195,7 +195,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "NORTH"
           }
         }
       ],

@@ -107,9 +107,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if(space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
-            System.out.println(actionType);
+            //System.out.println(actionType);
             if (actionType instanceof ConveyorBelt) {
-                viewConveyorbelt();
+                viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
             }else if (actionType instanceof Checkpoint){
                 viewCheckpoint();
             }else if (actionType instanceof Pit){
@@ -152,7 +152,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
-    public void viewConveyorbelt() {
+    public void viewConveyorbelt(Heading heading) {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
                 Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
@@ -161,11 +161,11 @@ public class SpaceView extends StackPane implements ViewObserver {
                 conveyorBeltImg.setImage(image);
                 setElementSize(conveyorBeltImg);
 
-                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case "NORTH" -> conveyorBeltImg.setRotate(180);
-                    case "SOUTH" -> conveyorBeltImg.setRotate(0);
-                    case "EAST" -> conveyorBeltImg.setRotate(270);
-                    case "WEST" -> conveyorBeltImg.setRotate(90);
+                switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
+                    case NORTH -> conveyorBeltImg.setRotate(180);
+                    case SOUTH -> conveyorBeltImg.setRotate(0);
+                    case EAST -> conveyorBeltImg.setRotate(270);
+                    case WEST -> conveyorBeltImg.setRotate(90);
                     default -> System.out.println("Error conveyorBelt direction");
                 }
                 this.getChildren().add(conveyorBeltImg);
