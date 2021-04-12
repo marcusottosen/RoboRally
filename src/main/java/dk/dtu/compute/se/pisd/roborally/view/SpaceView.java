@@ -28,6 +28,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -58,6 +60,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String TILE_IMAGE_PATH = "images/tiles/tile.png";
     final private static String WALL_IMAGE_PATH = "images/tiles/wall.png";
     final private static String BLUECONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltBlue.png";
+    final private static String PIT_IMAGE_PATH = "images/tiles/pit.png";
 
 
     private StackPane playerPane;
@@ -91,15 +94,23 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
 
-
     public void viewBoardElements(){
         SpecialFieldsView elements = new SpecialFieldsView(space); //Virker ikke!
         elements.viewConveryorBelt();
         elements.viewCheckpoint();
         elements.viewWall();
 
-        viewConveyorbelt();
-        viewCheckpoint();
+        if(space.getActions().size() != 0) {
+            FieldAction actionType = space.getActions().get(0);
+            System.out.println(actionType);
+            if (actionType instanceof ConveyorBelt) {
+                viewConveyorbelt();
+            }else if (actionType instanceof Checkpoint){
+                viewCheckpoint();
+            }else if (actionType instanceof Pit){
+                viewPit();
+            }
+        }
         viewWall();
     }
 
@@ -161,19 +172,16 @@ public class SpaceView extends StackPane implements ViewObserver {
      * tegner visuelt checkpointet.
      */
     public void viewCheckpoint() {
-        for(FieldAction checkpoints : space.getActions()){
-            if (checkpoints == null) {
-                Checkpoint checkpoint = new Checkpoint();
+        for(FieldAction checkpoint : space.getActions()){
+            if (checkpoint != null) {
+                int nr = 1;
                 String PATH ="";
 
-                    switch (checkpoint.getNumber()) {
+                    switch (nr) {
                         case 1 -> PATH="images/tiles/checkpoint1.png";
                         case 2 -> PATH="images/tiles/checkpoint2.png";
                         case 3 -> PATH="images/tiles/checkpoint3.png";
-                        default -> {
-                            System.out.println("Error checkpoint number");
-                            PATH="images/tiles/checkpoint1.png";
-                        }
+                        default -> System.out.println("Error checkpoint number");
                     }
                 Image image = new Image(PATH);
 
@@ -185,6 +193,20 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
+
+    public void viewPit() {
+        for (FieldAction pit : space.getActions()){
+            if(pit != null){
+                Image image = new Image(PIT_IMAGE_PATH);
+                ImageView pitImg = new ImageView();
+
+                pitImg.setImage(image);
+                setElementSize(pitImg);
+                this.getChildren().add(pitImg);
+            }
+        }
+    }
+
 
 
     /**
