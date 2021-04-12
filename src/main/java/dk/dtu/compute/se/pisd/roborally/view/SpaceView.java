@@ -24,7 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -62,11 +61,11 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String PIT_IMAGE_PATH = "images/tiles/pit.png";
     final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
     final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
+    final private static String LASER_EMITTER_IMAGE_PATH = "images/tiles/laserEmitter.png";
     final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
 
-
-
+    private StackPane laserPane;
     private StackPane playerPane;
     Random random = new Random();
 
@@ -79,6 +78,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         Image image = new Image(TILE_IMAGE_PATH);
 
         ImageView tile = new ImageView();
+        laserPane = new StackPane(); // Laver et nyt pane(lag) til laser emitters, så de kan stå ovenpå walls
         playerPane = new StackPane(); // laver et pane til robotten ovenpå alt andet.
 
         tile.setImage(image);
@@ -92,7 +92,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(tile);
         viewBoardElements();
 
-        playerPane = new StackPane();
+        this.getChildren().add(laserPane);
         this.getChildren().add(playerPane);
         updatePlayer();
     }
@@ -105,20 +105,23 @@ public class SpaceView extends StackPane implements ViewObserver {
         elements.viewWall();
 
         if(space.getActions().size() != 0) {
-            FieldAction actionType = space.getActions().get(0);
-            //System.out.println(actionType);
-            if (actionType instanceof ConveyorBelt) {
-                viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
-            }else if (actionType instanceof Checkpoint){
-                viewCheckpoint(((Checkpoint) actionType).getNumber());
-            }else if (actionType instanceof Pit){
-                viewPit();
-            }else if (actionType instanceof Gear){
-                viewGear(((Gear) actionType).getDirection());
-            }else if (actionType instanceof Toolbox){
-                viewToolbox();
+            for (int i = 0; i < space.getActions().size(); i++) {
+                FieldAction actionType = space.getActions().get(i);
+                //System.out.println(actionType);
+                if (actionType instanceof ConveyorBelt) {
+                    viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
+                }else if (actionType instanceof Checkpoint){
+                    viewCheckpoint(((Checkpoint) actionType).getNumber());
+                }else if (actionType instanceof Pit){
+                    viewPit();
+                }else if (actionType instanceof Gear){
+                    viewGear(((Gear) actionType).getDirection());
+                }else if (actionType instanceof Toolbox){
+                    viewToolbox();
+                }else if(actionType instanceof Laser){
+                    viewLaserEmitter(((Laser) actionType).getHeading());
+                }
             }
-
         }
         viewWall();
     }
@@ -174,6 +177,8 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
+
+
     /**
      * tegner visuelt checkpointet.
      */
@@ -235,6 +240,26 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    public void viewLaserEmitter(Heading heading) {
+        for(FieldAction laserEmitter : space.getActions()) {
+            if (laserEmitter != null) {
+                Image image = new Image(LASER_EMITTER_IMAGE_PATH);
+
+                ImageView laserEmitterImg = new ImageView();
+                laserEmitterImg.setImage(image);
+                setElementSize(laserEmitterImg);
+
+                switch (heading) {
+                    case NORTH -> laserEmitterImg.setRotate(0);
+                    case SOUTH -> laserEmitterImg.setRotate(180);
+                    case EAST -> laserEmitterImg.setRotate(90);
+                    case WEST -> laserEmitterImg.setRotate(270);
+                    default -> System.out.println("Error conveyorBelt direction");
+                }
+                laserPane.getChildren().add(laserEmitterImg);
+            }
+        }
+    }
     public void viewToolbox() {
         for (FieldAction toolbox : space.getActions()){
             if (toolbox != null) {
@@ -292,6 +317,8 @@ public class SpaceView extends StackPane implements ViewObserver {
             playerPane.getChildren().add(arrow);
         }
     }
+
+
 
 
     /**
