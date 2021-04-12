@@ -54,7 +54,7 @@ public class Player extends Subject {
 
     private int score = 0;
     public ArrayList<Integer> checkpointsCompleted = new ArrayList<Integer>();
-    private int health = 0;
+    private int health = 3;
 
 
 
