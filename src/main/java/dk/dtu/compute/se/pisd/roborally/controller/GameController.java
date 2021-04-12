@@ -265,7 +265,6 @@ public class GameController {
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
-            spaceActionInit(player.getSpace());
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -352,6 +351,8 @@ public class GameController {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
+            spaceActionInit(player.getSpace());
+
 
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
@@ -471,11 +472,10 @@ public class GameController {
      * @param space object af feltet
      */
     public void spaceActionInit(@NotNull Space space) {
-        //FieldAction conveyorBelt = new ConveyorBelt();
 
         if (space.getActions().size() == 1) {
             FieldAction actionType = space.getActions().get(0);
-
+            System.out.println(actionType);
 
             //Conveyorbelt
             if (actionType instanceof ConveyorBelt) {
@@ -483,7 +483,7 @@ public class GameController {
                 conveyorBelt.doAction(this, space);
             }
 
-            //Checkpoint
+             //Checkpoint
             else if (space.getActions().get(0) == null) {
                 FieldAction checkpoint = new Checkpoint();
                 checkpoint.doAction(this, space);

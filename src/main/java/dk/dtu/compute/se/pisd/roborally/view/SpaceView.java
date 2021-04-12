@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -160,16 +161,19 @@ public class SpaceView extends StackPane implements ViewObserver {
      * tegner visuelt checkpointet.
      */
     public void viewCheckpoint() {
-        for(FieldAction checkpoint : space.getActions()){
-            if (checkpoint == null) {
-                int nr = 1;
+        for(FieldAction checkpoints : space.getActions()){
+            if (checkpoints == null) {
+                Checkpoint checkpoint = new Checkpoint();
                 String PATH ="";
 
-                    switch (nr) {
+                    switch (checkpoint.getNumber()) {
                         case 1 -> PATH="images/tiles/checkpoint1.png";
                         case 2 -> PATH="images/tiles/checkpoint2.png";
                         case 3 -> PATH="images/tiles/checkpoint3.png";
-                        default -> System.out.println("Error checkpoint number");
+                        default -> {
+                            System.out.println("Error checkpoint number");
+                            PATH="images/tiles/checkpoint1.png";
+                        }
                     }
                 Image image = new Image(PATH);
 
