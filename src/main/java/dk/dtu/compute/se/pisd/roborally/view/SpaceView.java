@@ -106,15 +106,15 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if(space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
-            System.out.println(actionType);
+            //System.out.println(actionType);
             if (actionType instanceof ConveyorBelt) {
-                viewConveyorbelt();
+                viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
             }else if (actionType instanceof Checkpoint){
-                viewCheckpoint();
+                viewCheckpoint(((Checkpoint) actionType).getNumber());
             }else if (actionType instanceof Pit){
                 viewPit();
             }else if (actionType instanceof Gear){
-                viewGear();
+                viewGear(((Gear) actionType).getDirection());
             }else if (actionType instanceof Toolbox){
                 viewToolbox();
             }
@@ -154,7 +154,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
-    public void viewConveyorbelt() {
+    public void viewConveyorbelt(Heading heading) {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
                 Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
@@ -163,11 +163,11 @@ public class SpaceView extends StackPane implements ViewObserver {
                 conveyorBeltImg.setImage(image);
                 setElementSize(conveyorBeltImg);
 
-                switch ("NORTH"){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case "NORTH" -> conveyorBeltImg.setRotate(180);
-                    case "SOUTH" -> conveyorBeltImg.setRotate(0);
-                    case "EAST" -> conveyorBeltImg.setRotate(270);
-                    case "WEST" -> conveyorBeltImg.setRotate(90);
+                switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
+                    case NORTH -> conveyorBeltImg.setRotate(180);
+                    case SOUTH -> conveyorBeltImg.setRotate(0);
+                    case EAST -> conveyorBeltImg.setRotate(270);
+                    case WEST -> conveyorBeltImg.setRotate(90);
                     default -> System.out.println("Error conveyorBelt direction");
                 }
                 this.getChildren().add(conveyorBeltImg);
@@ -177,13 +177,13 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * tegner visuelt checkpointet.
      */
-    public void viewCheckpoint() {
+    public void viewCheckpoint(int number) {
         for(FieldAction checkpoints : space.getActions()){
             if (checkpoints != null) {
                 Checkpoint checkpoint = new Checkpoint();
                 String PATH ="";
 
-                switch (checkpoint.getNumber()) {
+                switch (number) {
                     case 1 -> PATH="images/tiles/checkpoint1.png";
                     case 2 -> PATH="images/tiles/checkpoint2.png";
                     case 3 -> PATH="images/tiles/checkpoint3.png";
@@ -216,15 +216,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void viewGear(){
+    public void viewGear(String direction){
         for (FieldAction gear : space.getActions()){
             if(gear != null){
-                Heading direction = Heading.WEST; //Dette skal ændres, så den læser heading fra JSON (NOTE: vi bruger kun WEST og EAST til Gear
                 String PATH = "";
 
                 switch (direction){
-                    case WEST -> PATH=LEFT_GEAR_IMAGE_PATH;
-                    case EAST -> PATH=RIGHT_GEAR_IMAGE_PATH;
+                    case "LEFT" -> PATH=LEFT_GEAR_IMAGE_PATH;
+                    case "RIGHT" -> PATH=RIGHT_GEAR_IMAGE_PATH;
                 }
                 Image image = new Image(PATH);
                 ImageView gearImg = new ImageView();

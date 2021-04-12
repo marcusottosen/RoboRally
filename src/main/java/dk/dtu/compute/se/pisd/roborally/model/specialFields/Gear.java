@@ -7,14 +7,14 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Gear extends FieldAction {
 
-    private Heading heading;
+    private String direction;
 
-    public Heading getHeading() {
-        return heading;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setHeading(Heading heading) {
-        this.heading = heading;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     @Override
