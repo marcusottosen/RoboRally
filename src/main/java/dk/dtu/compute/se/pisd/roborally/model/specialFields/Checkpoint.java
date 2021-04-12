@@ -21,7 +21,7 @@ public class Checkpoint extends FieldAction {
 
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println("velkommen til checkpoint, mister");
+        System.out.println("Here's a point");
         Player player = space.getPlayer();
         System.out.println("checkpoints completed before: " + player.checkpointsCompleted);
 

@@ -281,12 +281,15 @@ public class GameController {
                     break;
                 case RIGHT:
                     this.turnRight(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 case LEFT:
                     this.turnLeft(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 case UTURN:
                     this.uTurn(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -352,7 +355,6 @@ public class GameController {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
-            spaceActionInit(player.getSpace());
 
 
             Space target = board.getNeighbour(space, heading);
@@ -365,6 +367,8 @@ public class GameController {
                     // (which would be very bad style).
                 }
             }
+            spaceActionInit(player.getSpace());
+
         }
     }
 

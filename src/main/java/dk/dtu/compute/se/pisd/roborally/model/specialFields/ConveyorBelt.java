@@ -56,7 +56,7 @@ public class ConveyorBelt extends FieldAction {
         try {
             Space target = gameController.board.getNeighbour(space, space.getPlayer().getHeading());
             // TODO Heading skal skiftes til conveyorbelts' heading.
-            System.out.println("You too fat to move");
+            System.out.println("Move!");
 
             gameController.moveToSpace(space.getPlayer(), target, space.getPlayer().getHeading());
         } catch (GameController.ImpossibleMoveException e){
