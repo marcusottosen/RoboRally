@@ -51,8 +51,8 @@ import java.util.Random;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    public static int SPACE_HEIGHT = 75;
-    public static int SPACE_WIDTH = 75;
+    public static int SPACE_HEIGHT;
+    public static int SPACE_WIDTH;
 
     public final Space space;
 
@@ -83,8 +83,8 @@ public class SpaceView extends StackPane implements ViewObserver {
      */
     public SpaceView(@NotNull Space space, int height) {
         this.space = space;
-        SPACE_HEIGHT = 85-height;
-        SPACE_WIDTH = 85-height;
+        SPACE_HEIGHT = 85-(height*2);
+        SPACE_WIDTH = 85-(height*2);
 
         Image image = new Image(TILE_IMAGE_PATH);
 
