@@ -47,7 +47,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
           "INSTANCE": {
-            "direction": "RIGHT"
+            "direction": "LEFT"
           }
         }
       ],
@@ -174,9 +174,9 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "direction": "RIGHT"
+            "heading": "EAST"
           }
         }
       ],
@@ -396,6 +396,19 @@
       "walls": [],
       "actions": [
         {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "direction": "LEFT"
+          }
+        }
+      ],
+      "x": 8,
+      "y": 6
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit",
           "INSTANCE": {
             "number": null
@@ -404,6 +417,19 @@
       ],
       "x": 12,
       "y": 1
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "direction": "RIGHT"
+          }
+        }
+      ],
+      "x": 9,
+      "y": 4
     },
     {
       "walls": [
