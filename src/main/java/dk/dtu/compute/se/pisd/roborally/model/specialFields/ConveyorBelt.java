@@ -40,6 +40,9 @@ import java.io.IOException;
 public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
+    private String color;
+
+    public String getColor(){return color; }
 
 
     public Heading getHeading() {
