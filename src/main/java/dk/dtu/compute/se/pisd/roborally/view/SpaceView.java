@@ -285,10 +285,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                 setElementSize(pushPanelImg);
 
                 switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case NORTH -> pushPanelImg.setRotate(180);
-                    case SOUTH -> pushPanelImg.setRotate(0);
-                    case EAST -> pushPanelImg.setRotate(270);
-                    case WEST -> pushPanelImg.setRotate(90);
+                    case NORTH -> pushPanelImg.setRotate(270);
+                    case SOUTH -> pushPanelImg.setRotate(90);
+                    case EAST -> pushPanelImg.setRotate(0);
+                    case WEST -> pushPanelImg.setRotate(180);
                     default -> System.out.println("Error pushPanel direction");
                 }
                 laserPane.getChildren().add(pushPanelImg);

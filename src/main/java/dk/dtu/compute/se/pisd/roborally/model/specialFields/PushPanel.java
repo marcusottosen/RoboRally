@@ -21,8 +21,8 @@ public class PushPanel extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
         try {
-            Space target = gameController.board.getNeighbour(space, heading.next());
-            gameController.moveToSpace(space.getPlayer(), target, heading.next());
+            Space target = gameController.board.getNeighbour(space, heading.next().next());
+            gameController.moveToSpace(space.getPlayer(), target, heading.next().next());
         } catch (GameController.ImpossibleMoveException e){
             // catching exception.
         }
