@@ -96,6 +96,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         tile.setRotate(random.nextInt(4)*90);
 
+
         space.attach(this);
         update(space);
         this.getChildren().add(tile);
@@ -142,6 +143,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         imageView.setFitHeight(SPACE_HEIGHT);
         imageView.setSmooth(true);
         imageView.setCache(true); //Loader hurtigere
+
     }
 
     /**
