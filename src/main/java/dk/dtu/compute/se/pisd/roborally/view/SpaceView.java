@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -64,9 +65,15 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String LASER_EMITTER_IMAGE_PATH = "images/tiles/laserEmitter.png";
     final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
+    final private static String CHECKPOINT_IMAGE_PATH = "images/tiles/checkpoint";
 
-    private StackPane laserPane;
-    private StackPane playerPane;
+    final private static String PLAYER_IMAGE_PATH = "images/robots/player";
+    final private static String ALIVE = "/alive.png";
+    final private static String POWERUP = "/powerUp.png";
+    final private static String DEAD = "/dead.png";
+
+    private final StackPane laserPane;
+    private final StackPane playerPane;
     Random random = new Random();
 
     /**
@@ -85,7 +92,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         setElementSize(tile);
 
         tile.setRotate(random.nextInt(4)*90);
-
 
         space.attach(this);
         update(space);
@@ -133,7 +139,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         imageView.setFitHeight(SPACE_HEIGHT);
         imageView.setSmooth(true);
         imageView.setCache(true); //Loader hurtigere
-
     }
 
     /**
@@ -142,44 +147,40 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewWall() {
         for(Heading wall : space.getWalls()) {
             if (wall != null) {
-                Image image = new Image(WALL_IMAGE_PATH);
+                try {
+                    Image image = new Image(WALL_IMAGE_PATH);
 
-                ImageView wallImg = new ImageView();
-                wallImg.setImage(image);
-                setElementSize(wallImg);
+                    ImageView wallImg = new ImageView();
+                    wallImg.setImage(image);
+                    setElementSize(wallImg);
 
-                switch (wall) {
-                    case NORTH -> wallImg.setRotate(270);
-                    case SOUTH -> wallImg.setRotate(90);
-                    case EAST -> wallImg.setRotate(0);
-                    case WEST -> wallImg.setRotate(180);
-                    default -> System.out.println("Error wall direction");
+                    wallImg.setRotate(((90*wall.ordinal())%360)-180);
+                    this.getChildren().add(wallImg);
+                }catch (Exception e){
+                    System.out.println("Error loading wall");
                 }
-                this.getChildren().add(wallImg);
             }
         }
     }
+
     public void viewConveyorbelt(Heading heading) {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
-                Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
-                ImageView conveyorBeltImg = new ImageView();
+                try {
+                    Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
+                    ImageView conveyorBeltImg = new ImageView();
 
-                conveyorBeltImg.setImage(image);
-                setElementSize(conveyorBeltImg);
+                    conveyorBeltImg.setImage(image);
+                    setElementSize(conveyorBeltImg);
 
-                switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case NORTH -> conveyorBeltImg.setRotate(180);
-                    case SOUTH -> conveyorBeltImg.setRotate(0);
-                    case EAST -> conveyorBeltImg.setRotate(270);
-                    case WEST -> conveyorBeltImg.setRotate(90);
-                    default -> System.out.println("Error conveyorBelt direction");
+                    conveyorBeltImg.setRotate(((90*heading.ordinal())%360)-180);
+                    this.getChildren().add(conveyorBeltImg);
+                }catch (Exception e){
+                    System.out.println("Error loading conveyorbelt");
                 }
-                this.getChildren().add(conveyorBeltImg);
             }
         }
     }
-
 
     /**
      * tegner visuelt checkpointet.
@@ -187,25 +188,18 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewCheckpoint(int number) {
         for(FieldAction checkpoints : space.getActions()){
             if (checkpoints != null) {
-                Checkpoint checkpoint = new Checkpoint();
-                String PATH ="";
+                try {
+                    String PATH=CHECKPOINT_IMAGE_PATH+number+".png";
+                    Image image = new Image(PATH);
 
-                switch (number) {
-                    case 1 -> PATH="images/tiles/checkpoint1.png";
-                    case 2 -> PATH="images/tiles/checkpoint2.png";
-                    case 3 -> PATH="images/tiles/checkpoint3.png";
-                    default -> {
-                        System.out.println("Error checkpoint number");
-                        PATH="images/tiles/checkpoint1.png";
-                    }
+                    ImageView checkpointImg = new ImageView();
+
+                    checkpointImg.setImage(image);
+                    setElementSize(checkpointImg);
+                    this.getChildren().add(checkpointImg);
+                }catch (Exception e){
+                    System.out.println("Error loading checkpoint");
                 }
-                Image image = new Image(PATH);
-
-                ImageView checkpointImg = new ImageView();
-
-                checkpointImg.setImage(image);
-                setElementSize(checkpointImg);
-                this.getChildren().add(checkpointImg);
             }
         }
     }
@@ -213,12 +207,16 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewPit() {
         for (FieldAction pit : space.getActions()){
             if(pit != null){
-                Image image = new Image(PIT_IMAGE_PATH);
-                ImageView pitImg = new ImageView();
+                try {
+                    Image image = new Image(PIT_IMAGE_PATH);
+                    ImageView pitImg = new ImageView();
 
-                pitImg.setImage(image);
-                setElementSize(pitImg);
-                this.getChildren().add(pitImg);
+                    pitImg.setImage(image);
+                    setElementSize(pitImg);
+                    this.getChildren().add(pitImg);
+                } catch (Exception e){
+                    System.out.println("Error loading pit");
+                }
             }
         }
     }
@@ -232,12 +230,16 @@ public class SpaceView extends StackPane implements ViewObserver {
                     case "LEFT" -> PATH=LEFT_GEAR_IMAGE_PATH;
                     case "RIGHT" -> PATH=RIGHT_GEAR_IMAGE_PATH;
                 }
-                Image image = new Image(PATH);
-                ImageView gearImg = new ImageView();
+                try {
+                    Image image = new Image(PATH);
+                    ImageView gearImg = new ImageView();
 
-                gearImg.setImage(image);
-                setElementSize(gearImg);
-                this.getChildren().add(gearImg);
+                    gearImg.setImage(image);
+                    setElementSize(gearImg);
+                    this.getChildren().add(gearImg);
+                } catch (Exception e){
+                    System.out.println("Error loading gear");
+                }
             }
         }
     }
@@ -245,32 +247,34 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewLaserEmitter(Heading heading) {
         for(FieldAction laserEmitter : space.getActions()) {
             if (laserEmitter != null) {
-                Image image = new Image(LASER_EMITTER_IMAGE_PATH);
+                try {
+                    Image image = new Image(LASER_EMITTER_IMAGE_PATH);
+                    ImageView laserEmitterImg = new ImageView();
+                    laserEmitterImg.setImage(image);
+                    setElementSize(laserEmitterImg);
 
-                ImageView laserEmitterImg = new ImageView();
-                laserEmitterImg.setImage(image);
-                setElementSize(laserEmitterImg);
-
-                switch (heading) {
-                    case NORTH -> laserEmitterImg.setRotate(0);
-                    case SOUTH -> laserEmitterImg.setRotate(180);
-                    case EAST -> laserEmitterImg.setRotate(90);
-                    case WEST -> laserEmitterImg.setRotate(270);
-                    default -> System.out.println("Error conveyorBelt direction");
+                    laserEmitterImg.setRotate(((90*heading.ordinal())%360)-180);
+                    laserPane.getChildren().add(laserEmitterImg);
+                } catch (Exception e){
+                    System.out.println("Error loading Laser Emitter");
                 }
-                laserPane.getChildren().add(laserEmitterImg);
             }
         }
     }
+
     public void viewToolbox() {
         for (FieldAction toolbox : space.getActions()){
             if (toolbox != null) {
-                Image image = new Image(TOOLBOX_IMAGE_PATH);
-                ImageView tollboxImg = new ImageView();
+                try {
+                    Image image = new Image(TOOLBOX_IMAGE_PATH);
+                    ImageView tollboxImg = new ImageView();
 
-                tollboxImg.setImage(image);
-                setElementSize(tollboxImg);
-                this.getChildren().add(tollboxImg);
+                    tollboxImg.setImage(image);
+                    setElementSize(tollboxImg);
+                    this.getChildren().add(tollboxImg);
+                }catch (Exception e){
+                    System.out.println("Error loading Toolbox");
+                }
             }
         }
     }
@@ -278,25 +282,20 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void viewPushPanel(Heading heading) {
         for (FieldAction pushPanel : space.getActions()){
             if (pushPanel != null) {
-                Image image = new Image(PUSHPANEL_IMAGE_PATH);
-                ImageView pushPanelImg = new ImageView();
+                try {
+                    Image image = new Image(PUSHPANEL_IMAGE_PATH);
+                    ImageView pushPanelImg = new ImageView();
+                    pushPanelImg.setImage(image);
+                    setElementSize(pushPanelImg);
 
-                pushPanelImg.setImage(image);
-                setElementSize(pushPanelImg);
-
-                switch (heading){ // HER SKAL ADAPTER KLASSEN BRUGES PÅ EN ELLER ANDEN VIS, TIL AT LADE INSTANCE FRA JSON
-                    case NORTH -> pushPanelImg.setRotate(270);
-                    case SOUTH -> pushPanelImg.setRotate(90);
-                    case EAST -> pushPanelImg.setRotate(0);
-                    case WEST -> pushPanelImg.setRotate(180);
-                    default -> System.out.println("Error pushPanel direction");
+                    pushPanelImg.setRotate(((90*heading.ordinal())%360)-180);
+                    laserPane.getChildren().add(pushPanelImg);
+                } catch (Exception e){
+                    System.out.println("Error loading push panel");
                 }
-                laserPane.getChildren().add(pushPanelImg);
             }
         }
     }
-
-
 
     /**
      * Tegner spillerens ikon, her en trekant. Bruges primært til at opdatere spillerens lokation.
@@ -305,23 +304,26 @@ public class SpaceView extends StackPane implements ViewObserver {
     private void updatePlayer() {
         playerPane.getChildren().clear();
         Player player = space.getPlayer();
+        //player.board.getPlayerNumber(player)
         if (player != null) {
-            Polygon arrow = new Polygon(0.0, 0.0,
-                    10.0, 20.0,
-                    20.0, 0.0 );
             try {
-                arrow.setFill(Color.valueOf(player.getColor()));
-            } catch (Exception e) {
-                arrow.setFill(Color.MEDIUMPURPLE);
+                Image image = new Image(PLAYER_IMAGE_PATH + (player.board.getPlayerNumber(player) + 1) + ALIVE);
+                ImageView playerImg = new ImageView();
+
+                playerImg.setImage(image);
+                playerImg.setFitWidth(SPACE_WIDTH-10); //Holder billedet samme størrelse som en tile
+                playerImg.setFitHeight(SPACE_HEIGHT-10);
+                playerImg.setSmooth(true);
+                playerImg.setCache(true); //Loader hurtigere
+
+                playerImg.setRotate((90*player.getHeading().ordinal())%360);
+                playerPane.getChildren().add(playerImg);
+            } catch (Exception e){
+                System.out.println("Error loading player image");
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
-            playerPane.getChildren().add(arrow);
         }
     }
-
-
-
 
     /**
      * motoden sikre at der befinder sig et subject på feltet før den eksekverer updatePlayer()
