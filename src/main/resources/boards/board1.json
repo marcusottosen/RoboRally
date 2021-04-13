@@ -184,6 +184,19 @@
       "y": 3
     },
     {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit",
+          "INSTANCE": {
+            "direction": null
+          }
+        }
+      ],
+      "x": 6,
+      "y": 3
+    },
+    {
       "walls": [
         "EAST"
       ],
