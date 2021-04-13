@@ -86,6 +86,7 @@
       "x": 1,
       "y": 4
     },
+
     {
       "walls": [],
       "actions": [
@@ -133,9 +134,9 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.PushPanel",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "EAST"
           }
         }
       ],
@@ -151,6 +152,12 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
+          }
+        },
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
+          "INSTANCE": {
+            "heading": "SOUTH"
           }
         }
       ],
@@ -195,7 +202,7 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "SOUTH"
+            "heading": "NORTH"
           }
         }
       ],
@@ -206,11 +213,79 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint"
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 1
+          }
         }
       ],
       "x": 7,
       "y": 1
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit",
+          "INSTANCE": {
+            "heading": null
+          }
+        }
+      ],
+      "x": 5,
+      "y": 0
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "direction": "LEFT"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 7
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Toolbox",
+          "INSTANCE": {
+            "heading": null
+          }
+        }
+      ],
+      "x": 2,
+      "y": 7
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 2
+          }
+        }
+      ],
+      "x": 5,
+      "y": 7
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
+          "INSTANCE": {
+            "direction": "RIGHT"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 3
     }
   ]
 }

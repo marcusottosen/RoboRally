@@ -21,8 +21,13 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
+import javafx.stage.StageStyle;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -35,6 +40,8 @@ public class GameController {
 
     final public Board board;
     private Wall wall;
+    private Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
+
 
     public GameController(@NotNull Board board) {
         this.board = board;
@@ -188,6 +195,8 @@ public class GameController {
                     }
                 }
 
+                isWinnerFound(currentPlayer);
+
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
@@ -280,12 +289,15 @@ public class GameController {
                     break;
                 case RIGHT:
                     this.turnRight(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 case LEFT:
                     this.turnLeft(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 case UTURN:
                     this.uTurn(player);
+                    spaceActionInit(player.getSpace());
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -345,6 +357,7 @@ public class GameController {
         }
 
     }*/
+
     public void forward1(@NotNull Player player) {
         wall = new Wall(board);
         if (player.board == board) {
@@ -373,10 +386,12 @@ public class GameController {
                     // (which would be very bad style).
                 }
             }
+            spaceActionInit(player.getSpace());
+
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){
@@ -385,7 +400,7 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
-                    moveToSpace(other, target, heading);
+                moveToSpace(other, target, heading);
 
 
                 // Note that we do NOT embed the above statement in a try catch block, since
@@ -396,11 +411,11 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-            player.setSpace(space);
+        player.setSpace(space);
 
     }
 
-    static class ImpossibleMoveException extends Exception {
+    public static class ImpossibleMoveException extends Exception {
 
         private Player player;
         private Space space;
@@ -477,22 +492,29 @@ public class GameController {
         }
     }
 
-
-    /*public void isSpecialSpace(@NotNull Player player){
-        Space location = player.getSpace();
-        Checkpoint checkpoint = new Checkpoint(board);
-        //System.out.println(player.getSpace());
-        //System.out.println(checkpoint.getSpace());
-
-        if(location == checkpoint.getSpace()){
-            //Tjek om spilleren befinder sig på et checkpoint og giver point hvis true.
-            player.setScore(player.getScore() + 1);
-            System.out.println(player.getName() + "'s score: " + player.getScore());
-            if(player.getScore() > 3){
-                //Her skal der skrives kode til at stoppe spillet, når en spiller har vundet.
+    public void isWinnerFound(Player player){
+        if (player.getScore() >= 3 ){
+            if (!window.isShowing()) {
+                window.setTitle("WINNDER FOUND");
+                window.setContentText("Player " + player.getName() + " has won the game!");
+                window.initStyle(StageStyle.UTILITY);
+                window.showAndWait();
             }
         }
-    }*/
+    }
+
+    /**
+     * tjekker hvorvidt feltet er specielt og initialiserer feltet.
+     * @param space object af feltet
+     */
+    public void spaceActionInit(@NotNull Space space) {
+
+        if (space.getActions().size() != 0) {
+            FieldAction actionType = space.getActions().get(0);
+            System.out.println(actionType);
+            actionType.doAction(this, space);
+        }
+    }
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

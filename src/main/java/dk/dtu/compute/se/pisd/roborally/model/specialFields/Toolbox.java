@@ -2,24 +2,16 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-public class Laser extends FieldAction {
-
-    private Heading heading;
-
-
-    public Heading getHeading() {
-        return heading;
-    }
-
-    public void setHeading(Heading heading) {
-        this.heading = heading;
-    }
-
+public class Toolbox extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
+        Player player = space.getPlayer();
+        if (player.getHealth() < 3) {
+            player.setHealth(player.getHealth() + 1);
+        }
         return false;
     }
 }
