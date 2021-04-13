@@ -21,14 +21,15 @@
  */
 package dk.dtu.compute.se.pisd.roborally.dal;
 
+import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import javafx.scene.control.TextInputDialog;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * ...
@@ -64,8 +65,9 @@ class Repository implements IRepository {
 	private static final String PLAYER_SCORE = "score";
 	private static final String PLAYER_HEALTH = "health";
 	private static final String CHECKPOINTS_REACHED = "checkpointsReached";
+	private Object String;
 
-	
+
 	private void makeProKort(){
 		for (int i = 1; i <= 5; i++) {
 			final String PROKORT = "prokort" + i;
@@ -81,6 +83,12 @@ class Repository implements IRepository {
 
 	@Override
 	public boolean createGameInDB(Board game) {
+
+		//Egne navne på saves
+		TextInputDialog savegamename_dialog = new TextInputDialog();
+		savegamename_dialog.setContentText("Enter name for your save");
+		String savegamename = savegamename_dialog.showAndWait().orElse("Error?");
+
 		if (game.getGameId() == null) {
 			Connection connection = connector.getConnection();
 			try {
@@ -90,7 +98,7 @@ class Repository implements IRepository {
 				// TODO: the name should eventually set by the user
 				//       for the game and should be then used 
 				//       game.getName();
-				ps.setString(1, "Date: " +  new Date()); // instead of name
+				ps.setString(1, savegamename); // instead of name
 				//ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
 				ps.setNull(2, game.getPlayerNumber(game.getCurrentPlayer()));
 				ps.setInt(3, game.getPhase().ordinal());

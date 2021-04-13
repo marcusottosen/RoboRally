@@ -154,8 +154,19 @@ public class AppController implements Observer {
      * Til at gemme spillet
      */
     public void saveGame() {
-        RepositoryAccess save = new RepositoryAccess();
-        save.getRepository().createGameInDB(gameController.board);
+        if(this.board == null || board.getGameId() == null){
+            System.out.println("Create med board == null");
+            RepositoryAccess save = new RepositoryAccess();
+            save.getRepository().createGameInDB(gameController.board);
+        }
+        else if(board.getGameId() != null){
+            System.out.println("Update");
+            System.out.println(board.getGameId());
+            RepositoryAccess update = new RepositoryAccess();
+            update.getRepository().updateGameInDB(gameController.board);
+        }
+
+
     }
 
     /**
