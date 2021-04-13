@@ -9,7 +9,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
-            "color": "BLUE"
+            "color": "YELLOW"
           }
         }
       ],
@@ -23,7 +23,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
-            "color": "BLUE"
+            "color": "YELLOW"
           }
         }
       ],
@@ -63,7 +63,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
-            "color": "BLUE"
+            "color": "YELLOW"
           }
         }
       ],
@@ -184,7 +184,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST",
-            "color": "BLUE"
+            "color": "YELLOW"
           }
         }
       ],
