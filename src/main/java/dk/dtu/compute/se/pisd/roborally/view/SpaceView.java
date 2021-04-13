@@ -59,6 +59,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String TILE_IMAGE_PATH = "images/tiles/tile.png";
     final private static String WALL_IMAGE_PATH = "images/tiles/wall.png";
     final private static String BLUECONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltBlue.png";
+    final private static String YELLOWCONVEYORBELT_IMAGE_PATH = "images/tiles/conveyorbeltYellow.png";
     final private static String PIT_IMAGE_PATH = "images/tiles/pit.png";
     final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
     final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
@@ -119,7 +120,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 FieldAction actionType = space.getActions().get(i);
                 //System.out.println(actionType);
                 if (actionType instanceof ConveyorBelt) {
-                    viewConveyorbelt(((ConveyorBelt) actionType).getHeading());
+                    viewConveyorbelt(((ConveyorBelt) actionType).getHeading(), ((ConveyorBelt) actionType).getColor());
                 }else if (actionType instanceof Checkpoint){
                     viewCheckpoint(((Checkpoint) actionType).getNumber());
                 }else if (actionType instanceof Pit){
@@ -168,11 +169,17 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void viewConveyorbelt(Heading heading) {
+    public void viewConveyorbelt(Heading heading, String color) {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
                 try {
-                    Image image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
+                    Image image;
+                    if (color.equals("BLUE")) {
+                        image = new Image(BLUECONVEYORBELT_IMAGE_PATH);
+                    } else {
+                        image = new Image(YELLOWCONVEYORBELT_IMAGE_PATH);
+                    }
+
                     ImageView conveyorBeltImg = new ImageView();
 
                     conveyorBeltImg.setImage(image);
