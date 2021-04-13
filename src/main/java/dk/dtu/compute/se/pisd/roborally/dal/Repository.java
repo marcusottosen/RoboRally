@@ -355,10 +355,9 @@ class Repository implements IRepository {
 
 				player.setScore(rs.getInt(PLAYER_SCORE));
 
-				//TODO when merched, uncomment:
 				player.setHealth(rs.getInt(PLAYER_HEALTH));
 				for (int j = 0; j < rs.getInt(CHECKPOINTS_REACHED); j++) {
-					//player.addCheckpointsCompleted(j+1);
+					player.addCheckpointsCompleted(j+1);
 				}
 
 
