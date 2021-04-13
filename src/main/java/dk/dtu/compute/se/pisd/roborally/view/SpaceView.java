@@ -51,8 +51,8 @@ import java.util.Random;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 75;
-    final public static int SPACE_WIDTH = 75;
+    public static int SPACE_HEIGHT = 75;
+    public static int SPACE_WIDTH = 75;
 
     public final Space space;
 
@@ -80,8 +80,11 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Denne metode vise selve felterne, her sort og hvid.
      * @param space placeringen af feltet.
      */
-    public SpaceView(@NotNull Space space) {
+    public SpaceView(@NotNull Space space, int height) {
         this.space = space;
+        SPACE_HEIGHT = 85-height;
+        SPACE_WIDTH = 85-height;
+
         Image image = new Image(TILE_IMAGE_PATH);
 
         ImageView tile = new ImageView();
@@ -311,8 +314,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                 ImageView playerImg = new ImageView();
 
                 playerImg.setImage(image);
-                playerImg.setFitWidth(SPACE_WIDTH-10); //Holder billedet samme størrelse som en tile
-                playerImg.setFitHeight(SPACE_HEIGHT-10);
+                playerImg.setFitWidth(SPACE_WIDTH-15); //Holder billedet samme størrelse som en tile
+                playerImg.setFitHeight(SPACE_HEIGHT-15);
                 playerImg.setSmooth(true);
                 playerImg.setCache(true); //Loader hurtigere
 
