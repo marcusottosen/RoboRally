@@ -232,7 +232,7 @@ class Repository implements IRepository {
 				//game = new Board(width,height);
 				// TODO and we should also store the used game board in the database
 				//      for now, we use the default game board
-				game = LoadBoard.loadBoard("defaultboard");
+				game = LoadBoard.loadBoard("board1");
 				if (game == null) {
 					return null;
 				}
