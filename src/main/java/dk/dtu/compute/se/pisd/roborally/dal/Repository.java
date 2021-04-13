@@ -87,9 +87,9 @@ class Repository implements IRepository {
 		//Egne navne på saves
 		TextInputDialog savegamename_dialog = new TextInputDialog();
 		savegamename_dialog.setContentText("Enter name for your save");
-		String savegamename = savegamename_dialog.showAndWait().orElse("Error?");
+		Optional<String> savegamename = savegamename_dialog.showAndWait();
 
-		if (game.getGameId() == null) {
+		if (game.getGameId() == null || savegamename.isPresent()) {
 			Connection connection = connector.getConnection();
 			try {
 				connection.setAutoCommit(false);
@@ -98,7 +98,7 @@ class Repository implements IRepository {
 				// TODO: the name should eventually set by the user
 				//       for the game and should be then used 
 				//       game.getName();
-				ps.setString(1, savegamename); // instead of name
+				ps.setString(1, savegamename.get()); // instead of name
 				//ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
 				ps.setNull(2, game.getPlayerNumber(game.getCurrentPlayer()));
 				ps.setInt(3, game.getPhase().ordinal());
@@ -232,7 +232,7 @@ class Repository implements IRepository {
 				//game = new Board(width,height);
 				// TODO and we should also store the used game board in the database
 				//      for now, we use the default game board
-				game = LoadBoard.loadBoard("defaultboard");
+				game = LoadBoard.loadBoard("board1");
 				if (game == null) {
 					return null;
 				}

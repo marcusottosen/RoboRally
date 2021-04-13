@@ -67,6 +67,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private List<String>  BOARD_NAMES = Arrays.asList("defaultboard", "Board1", "Board2");
 
     final private RoboRally roboRally;
 
@@ -91,7 +92,12 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
-        if (result.isPresent()) {
+        ChoiceDialog<String> chooseBoard = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
+        chooseBoard.setTitle("Board name: ");
+        chooseBoard.setHeaderText("Select board");
+        Optional<String> boards = chooseBoard.showAndWait();
+
+        if (result.isPresent() && boards.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
@@ -100,9 +106,8 @@ public class AppController implements Observer {
                 }
             }
 
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            Board board = LoadBoard.loadBoard("defaultboard");
+            //boards.get() henter det valgte board fra ovenstående Optional<String> boards
+            Board board = LoadBoard.loadBoard(boards.get());
 
             gameController = new GameController(board);
 
@@ -111,7 +116,6 @@ public class AppController implements Observer {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
-
             }
 
             /*Checkpoint checkpoint1 = new Checkpoint(board);
