@@ -57,6 +57,8 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+    private HBox boxTest;
+    private InfoView view;
 
     /***
      * Konstruktøren
@@ -70,8 +72,9 @@ public class BoardView extends VBox implements ViewObserver {
         statusLabel = new Label("<no status>");
 
 
-        infoView view = new infoView();
-        HBox boxTest = new HBox();
+
+        boxTest = new HBox();
+        view = new InfoView();
         boxTest = view.showBox(boxTest);
 
         this.getChildren().add(boxTest);
@@ -119,6 +122,7 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
+            view.updateBox(boxTest, board.getCurrentPlayer()); //Opdaterer infobar
         }
     }
 
