@@ -42,7 +42,7 @@ public class Board extends Subject {
 
     public final int height;
 
-    public final String boardName;
+    public String boardName;
 
     private Integer gameId;
 
@@ -93,6 +93,12 @@ public class Board extends Subject {
         return gameId;
     }
 
+    public void setBoardName(String boardName){
+        this.boardName = boardName;
+    }
+    public String getBoardName(){
+        return boardName;
+    }
     /**
      * Sætter spillets id til det der bliver skrevet i parameteren, hvis den ikke er null.
      * Bruges til at gemme og loade spillet. gameID kan blive set some primary key.

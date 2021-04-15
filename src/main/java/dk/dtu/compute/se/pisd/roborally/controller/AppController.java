@@ -152,6 +152,11 @@ public class AppController implements Observer {
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
             roboRally.createBoardView(gameController);
+
+            //Til databasen
+            String chosen_board = boards.get();
+            board.setBoardName(chosen_board);
+
         }
     }
 
