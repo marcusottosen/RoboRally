@@ -40,6 +40,9 @@ import java.io.IOException;
 public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
+    private String color;
+
+    public String getColor(){return color; }
 
 
     public Heading getHeading() {
@@ -54,9 +57,21 @@ public class ConveyorBelt extends FieldAction {
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
 
         try {
-            Space target = gameController.board.getNeighbour(space, heading);
-            gameController.moveToSpace(space.getPlayer(), target, heading);
-        } catch (GameController.ImpossibleMoveException e){
+            Player player = space.getPlayer();
+
+            if (color.equals("YELLOW")) {
+                Space target = gameController.board.getNeighbour(space, heading);
+                gameController.moveToSpace(space.getPlayer(), target, heading);
+
+            } else {
+                Space target = gameController.board.getNeighbour(space, heading);
+                gameController.moveToSpace(space.getPlayer(), target, heading);
+                Space prevTarget = target;
+
+                target = gameController.board.getNeighbour(target, heading);
+                gameController.moveToSpace(prevTarget.getPlayer(), target, heading);
+            }
+        } catch (GameController.ImpossibleMoveException e) {
             // catching exception.
         }
         return false;

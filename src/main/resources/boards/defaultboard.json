@@ -10,7 +10,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "YELLOW"
           }
         }
       ],
@@ -25,7 +26,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "YELLOW"
           }
         }
       ],
@@ -40,7 +42,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -53,7 +56,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -66,7 +70,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -79,7 +84,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -93,7 +99,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -106,7 +113,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -121,7 +129,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "YELLOW"
           }
         }
       ],
@@ -151,7 +160,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "WEST"
+            "heading": "WEST",
+            "color": "YELLOW"
           }
         },
         {
@@ -172,7 +182,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],
@@ -187,7 +198,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "EAST"
+            "heading": "EAST",
+            "color": "YELLOW"
           }
         }
       ],
@@ -202,7 +214,8 @@
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "color": "YELLOW"
           }
         }
       ],

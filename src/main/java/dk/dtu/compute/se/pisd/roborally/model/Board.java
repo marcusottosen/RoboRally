@@ -320,8 +320,8 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getCount() +
                 ", score: " + getCurrentPlayer().getScore() +
-                ", health: " + getCurrentPlayer().getHealth();
-
+                ", health: " + getCurrentPlayer().getHealth() +
+                ", checkpoints completed: " + getCurrentPlayer().getCheckpointsCompleted().size();
     }
 
     /**
