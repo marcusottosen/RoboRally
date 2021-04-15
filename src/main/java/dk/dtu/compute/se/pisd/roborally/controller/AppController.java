@@ -74,7 +74,6 @@ public class AppController implements Observer {
     private GameController gameController;
     private Board board = null;
 
-
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
@@ -87,6 +86,8 @@ public class AppController implements Observer {
      * Sætter spillerne på boarded 1 height felt og 1 width felt fra den tidligere.
      */
     public void newGame() {
+        this.board = null;
+        this.gameController = null;
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -158,16 +159,16 @@ public class AppController implements Observer {
      * Til at gemme spillet
      */
     public void saveGame() {
-        if(this.board == null || board.getGameId() == null){
+        if(gameController.board.getGameId() != null ){
             System.out.println("Create med board == null");
             RepositoryAccess save = new RepositoryAccess();
-            save.getRepository().createGameInDB(gameController.board);
+            save.getRepository().updateGameInDB(gameController.board);
         }
-        else if(board.getGameId() != null){
+        else {
             System.out.println("Update");
-            System.out.println(board.getGameId());
+            System.out.println(gameController.board.getGameId());
             RepositoryAccess update = new RepositoryAccess();
-            update.getRepository().updateGameInDB(gameController.board);
+            update.getRepository().createGameInDB(gameController.board);
         }
 
 
