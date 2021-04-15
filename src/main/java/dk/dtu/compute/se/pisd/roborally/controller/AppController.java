@@ -93,31 +93,32 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
-        ChoiceDialog<String> chooseBoard = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
-        chooseBoard.setTitle("Board name: ");
-        chooseBoard.setHeaderText("Select board");
-        Optional<String> boards = chooseBoard.showAndWait();
+        if (result.isPresent()){
+            ChoiceDialog<String> chooseBoard = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
+            chooseBoard.setTitle("Board name: ");
+            chooseBoard.setHeaderText("Select board");
+            Optional<String> boards = chooseBoard.showAndWait();
 
-        if (result.isPresent() && boards.isPresent()) {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
-            }
+           if (boards.isPresent()){
+               if (gameController != null) {
+                   // The UI should not allow this, but in case this happens anyway.
+                   // give the user the option to save the game or abort this operation!
+                   if (!stopGame()) {
+                       return;
+                   }
+               }
 
-            //boards.get() henter det valgte board fra ovenstående Optional<String> boards
-            Board board = LoadBoard.loadBoard(boards.get());
+               //boards.get() henter det valgte board fra ovenstående Optional<String> boards
+               Board board = LoadBoard.loadBoard(boards.get());
 
-            gameController = new GameController(board);
+               gameController = new GameController(board);
 
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
+               int no = result.get();
+               for (int i = 0; i < no; i++) {
+                   Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                   board.addPlayer(player);
+                   player.setSpace(board.getSpace(i % board.width, i));
+               }
 
             /*Checkpoint checkpoint1 = new Checkpoint(board);
             board.addCheckpoint(checkpoint1);
@@ -146,18 +147,19 @@ public class AppController implements Observer {
             conveyorBelt1.setSpace(board.getSpace(6,2));*/
 
 
-            //FieldAction fieldAction = new ConveyorBelt1();
+               //FieldAction fieldAction = new ConveyorBelt1();
 
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
-            gameController.startProgrammingPhase();
-            roboRally.createBoardView(gameController);
+               // XXX: V2
+               // board.setCurrentPlayer(board.getPlayer(0));
+               gameController.startProgrammingPhase();
+               roboRally.createBoardView(gameController);
 
-            //Til databasen
-            String chosen_board = boards.get();
-            board.setBoardName(chosen_board);
+               //Til databasen
+               String chosen_board = boards.get();
+               board.setBoardName(chosen_board);
 
-        }
+           }
+           }
     }
 
     /**
