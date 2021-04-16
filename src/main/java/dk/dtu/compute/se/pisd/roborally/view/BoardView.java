@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,17 +43,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BoardView extends VBox implements ViewObserver {
 
-    private Board board;
+    private final Board board;
 
     private GridPane mainBoardPane;
     private SpaceView[][] spaces;
 
     private PlayersView playersView;
 
-    private Label statusLabel;
+    private final Label statusLabel;
 
     private SpaceEventHandler spaceEventHandler;
 
+    private final HBox infoView;
+    private final InfoView view;
 
     /***
      * Konstruktøren
@@ -65,13 +68,15 @@ public class BoardView extends VBox implements ViewObserver {
         playersView = new PlayersView(gameController);
         statusLabel = new Label("<no status>");
 
+        infoView = new HBox();
+        view = new InfoView(infoView, board);
+
+        this.getChildren().add(infoView);
         this.getChildren().add(mainBoardPane);
         this.getChildren().add(playersView);
         this.getChildren().add(statusLabel);
 
-
         spaces = new SpaceView[board.width][board.height];
-
         spaceEventHandler = new SpaceEventHandler(gameController);
 
         for (int x = 0; x < board.width; x++) {
@@ -86,16 +91,6 @@ public class BoardView extends VBox implements ViewObserver {
 
         board.attach(this);
         update(board);
-
-        //Tilføjer Walls til spillepladen
-        //Walls addWalls = new Walls(gameController, 5,5, "NORTH");
-        //addWalls.showWalls(board, mainBoardPane);
-
-        //Tilføjer Checkpoints til spillepladen
-        //Checkpoint checkpoint1 = new Checkpoint(board);
-        //checkpoint1.showCheckpoint(board, mainBoardPane);
-        //System.out.println(checkpoint1.getSpace());
-
     }
 
 
@@ -108,6 +103,7 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
+            view.updateBox(infoView, board.getCurrentPlayer()); //Opdaterer infobaren i toppen
         }
     }
 
