@@ -1,6 +1,6 @@
-#Roborally
+# Roborally
 
-##Hvordan spillet startes:
+## Hvordan spillet startes:
 1. Unpack zip filen.
 2. Lav en ny/ren database i MYSQL.
 3. Åben projektet i din IDE.
@@ -9,7 +9,7 @@
 6. Det foreslås at der bruges "board1".
 
 
-##Spillets features:
+## Spillets features:
 Spillet har i denne version:
 * 7 kort (move1, move2, move3, right, left, u-turn og lef/right).
 * En dropdown menu som indeholder: Stop, Save Game og Exit Game.
@@ -20,7 +20,7 @@ Spillet har i denne version:
 * Opnås der 3 checkpoints vinder spilleren og der vises en "vinderbox".
 * Mister en spiller alle sine liv, kan spilleren ikke rykke sig.
 
-###Felter:
+### Felter:
 * Checkpoint felt som giver en spiller et point når spilleren står på det. Tæller automatisk op.
 * Et felt med en væg, som kan sættes til hhv. NORTH, SOUTH, EAST, WEST.
 * Pits som fjerner spillerens liv.
@@ -31,7 +31,7 @@ Spillet har i denne version:
 * En ikke-fungerende laser.
 
 
-##Hvordan spillet spilles:
+## Hvordan spillet spilles:
 1. I denne version spilles spillet ved at:
 2. Spillet køres fra IDE'en hvor du først vil blive bedt om at loade, starte et nyt spil eller at exit.
 3. Ved tryk på "new game" vil du blive bedt om at angive antal spillere samt hvilket board der skal bruges.
