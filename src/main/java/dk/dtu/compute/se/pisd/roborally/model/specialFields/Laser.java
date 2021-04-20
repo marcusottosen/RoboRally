@@ -5,6 +5,10 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+/**
+ * Håndterer aktionen af hver laser.
+ * Fungerer endnu ikke.
+ */
 public class Laser extends FieldAction {
 
     private Heading heading;

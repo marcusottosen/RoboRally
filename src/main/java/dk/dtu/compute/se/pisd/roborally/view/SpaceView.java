@@ -23,17 +23,11 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.scene.image.Image;
@@ -41,13 +35,13 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
-
 /**
- * Dette dokument sørger for at tegne figurer på spillets felter.
- * Heriblandt spillerens ikon samt vægge og checkpoints.
+ * Dette dokument sørger for at tegne figurer/billeder på spillets felter.
+ * Heriblandt spillerens ikon samt vægge, checkpoints conveyorbelts osv..
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
@@ -108,13 +102,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         updatePlayer();
     }
 
-
+    /**
+     * Finder felttypens instans og tjekker om den matcher en instans af en af de spicielle felter.
+     * Hvis det er en instans, kaldes der til den rette felttype som så vises.
+     */
     public void viewBoardElements(){
-        SpecialFieldsView elements = new SpecialFieldsView(space); //Virker ikke!
-        elements.viewConveryorBelt();
-        elements.viewCheckpoint();
-        elements.viewWall();
-
         if(space.getActions().size() != 0) {
             for (int i = 0; i < space.getActions().size(); i++) {
                 FieldAction actionType = space.getActions().get(i);
@@ -139,16 +131,19 @@ public class SpaceView extends StackPane implements ViewObserver {
         viewWall();
     }
 
+    /**
+     * Lille metode til at sætte størrrelsen af et billede til størrelsen af et felt.
+     * @param imageView billedet der skal ændre størrelse.
+     */
     public void setElementSize(ImageView imageView){
         imageView.setFitWidth(SPACE_WIDTH); //Holder billedet samme størrelse som en tile
         imageView.setFitHeight(SPACE_HEIGHT);
         imageView.setSmooth(true);
         imageView.setCache(true); //Loader hurtigere
-
     }
 
     /**
-     * Viser væggen i form af en linje.
+     * Viser væggen.
      */
     public void viewWall() {
         for(Heading wall : space.getWalls()) {
@@ -169,6 +164,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser et conveyorbelt i den rette retning og farve.
+     * @param heading conveyorbeltets heading som Heading
+     * @param color conveyorbeltets farve som String.
+     */
     public void viewConveyorbelt(Heading heading, String color) {
         for (FieldAction conveyorBelt : space.getActions()){
             if (conveyorBelt != null) {
@@ -216,6 +216,9 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser et pit på det rette felt.
+     */
     public void viewPit() {
         for (FieldAction pit : space.getActions()){
             if(pit != null){
@@ -233,6 +236,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser et gear på det rette felt i retningen af det der er angivet i parameteren.
+     * @param direction retningen på gear. Skal være enten "LEFT" eller "RIGHT".
+     */
     public void viewGear(String direction){
         for (FieldAction gear : space.getActions()){
             if(gear != null){
@@ -256,6 +263,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser en laser emitter. Skal sættes ovenpå en væg.
+     * @param heading laser emitterens retning som Heading.
+     */
     public void viewLaserEmitter(Heading heading) {
         for(FieldAction laserEmitter : space.getActions()) {
             if (laserEmitter != null) {
@@ -274,6 +285,9 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser en toolbox på feltet.
+     */
     public void viewToolbox() {
         for (FieldAction toolbox : space.getActions()){
             if (toolbox != null) {
@@ -291,6 +305,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Viser et push panel på feltet i den retning som angivet i parameteren.
+     * @param heading retningen som Heading.
+     */
     public void viewPushPanel(Heading heading) {
         for (FieldAction pushPanel : space.getActions()){
             if (pushPanel != null) {

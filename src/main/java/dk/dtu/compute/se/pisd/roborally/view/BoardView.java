@@ -88,11 +88,9 @@ public class BoardView extends VBox implements ViewObserver {
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
-
         board.attach(this);
         update(board);
     }
-
 
     /**
      * Checks to see if subject is equal to board phase
@@ -107,6 +105,8 @@ public class BoardView extends VBox implements ViewObserver {
         }
     }
 
+
+
     // XXX this handler and its uses should eventually be deleted! This is just to help test the
     //     behaviour of the game by being able to explicitly move the players on the board!
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
@@ -117,8 +117,7 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
-
-        /***
+        /**
          *the "event" that happens when the game is initialized
          * @param event objekt af MouseEvent
          */
@@ -136,7 +135,5 @@ public class BoardView extends VBox implements ViewObserver {
                 }
             }
         }
-
     }
-
 }

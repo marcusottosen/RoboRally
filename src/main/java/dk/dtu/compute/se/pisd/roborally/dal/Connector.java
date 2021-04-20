@@ -35,26 +35,31 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * ...
+ * Spillets connection med databasen.
+ * Her indtastes bla. de nødvendige informationer ved forbindelse til databasen.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-class Connector {
 
+
+class Connector {
 	private static final String HOST     = "localhost";
 	private static final int    PORT     = 3306;
-	private static final String DATABASE = "pisu";
+	private static final String DATABASE = "roborally";
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "Gce59hgh";
+	private static final String PASSWORD = "hjd63vhw";
 
 	private static final String DELIMITER = ";;";
 
 	private Connection connection;
-        
-    Connector() {
+
+	/**
+	 * Konstruktøren.
+	 * Opretter de nødvendige inrformationer til oprettelse af forbindelsen.
+	 */
+	Connector() {
         try {
-			// String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
 			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?user=root";
 			connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
 			
@@ -68,9 +73,11 @@ class Connector {
 			// Platform.exit();
 		}
     }
-    
-    private void createDatabaseSchema() {
 
+	/**
+	 * Opretter forbindelsen til databasen vha. de tidligere angivede informationer.
+	 */
+	private void createDatabaseSchema() {
     	String createTablesStatement;
     	try {
 			ClassLoader classLoader = Connector.class.getClassLoader();
@@ -81,9 +88,6 @@ class Connector {
     		e.printStackTrace();
     		return;
 		}
-
-    	//String createTablesStatement =
-		//		IOUtil.readResource("schemas/createschema.sql");
 
     	try {
     		connection.setAutoCommit(false);
@@ -108,8 +112,12 @@ class Connector {
 			} catch (SQLException e) {}
 		}
     }
-    
-    Connection getConnection() {
+
+	/**
+	 * returnerer spillets connection.
+	 * @return connetion
+	 */
+	Connection getConnection() {
     	return connection; 
     }
     

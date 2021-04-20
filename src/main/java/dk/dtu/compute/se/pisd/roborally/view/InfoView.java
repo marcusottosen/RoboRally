@@ -11,9 +11,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 /**
- * InfoView viser spillets top-bar som indeholder hver spillers robot, navn, score og liv.
- * Viser desuden også hvis tur det er i ACTIVATION phase.
+ * InfoView viser spillets top-bar som indeholder alle spillers robot, navn, score og liv.
  *
+ * @author Ekkart Kindler, ekki@dtu.dk
  * @author Marcus Ottosen
  */
 public class InfoView{

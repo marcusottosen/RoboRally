@@ -50,9 +50,7 @@ public class Board extends Subject {
 
     private final List<Player> players = new ArrayList<>();
 
-    //private final List<Checkpoint> checkpoints = new ArrayList<>();
     private final List<Wall> walls = new ArrayList<>();
-    //private final List<ConveyorBelt1> conveyorBelt1s = new ArrayList<>();
 
     private Player current;
 
@@ -99,6 +97,7 @@ public class Board extends Subject {
     public String getBoardName(){
         return boardName;
     }
+
     /**
      * Sætter spillets id til det der bliver skrevet i parameteren, hvis den ikke er null.
      * Bruges til at gemme og loade spillet. gameID kan blive set some primary key.
@@ -147,8 +146,6 @@ public class Board extends Subject {
             notifyChange();
         }
     }
-
-
 
     /**
      * Væggen i parameteren bliver tilføjet til arraylisten over walls.
@@ -295,10 +292,18 @@ public class Board extends Subject {
     //PiSU P08.2
     private Command userChoice = null;
 
+    /**
+     * Returnerer Command. Spillerens choice.
+     * @return userChoice.
+     */
     public Command getUserChoice() {
         return userChoice;
     }
 
+    /**
+     * Sætter userChoice til den Command i parameteren.
+     * @param userChoice Command.
+     */
     public void setUserChoice(Command userChoice) {
         if (this.userChoice != userChoice) {
             this.userChoice = userChoice;
@@ -307,15 +312,10 @@ public class Board extends Subject {
     }
 
     /**
-     * En kort tekst i bunden af vinduet som angiver: spillets fase, den nuværende spillers navn, steps samt spillerens score.
-     * @return spillets fase, den nuværende spillers navn, steps samt spillerens score som en string.
+     * En kort tekst i bunden af vinduet som angiver: spillets fase og steps.
+     * @return spillets fase og steps som en string.
      */
     public String getStatusMessage() {
-        // this is actually a view aspect, but for making assignment V1 easy for
-        // the students, this method gives a string representation of the current
-        // status of the game
-
-        // XXX: V2 changed the status so that it shows the phase, the player and the step
         return "Phase: " + getPhase().name() + ", Step: " + getCount();
     }
 
@@ -342,8 +342,4 @@ public class Board extends Subject {
             notifyChange();
         }
     }
-
-
-
-
 }

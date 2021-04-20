@@ -9,6 +9,12 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Håndterer aktionen af en væg. Gør det umuligt at rykke egennem en væg.
+ *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
+ */
 public class Wall extends Subject {
     final public Board board;
     private Space space;
@@ -16,12 +22,20 @@ public class Wall extends Subject {
     private Heading otherDirection;
     private Player player;
 
-
+    /**
+     * Sætter boarded til det i parameteren.
+     * @param board Board.
+     */
     public Wall(@NotNull Board board){
         this.board = board;
-
     }
 
+    /**
+     * Den primære funktion for væggen.
+     * En boolean for hvorvidt spilleren kan rykke igennem eller ej.
+     * @param player spilleren som skal tjekkes ift. væggen.
+     * @return boolean hvorvidt spilleren må rykke eller ej.
+     */
     public boolean checkForWall(Player player){
         space = player.getSpace();
         direction = player.getHeading();
@@ -51,9 +65,7 @@ public class Wall extends Subject {
             }
         }
         return false;
-        }
-
-
+    }
 
     /**
      * Væggens placering på kortet.
@@ -67,7 +79,6 @@ public class Wall extends Subject {
      * Returnerer væggens retning
      * @return væggens retning
      */
-
     public Heading getDirection(){
         return direction;
     }
@@ -77,11 +88,9 @@ public class Wall extends Subject {
      * Sætter væggens retning til retningen i parameteren.
      * @param direction væggens nye retning.
      */
-
     public void setDirection(Heading direction){
         if (direction != this.direction) {
             this.direction = direction;
         }
     }
-
 }

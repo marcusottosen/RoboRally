@@ -233,36 +233,6 @@ public class GameController {
         assert board.getCurrentPlayer() != null;
         board.setUserChoice(option);
         continuePrograms();
-
-        /* Player currentPlayer = board.getCurrentPlayer();
-        if (currentPlayer != null &&
-                board.getPhase() == Phase.PLAYER_INTERACTION &&
-                option != null) {
-            board.setPhase(Phase.ACTIVATION);
-            executeCommand(currentPlayer, option);
-
-            int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-            //Sætter næste spillers tur.
-            if (nextPlayerNumber < board.getPlayersNumber()) {
-                board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-            } else {
-                int step = board.getStep() + 1;
-                //Tjekker om der er flere spillere i runden og starter ny runde hvis alle har fået sin tur.
-                if (step < Player.NO_REGISTERS) {
-                    makeProgramFieldsVisible(step);
-                    board.setStep(step);
-                    board.setCurrentPlayer(board.getPlayer(0));
-                } else { //Start ny programmeringsfase når alle runder er færdige.
-                    startProgrammingPhase();
-                }
-            }
-            //Fortsætter runden til alle kort er spillet, eller til næste interaction kort.
-            if (board.getPhase() == Phase.ACTIVATION && !board.isStepMode()) {
-                continuePrograms();
-            }
-        } else {
-            assert false;
-        }*/
     }
 
 
@@ -305,59 +275,6 @@ public class GameController {
         }
     }
 
-    /**
-     * Rykker spilleren et felt frem ved at oprette en variable "target", som specificerer hvor spilleren skal rykke sig hen.
-     * Der bliver tjekket om der står en person på feltet i forvejen, og evt. kalder pushPlayer() metoden hvis dette er true.
-     * @param player Spillerens objekt.
-     *//*
-    public void forward1(@NotNull Player player) {
-        Space current = player.getSpace();
-        if (current != null && player.board == current.board) {
-            //Vi opretter en variable "target", som specificerer hvor spilleren skal rykke sig hen.
-            Space target = board.getNeighbour(current, player.getHeading());
-            //Vi tjekker om der står en person på feltet i forvejen. Gør der ikke det, så eksekverer vi koden
-            if (target != null && target.getPlayer() == null) {
-                try {
-                    player.setSpace(target);
-                    isSpecialSpace(player); //tjekker player's felt for et specielt felt.
-
-            } catch (ImpossibleMoveException e){ //Hvis der står en spiller på feltet i forvejen.
-                    //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
-                    Player targetPlayer = target.getPlayer();
-                    //pushPlayer bruges til at skubbe den nye spiller
-                    pushPlayer(targetPlayer, player);
-                    // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
-                    player.setSpace(target);
-
-                    //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
-                }
-            }
-        }
-    }
-
-    *//**
-     * Når en spiller bliver skubbet.
-     //* @param targetPlayer Spilleren der bliver skubbet til.
-     * @param player spiller der skubber
-     *//*
-    public void pushPlayer(@NotNull Player targetPlayer, @NotNull Player player) {
-        Space target = board.getNeighbour(targetPlayer.getSpace(), player.getHeading());
-        if (target != null && target.getPlayer() == null) {
-            targetPlayer.setSpace(target);
-            isSpecialSpace(targetPlayer);
-        }else { //Hvis der står en spiller på feltet i forvejen.
-            //Vi opretter en ny target spiller, som bruges til at finde ud af hvem der står på feltet.
-            Player newTargetPlayer = target.getPlayer();
-            //pushPlayer bruges til at skubbe den nye spiller
-            pushPlayer(newTargetPlayer, player);
-            // Rykker til sidst spilleren over på feltet, efter targetPlayer har rykket sig af vejen.
-            targetPlayer.setSpace(target);
-
-            //isSpecialSpace(targetPlayer); //tjekker targetplayer's felt for specielt felt.
-        }
-
-    }*/
-
     public void forward1(@NotNull Player player) {
         wall = new Wall(board);
         if (player.board == board) {
@@ -381,13 +298,10 @@ public class GameController {
                         System.out.println("Du kan ikke rykke igennem en væg");
                     }
                 } catch (ImpossibleMoveException e) {
-                    // we don't do anything here  for now; we just catch the
-                    // exception so that we do no pass it on to the caller
-                    // (which would be very bad style).
+                    // Catching exception
                 }
             }
             spaceActionInit(player.getSpace());
-
         }
     }
 
@@ -402,17 +316,14 @@ public class GameController {
                 //     We will come back to that!
                 moveToSpace(other, target, heading);
 
-
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
-
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
         player.setSpace(space);
-
     }
 
     public static class ImpossibleMoveException extends Exception {
@@ -492,8 +403,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Tjekker hvorvidt en spillet har vundet.
+     * Hvis en spiller har vundet, vises en ny boks som fortæller spillerne hvem der har vundet.
+     * @param player spilleren der tjekkes.
+     */
     public void isWinnerFound(Player player){
-        if (player.getScore() >= 3 ){
+        if (player.getScore() >= 3 ){ //TODO 3-tallet bør ændres til antallet af checkpoints.
             if (!window.isShowing()) {
                 window.setTitle("WINNDER FOUND");
                 window.setContentText("Player " + player.getName() + " has won the game!");
@@ -515,14 +431,4 @@ public class GameController {
             actionType.doAction(this, space);
         }
     }
-
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
-    }
-
 }

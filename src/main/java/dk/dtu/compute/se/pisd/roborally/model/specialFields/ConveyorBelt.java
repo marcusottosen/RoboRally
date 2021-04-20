@@ -32,30 +32,48 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * ...
+ * Håndterer aktionen af et conveyorbelt. Gælder både for de blå og gule.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
     private String color;
 
+    /**
+     * Returnerer conveyorbeltets farve.
+     * @return faven som String.
+     */
     public String getColor(){return color; }
 
-
+    /**
+     * Returnerer conveyorbeltets retning.
+     * @return heading vha. enum klassen Heading.
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * Sætter conveyorbeltets heading.
+     * @param heading heading vha. enum klassen Heading.
+     */
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
+    /**
+     * Conveyorbeltets aktion. Køres når en spiller står på feltet.
+     * Rykker spilleren et felt hvis det er et gult transportbånd. 2 ved blå.
+     * @param gameController the gameController of the respective game.
+     * @param space the space this action should be executed for.
+     * @return false.
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-
         try {
             Player player = space.getPlayer();
 
