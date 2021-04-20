@@ -40,7 +40,7 @@ public class GameController {
 
     final public Board board;
     private Wall wall;
-    private Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
+    private final Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
 
 
     public GameController(@NotNull Board board) {
@@ -177,21 +177,23 @@ public class GameController {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 Command userChoice = board.getUserChoice();
-                if (userChoice != null){
-                    board.setUserChoice(null);
-                    board.setPhase(Phase.ACTIVATION);
-                    executeCommand(currentPlayer, userChoice);
+                if (currentPlayer.getHealth()>=1) {
+                    if (userChoice != null) {
+                        board.setUserChoice(null);
+                        board.setPhase(Phase.ACTIVATION);
+                        executeCommand(currentPlayer, userChoice);
 
-                } else {
-                    CommandCard card = currentPlayer.getProgramField(step).getCard();
-                    if (card != null) {
-                        Command command = card.command;
-                        //Afbryder eksekveringsløkken og giver spilleren et valg.
-                        if (command.isInteractive()) {
-                            board.setPhase(Phase.PLAYER_INTERACTION);
-                            return;
+                    } else {
+                        CommandCard card = currentPlayer.getProgramField(step).getCard();
+                        if (card != null) {
+                            Command command = card.command;
+                            //Afbryder eksekveringsløkken og giver spilleren et valg.
+                            if (command.isInteractive()) {
+                                board.setPhase(Phase.PLAYER_INTERACTION);
+                                return;
+                            }
+                            executeCommand(currentPlayer, command);
                         }
-                        executeCommand(currentPlayer, command);
                     }
                 }
 
@@ -242,7 +244,7 @@ public class GameController {
      * @param command Objekt af kommandokortet.
      */
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == board && command != null) {
+        if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -278,30 +280,32 @@ public class GameController {
     public void forward1(@NotNull Player player) {
         wall = new Wall(board);
         if (player.board == board) {
-            Space space = player.getSpace();
-            Heading heading = player.getHeading();
+            if ((player.getHealth() >= 1)) {
+                Space space = player.getSpace();
+                Heading heading = player.getHeading();
 
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                try {
-                    if(wall.checkForWall(player) == false){
-                        if(target.getPlayer() != null){
-                            if(wall.checkForWall(target.getPlayer()) == false){
+                Space target = board.getNeighbour(space, heading);
+                if (target != null) {
+                    try {
+                        if (!wall.checkForWall(player)) {
+                            if (target.getPlayer() != null) {
+                                if (!wall.checkForWall(target.getPlayer())) {
+                                    moveToSpace(player, target, heading);
+                                } else if (wall.checkForWall(target.getPlayer())) {
+                                    System.out.println("Der står en spiller i vejen, som ikke kan skubbes");
+                                }
+                            } else {
                                 moveToSpace(player, target, heading);
-                            }else if(wall.checkForWall(target.getPlayer()) == true){
-                                System.out.println("Der står en spiller i vejen, som ikke kan skubbes");
                             }
-                        }else{
-                            moveToSpace(player, target, heading);
+                        } else if (wall.checkForWall(player)) {
+                            System.out.println("Du kan ikke rykke igennem en væg");
                         }
-                    }else if(wall.checkForWall(player) == true){
-                        System.out.println("Du kan ikke rykke igennem en væg");
+                    } catch (ImpossibleMoveException e) {
+                        // Catching exception
                     }
-                } catch (ImpossibleMoveException e) {
-                    // Catching exception
                 }
+                spaceActionInit(player.getSpace());
             }
-            spaceActionInit(player.getSpace());
         }
     }
 
@@ -327,7 +331,6 @@ public class GameController {
     }
 
     public static class ImpossibleMoveException extends Exception {
-
         private Player player;
         private Space space;
         private Heading heading;
