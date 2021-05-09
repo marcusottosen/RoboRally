@@ -61,6 +61,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
     final private static String CHECKPOINT_IMAGE_PATH = "images/tiles/checkpoint";
+    final private static String ENERGYCUBE_IMAGE_PATH = "images/tiles/energyCube.png";
 
     final private static String PLAYER_IMAGE_PATH = "images/robots/player";
     final private static String ALIVE = "/alive.png";
@@ -105,6 +106,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * Finder felttypens instans og tjekker om den matcher en instans af en af de spicielle felter.
      * Hvis det er en instans, kaldes der til den rette felttype som så vises.
+     * Denne metode er kun til de felter som ikke ændrer, flytter eller fjerner sig.
      */
     public void viewBoardElements(){
         if(space.getActions().size() != 0) {
@@ -125,6 +127,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     viewLaserEmitter(((Laser) actionType).getHeading());
                 }else if(actionType instanceof PushPanel){
                     viewPushPanel(((PushPanel) actionType).getHeading());
+                }else if (actionType instanceof EnergyCube){
+                    viewEnergyCube();
                 }
             }
         }
@@ -300,6 +304,32 @@ public class SpaceView extends StackPane implements ViewObserver {
                     this.getChildren().add(tollboxImg);
                 }catch (Exception e){
                     System.out.println("Error loading Toolbox");
+                }
+            }
+        }
+    }
+
+    /**
+     * Viser en energyCube på feltet.
+     */
+    public void viewEnergyCube() {
+        laserPane.getChildren().clear();
+        for (FieldAction energyCube : space.getActions()){
+            if (energyCube != null) {
+                try {
+                    Image image = new Image(ENERGYCUBE_IMAGE_PATH);
+                    ImageView energyCubeImg = new ImageView();
+
+                    energyCubeImg.setImage(image);
+
+                    energyCubeImg.setFitWidth(SPACE_WIDTH/1.5);
+                    energyCubeImg.setFitHeight(SPACE_HEIGHT/1.5);
+                    energyCubeImg.setSmooth(true);
+                    energyCubeImg.setCache(true); //Loader hurtigere
+
+                    laserPane.getChildren().add(energyCubeImg);
+                }catch (Exception e){
+                    System.out.println("Error loading energyCube");
                 }
             }
         }

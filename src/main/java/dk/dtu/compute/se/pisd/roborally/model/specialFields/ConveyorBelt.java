@@ -23,10 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -80,7 +77,6 @@ public class ConveyorBelt extends FieldAction {
             if (color.equals("YELLOW")) {
                 Space target = gameController.board.getNeighbour(space, heading);
                 gameController.moveToSpace(space.getPlayer(), target, heading);
-
             } else {
                 Space target = gameController.board.getNeighbour(space, heading);
                 gameController.moveToSpace(space.getPlayer(), target, heading);

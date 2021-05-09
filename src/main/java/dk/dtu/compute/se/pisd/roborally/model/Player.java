@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +55,11 @@ public class Player extends Subject {
 
     private int score = 0;
     public ArrayList<Integer> checkpointsCompleted = new ArrayList<Integer>();
+    public int availableHealth = 3;
     private int health = 3;
 
+    // Liste over spillerens energyCubes
+    public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
 
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
@@ -184,6 +188,10 @@ public class Player extends Subject {
         return score;
     }
 
+    /**
+     * Sætter spillerens score til det i parameteren
+     * @param score den score man ønsker spilleren skal have
+     */
     public void setScore(int score) {
         this.score = score;
     }
@@ -199,9 +207,43 @@ public class Player extends Subject {
 
 
 
-
+    /**
+     * returnerer spillerens health.
+     * @return spillerens health som int.
+     */
     public int getHealth() {return health;}
+
+    /**
+     * Sætter spillerens health til det i parameteren
+     * @param health den health man ønsker spilleren skal have
+     */
     public void setHealth(int health) {this.health = health;}
 
 
+
+    /**
+     * Returnerer listen over hvilke energyCubes spilleren har
+     * @return liste af spillerens energyCubes.
+     */
+    public ArrayList<EnergyCubeTypes> getEnergyCubesOptained() {
+        return energyCubesOptained;
     }
+
+    /**
+     * Giver spilleren en energyCube som spilleren ikke har.
+     * @param newCube er den type cube man ønsker spilleren skal have.
+     */
+    public void setOptainedEnergyCube(EnergyCubeTypes newCube){
+        if (!energyCubesOptained.contains(newCube))
+        energyCubesOptained.add(newCube);
+    }
+
+    /**
+     * Fjerner den energyCube der skrives i attributten fra spilleren.
+     * @param removeCube den cube man ønsker skal fjernes fra spilleren.
+     */
+    public void removeOptainedEnergyCube(EnergyCubeTypes removeCube){
+        energyCubesOptained.remove(removeCube);
+    }
+
+}

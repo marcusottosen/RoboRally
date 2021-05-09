@@ -45,6 +45,7 @@ public class LoadBoard {
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
+    public static int energyCubesAmount = 0;
 
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
@@ -71,6 +72,7 @@ public class LoadBoard {
 			// fileReader = new FileReader(filename);
 			reader = gson.newJsonReader(new InputStreamReader(inputStream));
 			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+            energyCubesAmount = template.energyCubesAmount;
 
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
@@ -83,6 +85,7 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+
 			reader.close();
 			return result;
 		} catch (IOException e1) {

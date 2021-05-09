@@ -113,6 +113,7 @@ public class Space extends Subject {
 
     SpaceTemplate spaceTemplate = new SpaceTemplate();
 
+    //Wall
     public void addWall(Heading heading){
         spaceTemplate.walls.add(heading);
         notifyChange();
@@ -126,6 +127,7 @@ public class Space extends Subject {
     }
 
 
+    //Checkpoint
     public void addCheckpoint(FieldAction checkpoint){
         spaceTemplate.actions.add(checkpoint);
         notifyChange();
@@ -135,6 +137,7 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    //ConveyorBelt
     public void addConveyorBelt(FieldAction conveyorBelt){
         spaceTemplate.actions.add(conveyorBelt);
         notifyChange();
@@ -143,6 +146,17 @@ public class Space extends Subject {
         spaceTemplate.actions.remove(conveyorBelt);
         notifyChange();
     }
+
+    //EnergyCube
+    public void addEnergyCube(FieldAction energyCube){
+        spaceTemplate.actions.add(energyCube);
+        notifyChange();
+    }
+    public void deleteEnergyCube(FieldAction energyCube){
+        spaceTemplate.actions.remove(energyCube);
+        notifyChange();
+    }
+
     /**
      *
      * @return type af aktion.

@@ -53,5 +53,6 @@ public class Checkpoint extends FieldAction {
             player.setScore(player.getScore()+1);
         }
         return false;
-    }
+    } //TODO Egentligt ikke nogen grund til at både tilføje til checkpointsComplated array og score. Bare behold arrayet.
+    // Bare sørg for at der bruges arrayet alle steder scoren tjekkes (bla. når vinderen findes)
 }

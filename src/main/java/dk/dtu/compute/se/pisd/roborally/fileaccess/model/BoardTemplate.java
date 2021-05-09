@@ -35,6 +35,7 @@ public class BoardTemplate {
 
     public int width;
     public int height;
+    public int energyCubesAmount;
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
 

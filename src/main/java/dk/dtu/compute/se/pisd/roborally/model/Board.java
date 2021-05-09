@@ -128,6 +128,10 @@ public class Board extends Subject {
         }
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     /**
      * Bruges til at finde antallet at spillere ved at tjekke størrelsen på arraylisten Players.
      * @return størrelsen som int.

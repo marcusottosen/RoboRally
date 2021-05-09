@@ -130,7 +130,7 @@ public class InfoView{
         Image aliveImg = new Image(HEALTH_ALIVE);
         Image deadImg = new Image(HEALTH_DEAD);
 
-        for (int i = player.getHealth(); i < 3; i++) {
+        for (int i = player.getHealth(); i < player.availableHealth; i++) {
             ImageView deadHeart = new ImageView(deadImg);
             deadHeart.setFitHeight(20);
             deadHeart.setFitWidth(20);

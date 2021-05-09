@@ -22,7 +22,7 @@ public class Toolbox extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
         Player player = space.getPlayer();
-        if (player.getHealth() < 3) {
+        if (player.getHealth() < player.availableHealth) {
             player.setHealth(player.getHealth() + 1);
         }
         return false;
