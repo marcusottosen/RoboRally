@@ -26,12 +26,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,6 +48,7 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
     public static int energyCubesAmount = 0;
+    public static List<PlayerTemplate> playerList;
 
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
@@ -83,6 +86,7 @@ public class LoadBoard {
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
+                    space.getPlayerSpace().addAll((spaceTemplate.playerSpace));
                 }
             }
 

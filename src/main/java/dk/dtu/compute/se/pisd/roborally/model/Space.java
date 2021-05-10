@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 
@@ -162,6 +163,8 @@ public class Space extends Subject {
      * @return type af aktion.
      */
     public List<FieldAction> getActions(){ return spaceTemplate.actions; }
+
+    public List<PlayerTemplate> getPlayerSpace(){ return spaceTemplate.playerSpace; }
 
 
     /* public Checkpoint getCheckpoint(){

@@ -5,6 +5,7 @@
   "spaces": [
     {
       "walls": [],
+      "playerSpace": [],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
@@ -73,6 +74,7 @@
     },
     {
       "walls": [],
+      "playerSpace": [],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
@@ -139,6 +141,7 @@
     },
     {
       "walls": [],
+      "playerSpace": [],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Pit",
@@ -167,6 +170,7 @@
     },
     {
       "walls": [],
+      "playerSpace": [],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Toolbox",

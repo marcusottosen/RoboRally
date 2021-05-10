@@ -37,6 +37,7 @@ public class SpaceTemplate {
 
     public List<Heading> walls = new ArrayList<>();
     public List<FieldAction> actions = new ArrayList<>();
+    public List<PlayerTemplate> playerSpace = new ArrayList<>();
 
     public int x;
     public int y;

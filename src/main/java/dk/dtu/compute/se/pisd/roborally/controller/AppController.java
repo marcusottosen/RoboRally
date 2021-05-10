@@ -31,9 +31,11 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -117,8 +119,23 @@ public class AppController implements Observer {
                for (int i = 0; i < no; i++) {
                    Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                    board.addPlayer(player);
+                   SpaceTemplate spaceTemplate = new SpaceTemplate();
+                   Space space = new Space(board, board.width, board.height);
                    player.setSpace(board.getSpace(i % board.width, i));
                }
+               /*int no = result.get();
+               for (int i = 0; i < no; i++) {
+                   for (int j = 0; j < board.width; j++){
+                       for (int l = 0; l < board.height; l++){
+                           Space space = new Space(board, j, l);
+                           if (space.getPlayerSpace() != null){
+                               Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                               board.addPlayer(player);
+                               player.setSpace(board.getSpace(j,l));
+                           }
+                       }
+                   }
+               }*/
 
             /*Checkpoint checkpoint1 = new Checkpoint(board);
             board.addCheckpoint(checkpoint1);
