@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.dal;
 
 import com.mysql.cj.util.StringUtils;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.IOUtil;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.URI;
@@ -70,6 +71,13 @@ class Connector {
 			//      exit in a more graceful way
 			e.getSQLState();
 			e.printStackTrace();
+			System.out.println("1");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Connection error!");
+			alert.setHeaderText(null);
+			alert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.");
+
+			alert.showAndWait();
 			// Platform.exit();
 		}
     }
@@ -86,6 +94,7 @@ class Connector {
 			createTablesStatement = new String(bytes);
 		} catch (URISyntaxException | IOException e){
     		e.printStackTrace();
+			System.out.println("2");
     		return;
 		}
 
@@ -103,13 +112,18 @@ class Connector {
     	} catch (SQLException e) {
     		e.printStackTrace();
     		// TODO error handling
+			System.out.printf("3");
     		try {
 				connection.rollback();
-			} catch (SQLException e1) {}
+			} catch (SQLException e1) {
+				System.out.println("4");
+			}
     	} finally {
 			try {
 				connection.setAutoCommit(true);
-			} catch (SQLException e) {}
+			} catch (SQLException e) {
+				System.out.println("5");
+			}
 		}
     }
 
