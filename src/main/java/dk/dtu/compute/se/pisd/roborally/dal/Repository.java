@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 
 import java.sql.*;
@@ -97,9 +98,6 @@ class Repository implements IRepository {
 				connection.setAutoCommit(false);
 
 				PreparedStatement ps = getInsertGameStatementRGK();
-				// TODO: the name should eventually set by the user
-				//       for the game and should be then used 
-				//       game.getName();
 				ps.setString(1, savegamename.get()); // instead of name
 				//ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
 				ps.setNull(2, game.getPlayerNumber(game.getCurrentPlayer()));
@@ -143,7 +141,11 @@ class Repository implements IRepository {
 					rs.updateInt(GAME_CURRENTPLAYER, game.getPlayerNumber(game.getCurrentPlayer()));
 					rs.updateRow();
 				} else {
-					// TODO error handling
+					Alert rsalert = new Alert(Alert.AlertType.ERROR);
+					rsalert.setTitle("Game creation error!");
+					rsalert.setHeaderText(null);
+					rsalert.setContentText("There was an error creating the game in the database.");
+					rsalert.showAndWait();
 				}
 				rs.close();
 
@@ -151,15 +153,24 @@ class Repository implements IRepository {
 				connection.setAutoCommit(true);
 				return true;
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Game creation error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when creating the game in the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
+
 				e.printStackTrace();
-				System.err.println("Some DB error");
-				
+
 				try {
 					connection.rollback();
 					connection.setAutoCommit(true);
 				} catch (SQLException e1) {
-					// TODO error handling
+					Alert rbalert = new Alert(Alert.AlertType.ERROR);
+					rbalert.setTitle("Game creation error!");
+					rbalert.setHeaderText(null);
+					rbalert.setContentText("An error occurred when creating the game in the database.\n\nError message:\n" + e);
+					rbalert.showAndWait();
+
 					e1.printStackTrace();
 				}
 			}
@@ -187,7 +198,11 @@ class Repository implements IRepository {
 				rs.updateInt(GAME_STEP, game.getStep());
 				rs.updateRow();
 			} else {
-				// TODO error handling
+				Alert rsalert = new Alert(Alert.AlertType.ERROR);
+				rsalert.setTitle("Update error!");
+				rsalert.setHeaderText(null);
+				rsalert.setContentText("There was an error updating the game in the database.");
+				rsalert.showAndWait();
 			}
 			rs.close();
 
@@ -200,15 +215,22 @@ class Repository implements IRepository {
             connection.setAutoCommit(true);
 			return true;
 		} catch (SQLException e) {
-			// TODO error handling
+			Alert psalert = new Alert(Alert.AlertType.ERROR);
+			psalert.setTitle("Update error!");
+			psalert.setHeaderText(null);
+			psalert.setContentText("An error occurred when updating the game in the database.\n\nError message:\n" + e);
+			psalert.showAndWait();
 			e.printStackTrace();
-			System.err.println("Some DB error");
 			
 			try {
 				connection.rollback();
 				connection.setAutoCommit(true);
 			} catch (SQLException e1) {
-				// TODO error handling
+				Alert rbalert = new Alert(Alert.AlertType.ERROR);
+				rbalert.setTitle("Update error!");
+				rbalert.setHeaderText(null);
+				rbalert.setContentText("An error occurred when updating the game in the database.\n\nError message:\n" + e);
+				rbalert.showAndWait();
 				e1.printStackTrace();
 			}
 		}
@@ -220,31 +242,25 @@ class Repository implements IRepository {
 	public Board loadGameFromDB(int id) {
 		Board game;
 		try {
-			// TODO here, we could actually use a simpler statement
-			//      which is not updatable, but reuse the one from
-			//      above for the pupose
 			PreparedStatement ps = getSelectGameStatementU();
 			ps.setInt(1, id);
 			
 			ResultSet rs = ps.executeQuery();
 			int playerNo = -1;
 			if (rs.next()) {
-				// TODO the width and height could eventually come from the database
-				//int width = AppController.BOARD_WIDTH;
-				//int height = AppController.BOARD_HEIGHT;
-				//game = new Board(width,height);
-				// TODO and we should also store the used game board in the database
-				//      for now, we use the default game board
 				game = LoadBoard.loadBoard(rs.getString(BOARD_NAME));
 				if (game == null) {
 					return null;
 				}
 				playerNo = rs.getInt(GAME_CURRENTPLAYER);
-				// TODO currently we do not set the games name (needs to be added)
 				game.setPhase(Phase.values()[rs.getInt(GAME_PHASE)]);
 				game.setStep(rs.getInt(GAME_STEP));
 			} else {
-				// TODO error handling
+				Alert loadalert = new Alert(Alert.AlertType.ERROR);
+				loadalert.setTitle("Loading error!");
+				loadalert.setHeaderText(null);
+				loadalert.setContentText("An error occurred when loading the game from the database.");
+				loadalert.showAndWait();
 				return null;
 			}
 			rs.close();
@@ -255,7 +271,11 @@ class Repository implements IRepository {
 			if (playerNo >= 0 && playerNo < game.getPlayersNumber()) {
 				game.setCurrentPlayer(game.getPlayer(playerNo));
 			} else {
-				// TODO  error handling
+				Alert loadplayeralert = new Alert(Alert.AlertType.ERROR);
+				loadplayeralert.setTitle("Loading error!");
+				loadplayeralert.setHeaderText(null);
+				loadplayeralert.setContentText("An error occurred when loading the saved current player from the database.");
+				loadplayeralert.showAndWait();
 				return null;
 			}
 
@@ -265,9 +285,13 @@ class Repository implements IRepository {
 
 			return game;
 		} catch (SQLException e) {
-			// TODO error handling
+			Alert loadalert = new Alert(Alert.AlertType.ERROR);
+			loadalert.setTitle("Loading error!");
+			loadalert.setHeaderText(null);
+			loadalert.setContentText("An error occurred when loading the game from the database.\n\nError message:\n" + e);
+			loadalert.showAndWait();
+
 			e.printStackTrace();
-			System.err.println("Some DB error");
 		}
 		return null;
 	}
@@ -289,7 +313,11 @@ class Repository implements IRepository {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			// TODO proper error handling
+			Alert rsalert = new Alert(Alert.AlertType.ERROR);
+			rsalert.setTitle("Loading error!");
+			rsalert.setHeaderText(null);
+			rsalert.setContentText("An error occurred when loading the list of games from the database.\n\nError message:\n" + e);
+			rsalert.showAndWait();
 			e.printStackTrace();
 		}
 		return result;		
@@ -406,7 +434,12 @@ class Repository implements IRepository {
 
 
 			} else {
-				// TODO error handling
+				Alert rsalert = new Alert(Alert.AlertType.ERROR);
+				rsalert.setTitle("Loading error!");
+				rsalert.setHeaderText(null);
+				rsalert.setContentText("Game in DB does not have a player with id " + i +"!");
+				rsalert.showAndWait();
+
 				System.err.println("Game in DB does not have a player with id " + i +"!");
 			}
 		}

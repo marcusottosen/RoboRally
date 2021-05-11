@@ -47,9 +47,9 @@ import java.sql.Statement;
 class Connector {
 	private static final String HOST     = "localhost";
 	private static final int    PORT     = 3306;
-	private static final String DATABASE = "roborally";
+	private static final String DATABASE = "pisu";
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "qjf67xsm";
+	private static final String PASSWORD = "Gce59hgh";
 
 	private static final String DELIMITER = ";;";
 
@@ -57,7 +57,7 @@ class Connector {
 
 	/**
 	 * Konstruktøren.
-	 * Opretter de nødvendige inrformationer til oprettelse af forbindelsen.
+	 * Opretter de nødvendige informationer til oprettelse af forbindelsen.
 	 */
 	Connector() {
         try {
@@ -71,13 +71,12 @@ class Connector {
 			//      exit in a more graceful way
 			e.getSQLState();
 			e.printStackTrace();
-			System.out.println("1");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Connection error!");
-			alert.setHeaderText(null);
-			alert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.");
 
-			alert.showAndWait();
+			Alert connectionalert = new Alert(Alert.AlertType.ERROR);
+			connectionalert.setTitle("Connection error!");
+			connectionalert.setHeaderText(null);
+			connectionalert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.\n\nError message:\n" + e);
+			connectionalert.showAndWait();
 			// Platform.exit();
 		}
     }
@@ -93,8 +92,6 @@ class Connector {
 			byte[] bytes = Files.readAllBytes(Paths.get(uri));
 			createTablesStatement = new String(bytes);
 		} catch (URISyntaxException | IOException e){
-    		e.printStackTrace();
-			System.out.println("2");
     		return;
 		}
 
@@ -111,18 +108,19 @@ class Connector {
     		connection.commit();
     	} catch (SQLException e) {
     		e.printStackTrace();
-    		// TODO error handling
-			System.out.printf("3");
+			Alert statementalert = new Alert(Alert.AlertType.ERROR);
+			statementalert.setTitle("Connection error!");
+			statementalert.setHeaderText(null);
+			statementalert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.\n\nError message:\n" + e);
+			statementalert.showAndWait();
     		try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				System.out.println("4");
 			}
     	} finally {
 			try {
 				connection.setAutoCommit(true);
 			} catch (SQLException e) {
-				System.out.println("5");
 			}
 		}
     }
