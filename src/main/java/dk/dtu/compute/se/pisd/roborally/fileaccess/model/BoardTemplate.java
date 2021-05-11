@@ -38,5 +38,6 @@ public class BoardTemplate {
     public int energyCubesAmount;
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
+    public List<PlayerTemplate> spawns = new ArrayList<>();
 
 }
