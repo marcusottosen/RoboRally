@@ -197,14 +197,23 @@ public class Player extends Subject {
     }
 
 
+    /**
+     * Bruges til at returnere et programmeringskort
+     * @param i Nummeret på kortet i listen
+     * @return programmeringskort
+     */
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
 
+    /**
+     * Bruges til at teturnere et kommandokort
+     * @param i Nummeret på kortet i listen
+     * @return kommandokort
+     */
     public CommandCardField getCardField(int i) {
         return cards[i];
     }
-
 
 
     /**
@@ -219,6 +228,17 @@ public class Player extends Subject {
      */
     public void setHealth(int health) {this.health = health;}
 
+    /**
+     * Fjerner en specifikt mængde health fra spilleren - går ikke under 0
+     * @param amount mængden af liv der skal trækkes fra spilleren.
+     */
+    public void takeHealth(int amount){
+        if (health-amount > 0){
+            health = health-amount;
+        } else {
+            health = 0;
+        }
+    }
 
 
     /**
@@ -230,7 +250,7 @@ public class Player extends Subject {
     }
 
     /**
-     * Giver spilleren en energyCube som spilleren ikke har.
+     * Giver spilleren en energyCube hvis spilleren ikke allerede har den.
      * @param newCube er den type cube man ønsker spilleren skal have.
      */
     public void setOptainedEnergyCube(EnergyCubeTypes newCube){
