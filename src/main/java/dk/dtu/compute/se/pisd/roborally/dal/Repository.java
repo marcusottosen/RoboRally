@@ -456,11 +456,16 @@ class Repository implements IRepository {
 			int playerId = rs.getInt(PLAYER_PLAYERID);
 			// TODO should be more defensive
 			Player player = game.getPlayer(playerId);
-			// rs.updateString(PLAYER_NAME, player.getName()); // not needed: player's names does not change
 			rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
-			// TODO error handling
+
+			Alert rsalert = new Alert(Alert.AlertType.ERROR);
+			rsalert.setTitle("Update error!");
+			rsalert.setHeaderText(null);
+			rsalert.setContentText("An error occurred when updating the players the database.");
+			rsalert.showAndWait();
+
 			// TODO take care of case when number of players changes, etc
 			rs.updateRow();
 		}
@@ -482,7 +487,11 @@ class Repository implements IRepository {
 						SQL_INSERT_GAME,
 						Statement.RETURN_GENERATED_KEYS);
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Game creation error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when creating the game in the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
 				e.printStackTrace();
 			}
 		}
@@ -503,7 +512,11 @@ class Repository implements IRepository {
 						ResultSet.TYPE_FORWARD_ONLY,
 					    ResultSet.CONCUR_UPDATABLE);
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Game creation error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when creating the game in the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
 				e.printStackTrace();
 			}
 		}
@@ -524,7 +537,11 @@ class Repository implements IRepository {
 						ResultSet.TYPE_FORWARD_ONLY,
 						ResultSet.CONCUR_UPDATABLE);
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Updating error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when updating the players the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
 				e.printStackTrace();
 			}
 		}
@@ -544,7 +561,11 @@ class Repository implements IRepository {
 				select_players_asc_stmt = connection.prepareStatement(
 						SQL_SELECT_PLAYERS_ASC);
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Update error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when updating the players the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
 				e.printStackTrace();
 			}
 		}
@@ -563,7 +584,11 @@ class Repository implements IRepository {
 				select_games_stmt = connection.prepareStatement(
 						SQL_SELECT_GAMES);
 			} catch (SQLException e) {
-				// TODO error handling
+				Alert psalert = new Alert(Alert.AlertType.ERROR);
+				psalert.setTitle("Update error!");
+				psalert.setHeaderText(null);
+				psalert.setContentText("An error occurred when updating the game the database.\n\nError message:\n" + e);
+				psalert.showAndWait();
 				e.printStackTrace();
 			}
 		}
