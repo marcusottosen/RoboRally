@@ -23,7 +23,9 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.PlayerSpawns;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 
 import java.util.List;
@@ -112,6 +114,7 @@ public class Space extends Subject {
     }*/
 
     SpaceTemplate spaceTemplate = new SpaceTemplate();
+    PlayerTemplate playerTemplate = new PlayerTemplate();
 
     //Wall
     public void addWall(Heading heading){
@@ -162,6 +165,8 @@ public class Space extends Subject {
      * @return type af aktion.
      */
     public List<FieldAction> getActions(){ return spaceTemplate.actions; }
+
+    public List<PlayerSpawns> getSpawns(){ return playerTemplate.spawns; }
 
 
     /* public Checkpoint getCheckpoint(){
