@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
@@ -58,6 +59,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
     final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
     final private static String LASER_EMITTER_IMAGE_PATH = "images/tiles/laserEmitter.png";
+    final private static String LASER_IMAGE_PATH = "images/tiles/laser.png";
     final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
     final private static String CHECKPOINT_IMAGE_PATH = "images/tiles/checkpoint";
@@ -125,6 +127,9 @@ public class SpaceView extends StackPane implements ViewObserver {
                     viewToolbox();
                 }else if(actionType instanceof Laser){
                     viewLaserEmitter(((Laser) actionType).getHeading());
+                    viewLaser(space, ((Laser) actionType).getHeading());
+                    //Laser laser = new Laser();
+                    //laser.shootLaser();
                 }else if(actionType instanceof PushPanel){
                     viewPushPanel(((PushPanel) actionType).getHeading());
                 }else if (actionType instanceof EnergyCube){
@@ -282,6 +287,51 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                     laserEmitterImg.setRotate(((90*heading.ordinal())%360)-180);
                     laserPane.getChildren().add(laserEmitterImg);
+                } catch (Exception e){
+                    System.out.println("Error loading Laser Emitter");
+                }
+            }
+        }
+    }
+
+    /*public void viewLaser(Space space, Heading heading){
+        //while (space.board.getPhase() == Phase.ACTIVATION){
+            if (space.board.getPhase() == Phase.ACTIVATION){
+                for(FieldAction laserEmitter : space.getActions()) {
+                    if (laserEmitter != null) {
+                        try {
+                            Image image = new Image(LASER_IMAGE_PATH);
+                            ImageView laserImg = new ImageView();
+                            laserImg.setImage(image);
+                            setElementSize(laserImg);
+
+                            laserImg.setRotate(((90*heading.ordinal())%360)-180);
+                            laserPane.getChildren().add(laserImg);
+                        } catch (Exception e){
+                            System.out.println("Error loading Laser Emitter");
+                        }
+                    }
+                }
+            }
+        //}
+    }*/
+
+
+    //Virker med viewLaser(space, ((Laser) actionType).getHeading());
+    public void viewLaser(Space space, Heading heading){
+        for(FieldAction laserEmitter : space.getActions()) {
+            if (laserEmitter != null) {
+                try {
+                    Image image = new Image(LASER_IMAGE_PATH);
+                    ImageView laserImg = new ImageView();
+                    laserImg.setImage(image);
+                    setElementSize(laserImg);
+
+                    laserImg.setRotate(((90*heading.ordinal())%360)-180);
+                    //laserPane.getChildren().add(laserImg);
+                    //laserPane.getChildren().remove(laserImg);
+                    LaserView laserView = new LaserView(laserPane, laserImg, space);
+                    laserView.shootLaser();
                 } catch (Exception e){
                     System.out.println("Error loading Laser Emitter");
                 }

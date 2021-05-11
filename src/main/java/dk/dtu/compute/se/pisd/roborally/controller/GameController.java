@@ -22,9 +22,12 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
+import dk.dtu.compute.se.pisd.roborally.view.LaserView;
+import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.stage.StageStyle;
@@ -68,6 +71,15 @@ public class GameController {
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */
     public void startProgrammingPhase() {
+        /*for (SpaceTemplate spaceTemplate : LoadBoard.template.spaces){
+            Space space = LoadBoard.result.getSpace(spaceTemplate.x, spaceTemplate.y);
+            FieldAction laser = space.getActions().get(0);
+            if (laser instanceof Laser){
+                Laser action = new Laser();
+                action.shootLaser(this, space, ((Laser) laser).getHeading());
+            }
+        }*/
+        //LaserView.shootLaser();
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -104,6 +116,7 @@ public class GameController {
      * Ænder derudover fasen til ACTIVATION.
      */
     public void finishProgrammingPhase() {
+        LaserView.stopLaser();
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
