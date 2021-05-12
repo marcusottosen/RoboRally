@@ -79,7 +79,8 @@ public class GameController {
                 action.shootLaser(this, space, ((Laser) laser).getHeading());
             }
         }*/
-        //LaserView.shootLaser();
+        LaserView.shootLaser();
+        //LaserView.stopLaser();
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -117,6 +118,7 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         LaserView.stopLaser();
+        //LaserView.shootLaser();
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
