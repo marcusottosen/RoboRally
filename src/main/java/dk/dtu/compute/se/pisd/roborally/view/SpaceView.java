@@ -23,9 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
 import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -58,6 +58,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String LEFT_GEAR_IMAGE_PATH = "images/tiles/gearLeft.png";
     final private static String RIGHT_GEAR_IMAGE_PATH = "images/tiles/gearRight.png";
     final private static String LASER_EMITTER_IMAGE_PATH = "images/tiles/laserEmitter.png";
+    final private static String LASER_IMAGE_PATH = "images/tiles/laser.png";
     final private static String PUSHPANEL_IMAGE_PATH = "images/tiles/pushPanel.png";
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
     final private static String CHECKPOINT_IMAGE_PATH = "images/tiles/checkpoint";
@@ -98,6 +99,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(tile);
         viewBoardElements();
 
+        //prep the laser to shoot at the end of every activation phase.
+        viewLaser(space);
+        LaserView.stopLaser();
+
         this.getChildren().add(laserPane);
         this.getChildren().add(playerPane);
         updatePlayer();
@@ -112,28 +117,28 @@ public class SpaceView extends StackPane implements ViewObserver {
         if(space.getActions().size() != 0) {
             for (int i = 0; i < space.getActions().size(); i++) {
                 FieldAction actionType = space.getActions().get(i);
-                //System.out.println(actionType);
                 if (actionType instanceof ConveyorBelt) {
                     viewConveyorbelt(((ConveyorBelt) actionType).getHeading(), ((ConveyorBelt) actionType).getColor());
-                }else if (actionType instanceof Checkpoint){
+                } else if (actionType instanceof Checkpoint) {
                     viewCheckpoint(((Checkpoint) actionType).getNumber());
-                }else if (actionType instanceof Pit){
+                } else if (actionType instanceof Pit) {
                     viewPit();
-                }else if (actionType instanceof Gear){
+                } else if (actionType instanceof Gear) {
                     viewGear(((Gear) actionType).getDirection());
-                }else if (actionType instanceof Toolbox){
+                } else if (actionType instanceof Toolbox) {
                     viewToolbox();
-                }else if(actionType instanceof Laser){
+                } else if (actionType instanceof Laser) {
                     viewLaserEmitter(((Laser) actionType).getHeading());
-                }else if(actionType instanceof PushPanel){
+                } else if (actionType instanceof PushPanel) {
                     viewPushPanel(((PushPanel) actionType).getHeading());
-                }else if (actionType instanceof EnergyCube){
+                } else if (actionType instanceof EnergyCube) {
                     viewEnergyCube();
                 }
             }
         }
         viewWall();
     }
+
 
     /**
      * Lille metode til at sætte størrrelsen af et billede til størrelsen af et felt.
@@ -284,6 +289,29 @@ public class SpaceView extends StackPane implements ViewObserver {
                     laserPane.getChildren().add(laserEmitterImg);
                 } catch (Exception e){
                     System.out.println("Error loading Laser Emitter");
+                }
+            }
+        }
+    }
+
+    /**
+     * @param space hvilken lokation skal der tilføjes en laser til. Det tjekkes også i metoden, at feltet er korrekt. Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     */
+    public void viewLaser(Space space){
+        for (int j = 0; j < BoardView.laserSpaces.size(); j++){
+            if (space == BoardView.laserSpaces.get(j)){
+                try {
+                    Image image = new Image(LASER_IMAGE_PATH);
+                    ImageView laserImg = new ImageView();
+                    laserImg.setImage(image);
+                    setElementSize(laserImg);
+
+                    laserImg.setRotate(((90*BoardView.laserHeading.get(j).ordinal())%360)-180);
+                    LaserView laserView = new LaserView(laserPane, laserImg, space);
+                    laserView.shootLaser();
+
+                } catch (Exception e){
+                    System.out.println("Error loading Laser");
                 }
             }
         }
