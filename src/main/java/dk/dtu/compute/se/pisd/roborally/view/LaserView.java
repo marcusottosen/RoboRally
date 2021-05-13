@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ *
+ * @author Victor Kongsbak
+ */
+
 public class LaserView{
 
     public static StackPane laserPane;

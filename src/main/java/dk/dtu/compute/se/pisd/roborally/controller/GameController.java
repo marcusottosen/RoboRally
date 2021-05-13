@@ -75,6 +75,7 @@ public class GameController {
     public void startProgrammingPhase() {
         LaserView.shootLaser();
         Laser.laserDamage();
+        playerDeath(board);
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -451,4 +452,20 @@ public class GameController {
             actionType.doAction(this, space);
         }
     }
+
+
+    public void playerDeath(Board board){
+        for (int i = 0; i < board.getPlayersNumber(); i++){
+            int health = board.getPlayer(i).getHealth();
+            Player player = board.getPlayer(i);
+            if (health <= 0){
+                int x = LoadBoard.template.spawns.get(i).x;
+                int y = LoadBoard.template.spawns.get(i).y;
+                player.setSpace(board.getSpace(x, y));
+                player.setHealth(3);
+                player.setHeading(Heading.SOUTH);
+            }
+        }
+    }
 }
+

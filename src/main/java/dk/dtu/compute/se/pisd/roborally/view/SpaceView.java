@@ -287,7 +287,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                     laserEmitterImg.setRotate(((90*heading.ordinal())%360)-180);
                     laserPane.getChildren().add(laserEmitterImg);
-                } catch (Exception e){
+                }catch (Exception e){
                     System.out.println("Error loading Laser Emitter");
                 }
             }

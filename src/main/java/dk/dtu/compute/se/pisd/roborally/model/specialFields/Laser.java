@@ -14,8 +14,9 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import java.util.List;
 
 /**
- * Håndterer aktionen af hver laser.
- * Fungerer endnu ikke.
+ * Controllerer laserens funktionalitet
+ *
+ * @author Victor Kongsbak
  */
 public class Laser extends FieldAction{
 
@@ -37,20 +38,11 @@ public class Laser extends FieldAction{
     }
 
     public static void laserDamage(){
-        //Space playerLocation = player.getSpace();
-        /*for (Space playerLocation : laserSpaces){
-            playerLocation = player.getSpace();
-            if (playerLocation == laserSpaces){
-                player.takeHealth(1);
-            }
-        }*/
         for (int i = 0; i < laserSpaces.size(); i++){
             Player player = laserSpaces.get(i).getPlayer();
             if (player != null){
                 player.takeHealth(1);
             }
-
         }
     }
-
 }
