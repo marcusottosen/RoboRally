@@ -6,8 +6,12 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+
+import java.util.List;
 
 /**
  * Håndterer aktionen af hver laser.
@@ -16,6 +20,7 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 public class Laser extends FieldAction{
 
     private Heading heading;
+    final public static List<Space> laserSpaces = BoardView.laserSpaces;
 
 
     public Heading getHeading() {
@@ -31,17 +36,14 @@ public class Laser extends FieldAction{
         return false;
     }
 
-    /*public void shootLaser(Space space, Heading heading) {
-        if (space.getActions().size() != 0){
-            for (int i = 0; i < space.getActions().size(); i++){
-                FieldAction laser = space.getActions().get(i);
-                if (laser instanceof Laser){
-                    Space target = space.board.getNeighbour(space, heading);
-                    //SpaceView view = new SpaceView(space, gameController.board.height);
-                    //view.viewLaser(target, heading);
-                }
+    public void laserDamage(Player player){
+        //Space playerLocation = player.getSpace();
+        for (Space playerLocation : laserSpaces){
+            playerLocation = player.getSpace();
+            if (playerLocation == laserSpaces){
+
             }
         }
-    }*/
+    }
 
 }

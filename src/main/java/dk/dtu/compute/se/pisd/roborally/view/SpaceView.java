@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -98,6 +99,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(tile);
         viewBoardElements();
 
+        //prep the laser to shoot at the end of every activation phase.
+        viewLaser(space);
+        LaserView.stopLaser();
+
         this.getChildren().add(laserPane);
         this.getChildren().add(playerPane);
         updatePlayer();
@@ -109,53 +114,31 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Denne metode er kun til de felter som ikke ændrer, flytter eller fjerner sig.
      */
     public void viewBoardElements(){
-
         if(space.getActions().size() != 0) {
             for (int i = 0; i < space.getActions().size(); i++) {
                 FieldAction actionType = space.getActions().get(i);
-                //System.out.println(actionType);
                 if (actionType instanceof ConveyorBelt) {
                     viewConveyorbelt(((ConveyorBelt) actionType).getHeading(), ((ConveyorBelt) actionType).getColor());
-                }else if (actionType instanceof Checkpoint){
+                } else if (actionType instanceof Checkpoint) {
                     viewCheckpoint(((Checkpoint) actionType).getNumber());
-                }else if (actionType instanceof Pit){
+                } else if (actionType instanceof Pit) {
                     viewPit();
-                }else if (actionType instanceof Gear){
+                } else if (actionType instanceof Gear) {
                     viewGear(((Gear) actionType).getDirection());
-                }else if (actionType instanceof Toolbox){
+                } else if (actionType instanceof Toolbox) {
                     viewToolbox();
-                }else if(actionType instanceof Laser){
+                } else if (actionType instanceof Laser) {
                     viewLaserEmitter(((Laser) actionType).getHeading());
-
-                    viewLaser(space, ((Laser) actionType).getHeading());
-                    LaserView.stopLaser();
-
-                    /*Space oldspace = space;
-                    FieldAction laser = space.getActions().get(0);
-                    System.out.println("start");
-                    do {
-                        System.out.println("oldspace x: " + oldspace.x);
-                        System.out.println("oldspace y: " + oldspace.y);
-                        viewLaser(oldspace, ((Laser) laser).getHeading());
-                        oldspace = oldspace.board.getNeighbour(oldspace, ((Laser) laser).getHeading().next().next());
-                    }while((oldspace.y != 0 && oldspace.y != space.board.height) && (oldspace.x != 0 && oldspace.x != space.board.width));*/
-
-
-                }else if(actionType instanceof PushPanel){
+                } else if (actionType instanceof PushPanel) {
                     viewPushPanel(((PushPanel) actionType).getHeading());
-                }else if (actionType instanceof EnergyCube){
+                } else if (actionType instanceof EnergyCube) {
                     viewEnergyCube();
                 }
-
             }
         }
         viewWall();
     }
 
-    public void viewLaserShot(){
-        Heading laserHeading;
-
-    }
 
     /**
      * Lille metode til at sætte størrrelsen af et billede til størrelsen af et felt.
@@ -311,74 +294,28 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    /*public void viewLaser(Space space, Heading heading){
-        //while (space.board.getPhase() == Phase.ACTIVATION){
-            if (space.board.getPhase() == Phase.ACTIVATION){
-                for(FieldAction laserEmitter : space.getActions()) {
-                    if (laserEmitter != null) {
-                        try {
-                            Image image = new Image(LASER_IMAGE_PATH);
-                            ImageView laserImg = new ImageView();
-                            laserImg.setImage(image);
-                            setElementSize(laserImg);
+    /**
+     * @param space hvilken lokation skal der tilføjes en laser til. Det tjekkes også i metoden, at feltet er korrekt. Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     */
+    public void viewLaser(Space space){
+        for (int j = 0; j < BoardView.laserSpaces.size(); j++){
+            if (space == BoardView.laserSpaces.get(j)){
+                try {
+                    Image image = new Image(LASER_IMAGE_PATH);
+                    ImageView laserImg = new ImageView();
+                    laserImg.setImage(image);
+                    setElementSize(laserImg);
 
-                            laserImg.setRotate(((90*heading.ordinal())%360)-180);
-                            laserPane.getChildren().add(laserImg);
-                        } catch (Exception e){
-                            System.out.println("Error loading Laser Emitter");
-                        }
-                    }
+                    laserImg.setRotate(((90*BoardView.laserHeading.get(j).ordinal())%360)-180);
+                    LaserView laserView = new LaserView(laserPane, laserImg, space);
+                    laserView.shootLaser();
+
+                } catch (Exception e){
+                    System.out.println("Error loading Laser");
                 }
             }
-        //}
-    }*/
-
-
-    //Virker med viewLaser(space, ((Laser) actionType).getHeading());
-    public void viewLaser(Space space, Heading heading){
-        //System.out.println("start");
-        Space oldspace = space;
-        int x = space.x;
-        int y = space.y;
-
-        //for(FieldAction laserEmitter : space.getActions()) {
-                //if (laserEmitter != null) {
-                    try {
-                        /*do {
-                            System.out.println("oldspace x: " + oldspace.x);
-                            System.out.println("oldspace y: " + oldspace.y);
-
-
-
-                            oldspace = oldspace.board.getNeighbour(oldspace, heading.next().next());
-                        }while((oldspace.y != 0 && oldspace.y != space.board.height) && (oldspace.x != 0 && oldspace.x != space.board.width));*/
-
-
-                        //laserPane.getChildren().add(laserImg);
-                        //laserPane.getChildren().remove(laserImg);
-
-                        Image image = new Image(LASER_IMAGE_PATH);
-                        ImageView laserImg = new ImageView();
-                        laserImg.setImage(image);
-                        setElementSize(laserImg);
-
-                        laserImg.setRotate(((90*heading.ordinal())%360)-180);
-
-                        //StackPane laser = laserPane;
-
-                        LaserView laserView = new LaserView(laserPane, laserImg, oldspace);
-                        laserView.shootLaser();
-
-
-
-                        //oldspace = oldspace.board.getNeighbour(oldspace, heading);
-                    } catch (Exception e){
-                        System.out.println("Error loading Laser");
-                    }
-                }
-            //}while (space.board.getNeighbour(oldspace, heading).x > 0 && space.board.getNeighbour(oldspace, heading).y > 0);
-        //}
-    //}
+        }
+    }
 
     /**
      * Viser en toolbox på feltet.

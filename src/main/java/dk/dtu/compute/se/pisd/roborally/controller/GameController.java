@@ -71,16 +71,7 @@ public class GameController {
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */
     public void startProgrammingPhase() {
-        /*for (SpaceTemplate spaceTemplate : LoadBoard.template.spaces){
-            Space space = LoadBoard.result.getSpace(spaceTemplate.x, spaceTemplate.y);
-            FieldAction laser = space.getActions().get(0);
-            if (laser instanceof Laser){
-                Laser action = new Laser();
-                action.shootLaser(this, space, ((Laser) laser).getHeading());
-            }
-        }*/
         LaserView.shootLaser();
-        //LaserView.stopLaser();
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -118,7 +109,6 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         LaserView.stopLaser();
-        //LaserView.shootLaser();
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
@@ -260,9 +250,10 @@ public class GameController {
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and
+            // XXX TODO This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
+            // Victor der har sat to do på her, og ikke Ekkart - er det noget vi ønkser at rette?
 
             switch (command) {
                 case FORWARD1:
