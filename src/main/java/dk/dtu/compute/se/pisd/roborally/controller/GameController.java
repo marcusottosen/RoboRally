@@ -74,10 +74,10 @@ public class GameController {
      */
     public void startProgrammingPhase() {
         LaserView.shootLaser();
+        Laser.laserDamage();
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
-
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {

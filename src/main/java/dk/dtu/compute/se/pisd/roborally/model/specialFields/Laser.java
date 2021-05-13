@@ -36,13 +36,20 @@ public class Laser extends FieldAction{
         return false;
     }
 
-    public void laserDamage(Player player){
+    public static void laserDamage(){
         //Space playerLocation = player.getSpace();
-        for (Space playerLocation : laserSpaces){
+        /*for (Space playerLocation : laserSpaces){
             playerLocation = player.getSpace();
             if (playerLocation == laserSpaces){
-
+                player.takeHealth(1);
             }
+        }*/
+        for (int i = 0; i < laserSpaces.size(); i++){
+            Player player = laserSpaces.get(i).getPlayer();
+            if (player != null){
+                player.takeHealth(1);
+            }
+
         }
     }
 
