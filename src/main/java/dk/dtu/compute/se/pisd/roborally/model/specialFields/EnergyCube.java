@@ -2,9 +2,8 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.EnergyCubeTypes;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.view.PopupView;
 
 /**
  * En EnergyCube kan være af 6 forskellige værdier: se evt. EnergyCubeTypes (ENUM).
@@ -22,6 +21,16 @@ public class EnergyCube extends FieldAction {
 
     public void setType(EnergyCubeTypes newType){
         type = newType;
+    }
+
+    /**
+     * Finder random kort som bliver efterspurgt fra newCardsWindow().
+     * @return nyt random kommandokort
+     */
+    private CommandCard generateRandomCommandCard() {
+        Command[] commands = Command.values();
+        int random = (int) (Math.random() * commands.length);
+        return new CommandCard(commands[random]);
     }
 
     /**
@@ -46,6 +55,8 @@ public class EnergyCube extends FieldAction {
             type = EnergyCubeTypes.getRandom();
         }
 
+        type = EnergyCubeTypes.NEWCARDS;
+        System.out.println(type);
 
         //Giv laser til spilleren og fjern evt. fra en anden spiller.
         if (type == EnergyCubeTypes.GETLASER){
@@ -57,17 +68,29 @@ public class EnergyCube extends FieldAction {
 
         } else if (type == EnergyCubeTypes.EXTRALIFE){ //Giver spilleren mulighed for at få et 4. liv.
             player.availableHealth=4;
-        } else if (type == EnergyCubeTypes.EXTRAMOVE){ //Rykker spilleren 1 ekstra frem ved hvert move kort.
-            //Logik til denne skrives evt. inde i gamecontroller når man rykker sig.
         } else if (type == EnergyCubeTypes.DEFLECTORSHIELD){ //Skjold mod laser. Kan kun bruges 1 gang.
             //Skrives hvorend skaden tages
-        } else if (type == EnergyCubeTypes.MELEEWEAPON){ //Skader alle man skubber til.
-            //Logik til denne skrives evt. inde i Gamecontroller når der skubbes
         } else if (type == EnergyCubeTypes.NEWCARDS){ //Spørger spilleren om han vil have alle sine kort skiftet ud.
-            //Åben enten et nye vindue eller ændre på knapperne så spilleren kan vælge om han vil have nye kort.
+            PopupView view = new PopupView();
+            if(view.newCardsWindow(player) == 0) {
+                for (int j = 0; j < Player.NO_CARDS; j++) {
+                    CommandCardField field = player.getCardField(j);
+                    field.setCard(generateRandomCommandCard());
+                    field.setVisible(true);
+                }
+            }
+            player.removeOptainedEnergyCube(EnergyCubeTypes.NEWCARDS);
         }
 
-        //System.out.println(type);
+
+
+
+
+
+
+
+
+
         player.setOptainedEnergyCube(type); //Tilføjer til spillerens liste over opnået energyCubes.
 
         //TODO Hvis energyCuben skal rykkes et andet sted hen efter den er samlet op skriv det her.
@@ -75,4 +98,6 @@ public class EnergyCube extends FieldAction {
         //space.deleteEnergyCube(this);
         return false;
     }
+
+
 }

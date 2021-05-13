@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.control.Alert;
 
 /**
  * Håndterer aktionen af et pit.
@@ -22,6 +23,12 @@ public class Pit extends FieldAction {
     public boolean doAction(GameController gameController, Space space) {
         System.out.println("You fell into the abyss");
         space.getPlayer().setHealth(0);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText(space.getPlayer().getName() + " fell into the abyss!");
+
+        alert.showAndWait();
         return false;
     }
 }

@@ -25,6 +25,8 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
+import dk.dtu.compute.se.pisd.roborally.view.InfoView;
+import dk.dtu.compute.se.pisd.roborally.view.PopupView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.stage.StageStyle;
@@ -40,7 +42,7 @@ public class GameController {
 
     final public Board board;
     private Wall wall;
-    private final Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
+    //private final Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
 
 
     public GameController(@NotNull Board board) {
@@ -64,7 +66,7 @@ public class GameController {
     }
 
     /**
-     * Starter programmeringsfasen, sætter antal spiller=0 og steps=0
+     * Starter programmeringsfasen, skifter til den første spiller og sætter steps til 0
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */
     public void startProgrammingPhase() {
@@ -81,16 +83,18 @@ public class GameController {
                     field.setVisible(true);
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
-                    CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    if (player.getCardField(j).getCard() == null) { //Giver kun kort ved de brugte kort
+                        CommandCardField field = player.getCardField(j);
+                        field.setCard(generateRandomCommandCard());
+                        field.setVisible(true);
+                    }
                 }
             }
         }
     }
 
     /**
-     * Finder random kort som bliver givet vha. StartProgrammingPhase().
+     * Finder random kort som bliver efterspurgt fra StartProgrammingPhase().
      * @return nyt random kommandokort
      */
     private CommandCard generateRandomCommandCard() {
@@ -240,14 +244,20 @@ public class GameController {
 
     /**
      * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
+     * Hvis spilleren har EXTRAMOVE energyCuben, bliver der rykket en ekstra frem.
      * @param player Spillerens objekt
      * @param command Objekt af kommandokortet.
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and
+            // XXX This is a very simplistic way of dealing with some basic cards and TODO Forstå hvad ekkart vil her.
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
+
+            if (player.energyCubesOptained.contains(EnergyCubeTypes.EXTRAMOVE) &&
+                    !((command == Command.RIGHT) || (command == Command.LEFT) || (command == Command.UTURN)
+            || (command == Command.OPTION_LEFT_RIGHT))){
+                forward1(player);}
 
             switch (command) {
                 case FORWARD1:
@@ -289,6 +299,8 @@ public class GameController {
                     try {
                         if (!wall.checkForWall(player)) {
                             if (target.getPlayer() != null) {
+                                if (player.energyCubesOptained.contains(EnergyCubeTypes.MELEEWEAPON)){
+                                    target.getPlayer().takeHealth(1);}
                                 if (!wall.checkForWall(target.getPlayer())) {
                                     moveToSpace(player, target, heading);
                                 } else if (wall.checkForWall(target.getPlayer())) {
@@ -409,16 +421,14 @@ public class GameController {
     /**
      * Tjekker hvorvidt en spillet har vundet.
      * Hvis en spiller har vundet, vises en ny boks som fortæller spillerne hvem der har vundet.
+     * Derudover ændres fasen til FINISH som skjuler knapper og kort.
      * @param player spilleren der tjekkes.
      */
     public void isWinnerFound(Player player){
-        if (player.getScore() >= 3 ){ //TODO 3-tallet bør ændres til antallet af checkpoints.
-            if (!window.isShowing()) {
-                window.setTitle("WINNDER FOUND");
-                window.setContentText("Player " + player.getName() + " has won the game!");
-                window.initStyle(StageStyle.UTILITY);
-                window.showAndWait();
-            }
+        if (player.getScore() >= 3 ){ //TODO 3-tallet bør ændres til antallet af checkpoints (ikke hard-coded)
+            board.setPhase(Phase.FINISH);
+            PopupView view = new PopupView();
+            view.winningWindow(player);
         }
     }
 
