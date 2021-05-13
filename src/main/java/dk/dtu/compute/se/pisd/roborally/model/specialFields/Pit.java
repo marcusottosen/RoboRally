@@ -21,7 +21,7 @@ public class Pit extends FieldAction {
      */
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println("You fell into the abyss");
+        System.out.println(space.getPlayer().getName() + " fell into the abyss");
         space.getPlayer().setHealth(0);
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(null);

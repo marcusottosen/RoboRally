@@ -104,6 +104,10 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
+    /**
+     * Range of laser
+     * @param board objektet
+     */
     public void laserRange(Board board){
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {

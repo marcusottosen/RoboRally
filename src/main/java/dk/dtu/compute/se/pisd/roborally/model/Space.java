@@ -116,11 +116,19 @@ public class Space extends Subject {
     SpaceTemplate spaceTemplate = new SpaceTemplate();
     PlayerTemplate playerTemplate = new PlayerTemplate();
 
-    //Wall
+    /**
+     * Adds a wall on a field
+     * @param heading for the wall on the field
+     */
     public void addWall(Heading heading){
         spaceTemplate.walls.add(heading);
         notifyChange();
     }
+
+    /**
+     * Deletes a wall on the field
+     * @param heading for the wall on the field
+     */
     public void deleteWall(Heading heading){
         spaceTemplate.walls.remove(heading);
         notifyChange();
@@ -130,31 +138,55 @@ public class Space extends Subject {
     }
 
 
-    //Checkpoint
+    /**
+     * Adds a checkpoint on a field
+     * @param checkpoint
+     */
     public void addCheckpoint(FieldAction checkpoint){
         spaceTemplate.actions.add(checkpoint);
         notifyChange();
     }
+
+    /**
+     * Deletes a checkpoint from a field
+     * @param checkpoint
+     */
     public void deleteCheckpoint(FieldAction checkpoint){
         spaceTemplate.actions.remove(checkpoint);
         notifyChange();
     }
 
-    //ConveyorBelt
+    /**
+     * Adds a conveyorbelt on a field
+     * @param conveyorBelt
+     */
     public void addConveyorBelt(FieldAction conveyorBelt){
         spaceTemplate.actions.add(conveyorBelt);
         notifyChange();
     }
+
+    /**
+     * Deletes a conveyorbelt from a field
+     * @param conveyorBelt
+     */
     public void deleteConveyorBelt(FieldAction conveyorBelt){
         spaceTemplate.actions.remove(conveyorBelt);
         notifyChange();
     }
 
-    //EnergyCube
+    /**
+     * Adds an energycube to a field
+     * @param energyCube
+     */
     public void addEnergyCube(FieldAction energyCube){
         spaceTemplate.actions.add(energyCube);
         notifyChange();
     }
+
+    /**
+     * Removes an energycube from a field
+     * @param energyCube
+     */
     public void deleteEnergyCube(FieldAction energyCube){
         spaceTemplate.actions.remove(energyCube);
         notifyChange();
