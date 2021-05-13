@@ -26,9 +26,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
@@ -46,6 +48,9 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
     public static int energyCubesAmount = 0;
+    public static BoardTemplate template;
+    public static Space space;
+    public static Board result;
 
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
@@ -65,24 +70,25 @@ public class LoadBoard {
                 registerTypeAdapter(FieldAction.class, adapter);
         Gson gson = simpleBuilder.create();
 
-		Board result;
+		//Board result;
 		// FileReader fileReader = null;
         JsonReader reader = null;
 		try {
 			// fileReader = new FileReader(filename);
 			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+			template = gson.fromJson(reader, BoardTemplate.class);
             energyCubesAmount = template.energyCubesAmount;
 
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+			    space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
 			    /*for(Heading wall : spaceTemplate.walls) {
 			        space.addWall(wall);
                 }*/
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
+                    //space.getSpawns().addAll(spaceTemplate.spawns);
                 }
             }
 
@@ -102,6 +108,20 @@ public class LoadBoard {
 			}
 		}
 		return null;
+    }
+
+    /**
+     * @param player the player to add to the board
+     * @param i the index of the loop required to spawn all players on the board. (see AppController)
+     */
+    public static void loadPlayer( Player player, int i ) {
+        /* i er indexet af den loop der bruges til at kalde metoden */
+            PlayerTemplate playerTemplate = template.spawns.get(i);
+                space = result.getSpace(playerTemplate.x, playerTemplate.y);
+                if (space != null) {
+                    space.getSpawns().addAll(playerTemplate.spawns);
+                }
+                player.setSpace(space);
     }
 
     public static void saveBoard(Board board, String name) {

@@ -22,11 +22,14 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
 import dk.dtu.compute.se.pisd.roborally.view.InfoView;
 import dk.dtu.compute.se.pisd.roborally.view.PopupView;
+import dk.dtu.compute.se.pisd.roborally.view.LaserView;
+import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.stage.StageStyle;
@@ -70,10 +73,12 @@ public class GameController {
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */
     public void startProgrammingPhase() {
+        LaserView.shootLaser();
+        Laser.laserDamage();
+        playerDeath(board);
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
-
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {
@@ -108,6 +113,7 @@ public class GameController {
      * Ænder derudover fasen til ACTIVATION.
      */
     public void finishProgrammingPhase() {
+        LaserView.stopLaser();
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
@@ -251,8 +257,10 @@ public class GameController {
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and TODO Forstå hvad ekkart vil her.
+            // XXX TODO This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
+            // Victor der har sat to do på her, og ikke Ekkart - er det noget vi ønkser at rette?
 
             if (player.energyCubesOptained.contains(EnergyCubeTypes.EXTRAMOVE) &&
                     !((command == Command.RIGHT) || (command == Command.LEFT) || (command == Command.UTURN)
@@ -444,4 +452,20 @@ public class GameController {
             actionType.doAction(this, space);
         }
     }
+
+
+    public void playerDeath(Board board){
+        for (int i = 0; i < board.getPlayersNumber(); i++){
+            int health = board.getPlayer(i).getHealth();
+            Player player = board.getPlayer(i);
+            if (health <= 0){
+                int x = LoadBoard.template.spawns.get(i).x;
+                int y = LoadBoard.template.spawns.get(i).y;
+                player.setSpace(board.getSpace(x, y));
+                player.setHealth(3);
+                player.setHeading(Heading.SOUTH);
+            }
+        }
+    }
 }
+

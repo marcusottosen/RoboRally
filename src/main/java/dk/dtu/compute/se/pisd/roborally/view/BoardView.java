@@ -22,10 +22,13 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +36,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * BoardView implementere GameController til spillepladen.
@@ -57,6 +63,9 @@ public class BoardView extends VBox implements ViewObserver {
     private final HBox infoView;
     private final InfoView view;
 
+    final public static List<Heading> laserHeading = new ArrayList<>();
+    final public static List<Space> laserSpaces = new ArrayList<>();
+
     /***
      * Konstruktøren
      * @param gameController The GameController of the given game
@@ -79,6 +88,9 @@ public class BoardView extends VBox implements ViewObserver {
         spaces = new SpaceView[board.width][board.height];
         spaceEventHandler = new SpaceEventHandler(gameController);
 
+        //initiate the lasers for the given board. This is done before the SpaceView is created, to be able to prep the lasers range.
+        laserRange(board);
+
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
@@ -90,6 +102,54 @@ public class BoardView extends VBox implements ViewObserver {
         }
         board.attach(this);
         update(board);
+    }
+
+    public void laserRange(Board board){
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
+                Space space = board.getSpace(x, y);
+                Space oldspace;
+                Space newspace = space;
+                if(space.getActions().size() != 0) {
+                    for (int i = 0; i < space.getActions().size(); i++) {
+                        FieldAction actionType = space.getActions().get(i);
+                        if (actionType instanceof Laser){
+                            System.out.println("start");
+                            if (((Laser) actionType).getHeading() == Heading.WEST || ((Laser) actionType).getHeading() == Heading.NORTH){
+                                do {
+                                    oldspace = newspace;
+                                    System.out.println("oldspace x: " + oldspace.x);
+                                    System.out.println("oldspace y: " + oldspace.y);
+                                    laserHeading.add(((Laser) actionType).getHeading());
+                                    laserSpaces.add(newspace);
+                                    newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
+                                }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height);
+                            }else if (((Laser) actionType).getHeading() == Heading.EAST){
+                                do {
+                                    oldspace = newspace;
+                                    System.out.println("oldspace x: " + oldspace.x);
+                                    System.out.println("oldspace y: " + oldspace.y);
+                                    laserHeading.add(((Laser) actionType).getHeading());
+                                    laserSpaces.add(newspace);
+                                    newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
+                                }while(oldspace.x != 0);
+                            }else if (((Laser) actionType).getHeading() == Heading.SOUTH){
+                                do {
+                                    oldspace = newspace;
+                                    //System.out.println("oldspace x: " + newspace.x);
+                                    //System.out.println("oldspace y: " + newspace.y);
+                                    laserHeading.add(((Laser) actionType).getHeading());
+                                    laserSpaces.add(newspace);
+                                    newspace = oldspace.board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
+                                }while(oldspace.y != 0);
+                            }
+                        }
+                        //System.out.println("heading: " + laserHeading.size());
+                        //System.out.println("space: " + laserSpaces.size());
+                    }
+                }
+            }
+        }
     }
 
     /**
