@@ -13,14 +13,14 @@ class BoardTest {
     private final int TEST_HEIGHT = 8;
 
     Board board;
-    Player player1;
-    Player player2;
+    Player player;
 
     @BeforeEach
     void setup(){
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
-        player1 = new Player(board, "red", "Player " + 1);
-        player2  = new Player(board, "blue", "Player " + 2)
+        player = new Player(board, "red", "Player " + 1);
+
+        board.addPlayer(player);
     }
     @AfterEach
     void tearDown(){
@@ -44,9 +44,9 @@ class BoardTest {
 
     @Test
     void setCurrentPlayer() {
-        board.setCurrentPlayer(player1);
+        board.setCurrentPlayer(player);
 
-        Assertions.assertEquals(player1, board.getCurrentPlayer(), "Currentplayer should be player 1");
+        Assertions.assertEquals(player, board.getCurrentPlayer(), "Currentplayer should be player 1");
     }
 
     @Test
