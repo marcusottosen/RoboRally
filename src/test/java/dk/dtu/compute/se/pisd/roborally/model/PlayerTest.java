@@ -11,9 +11,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-
-
 class PlayerTest {
 
     private final int TEST_WIDTH = 8;
@@ -26,7 +23,7 @@ class PlayerTest {
 
 
     @BeforeEach
-    void setup(){
+    void setUp(){
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
         player = new Player(board, PLAYER_COLORS.get(1), "Player " + (1));
 

@@ -16,7 +16,7 @@ class BoardTest {
     Player player;
 
     @BeforeEach
-    void setup(){
+    void setUp(){
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
         player = new Player(board, "red", "Player " + 1);
 
