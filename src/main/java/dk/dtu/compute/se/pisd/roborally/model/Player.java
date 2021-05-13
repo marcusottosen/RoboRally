@@ -35,7 +35,8 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * Viser bl.a. farver, navn, placering og retning.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class Player extends Subject {
 
@@ -50,8 +51,8 @@ public class Player extends Subject {
     private Space space;
     private Heading heading = SOUTH;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
 
     private int score = 0;
     public ArrayList<Integer> checkpointsCompleted = new ArrayList<Integer>();

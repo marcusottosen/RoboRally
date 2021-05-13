@@ -40,13 +40,13 @@ import org.jetbrains.annotations.NotNull;
  * Den primære logik af selve spillet findes sted i GameController.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
+ * @author Frederik Nissen
  */
 public class GameController {
 
     final public Board board;
-    private Wall wall;
-    //private final Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
-
 
     public GameController(@NotNull Board board) {
         this.board = board;
@@ -296,7 +296,7 @@ public class GameController {
     }
 
     public void forward1(@NotNull Player player) {
-        wall = new Wall(board);
+        Wall wall = new Wall(board);
         if (player.board == board) {
             if ((player.getHealth() >= 1)) {
                 Space space = player.getSpace();
@@ -464,6 +464,9 @@ public class GameController {
                 player.setSpace(board.getSpace(x, y));
                 player.setHealth(3);
                 player.setHeading(Heading.SOUTH);
+                player.getEnergyCubesOptained().clear();
+                player.getCheckpointsCompleted().clear();
+                player.setScore(0);
             }
         }
     }

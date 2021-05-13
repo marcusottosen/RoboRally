@@ -44,9 +44,7 @@ public class Space extends Subject {
     public final int y;
 
     private Player player;
-   // private Checkpoint checkpoint;
     private Wall wall;
-    //private ConveyorBelt1 conveyorBelt1;
 
     /**
      * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
@@ -90,28 +88,6 @@ public class Space extends Subject {
         }
     }
 
-
-    /**
-     *
-     * @return walls.
-     */
-    /*public Wall getWalls() {
-        return wall;
-    }
-*/
-    /*public void setWall(Wall wall){
-        Wall oldWall = this.wall;
-        if (wall != oldWall && (wall == null || board == wall.board));{
-            this.wall = wall;
-            if (oldWall != null){
-                oldWall.setSpace(null);
-            }
-            if (wall != null){
-                wall.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
 
     SpaceTemplate spaceTemplate = new SpaceTemplate();
     PlayerTemplate playerTemplate = new PlayerTemplate();
@@ -167,45 +143,6 @@ public class Space extends Subject {
     public List<FieldAction> getActions(){ return spaceTemplate.actions; }
 
     public List<PlayerSpawns> getSpawns(){ return playerTemplate.spawns; }
-
-
-    /* public Checkpoint getCheckpoint(){
-        return checkpoint;
-    }*/
-
-    /*public void setCheckpoint(Checkpoint checkpoint){ //skal slettes
-        Checkpoint oldCheckpoint = this.checkpoint;
-        if (checkpoint != oldCheckpoint && (checkpoint == null || board == checkpoint.board));{
-            this.checkpoint = checkpoint;
-            if (oldCheckpoint != null){
-                oldCheckpoint.setSpace(null);
-            }
-            if (checkpoint != null){
-                checkpoint.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
-    /*
-    public ConveyorBelt1 getConveyorBelt(){ //skal ændres
-        return conveyorBelt1;
-    }
-    public void setConveyorBelt(ConveyorBelt1 conveyorBelt1){ //skal slettes
-        ConveyorBelt1 oldConveyorBelt1 = this.conveyorBelt1;
-        if (conveyorBelt1 != oldConveyorBelt1 && (conveyorBelt1 == null || board == conveyorBelt1.board));{
-            this.conveyorBelt1 = conveyorBelt1;
-            if (oldConveyorBelt1 != null){
-                oldConveyorBelt1.setSpace(null);
-            }
-            if (conveyorBelt1 != null){
-                conveyorBelt1.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
-
-
-
 
     /**
      * This is a minor hack; since some views that are registered with the space
