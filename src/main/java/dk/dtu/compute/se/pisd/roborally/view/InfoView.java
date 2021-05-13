@@ -2,7 +2,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.EnergyCubeTypes;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
@@ -25,15 +27,25 @@ public class InfoView{
     final private static String ALIVE = "/alive.png";
     final private static String HEALTH_ALIVE = "images/heart.png";
     final private static String HEALTH_DEAD = "images/heartDead.png";
+    final private static String EXTRAMOVE_IMAGE_PATH = "images/energyCubeIcons/extraMove.png";
+    final private static String KNIFE_IMAGE_PATH = "images/energyCubeIcons/knife.png";
+    final private static String LASER_IMAGE_PATH = "images/energyCubeIcons/laser.png";
+    final private static String SHIELD_IMAGE_PATH = "images/energyCubeIcons/shield.png";
 
     HBox playerView;
     ImageView playerImageView;
     VBox playerInfoBox;
     VBox playerHealthBox;
 
+    HBox cubeBoxtop;
+    HBox cubeBoxBottom;
+
+    int smallIconSize = 20;
+
     /**
      * Konstruktøren af klassen.
      * Opretter mængden af HBoxe som der vil blive brugt.
+     * Hvis boxene ikke bliver oprettet her, resulterer det i index out of bounds når de blive ændret længere nede.
      * @param allInfoBox HBoxen som viser hele top-baren.
      * @param board spillets board.
      */
@@ -49,10 +61,10 @@ public class InfoView{
      * Opdaterer og viser alle informationerne i top-baren.
      * Der laves et playerView HBox til hver spiller som indeholder spillerens robot, navn, score og liv.
      * Hver playerView HBox bliver tilføjet til containeren som så viser dem alle.
-     * @param container HBoxen som viser hele top-baren.
+     * @param allInfoBox HBoxen som viser hele top-baren.
      * @param player Den nuværende spiller.
      */
-    public void updateBox(HBox container, Player player){
+    public void updateBox(HBox allInfoBox, Player player){
         if (player!=null) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 playerView = new HBox();
@@ -73,7 +85,8 @@ public class InfoView{
                 showPlayerHealth();
                 playerView.getChildren().setAll(playerImageView, playerInfoBox, playerHealthBox);
 
-                container.getChildren().set(i, playerView);
+                allInfoBox.setMinHeight(smallIconSize*4+5);
+                allInfoBox.getChildren().set(i, playerView);
             }
         }
     }
@@ -103,45 +116,112 @@ public class InfoView{
         playerImageView = new ImageView();
 
         playerImageView.setImage(playerImg);
-        playerImageView.setFitWidth(50);
-        playerImageView.setFitHeight(50);
-        playerImageView.setSmooth(true);
-        playerImageView.setCache(true); //Loader hurtigere
+
+        setElementSize(playerImageView, 50);
     }
 
     /**
      * Viser spillerens navn og score inde i en VBox
+     * Derudover tilføjer den også cubeBoxTop og cubeBoxBottom til playerInfoBox.
+     * Dette er for at alt ovenstående information er i samme box i HBoxen "allInfoBox".
      */
     private void showPlayerInfo(){
-        playerInfoBox = new VBox(5);
+        cubeBoxtop = new HBox();
+        cubeBoxBottom = new HBox();
+
+
+        playerInfoBox = new VBox();
+        playerInfoBox.getChildren().clear();
 
         Label playerName = new Label(player.getName());
         Label playerScore = new Label("score: " + player.getScore());
 
-        playerInfoBox.getChildren().setAll(playerName, playerScore);
+        cubeBoxtop.setMinHeight(20);
+        cubeBoxBottom.setMinHeight(20);
+        cubeBoxes();
+        playerInfoBox.getChildren().setAll(playerName, playerScore, cubeBoxtop, cubeBoxBottom);
     }
 
     /**
+     * Tilføjer billeder til hhv. cubeBoxTop og cubeBoxBottom.
+     */
+    public void cubeBoxes() {
+        //System.out.println(player.getEnergyCubesOptained());
+        ImageView energyCubeTop = null;
+        ImageView energyCubeBottom = null;
+        for (EnergyCubeTypes type : player.energyCubesOptained) {
+            switch (type.name()) {
+                case "GETLASER" -> {
+                    Image laserImg = new Image(LASER_IMAGE_PATH);
+                    energyCubeTop = new ImageView(laserImg);
+                    energyCubeBottom = null;
+                }
+                case "EXTRAMOVE" -> {
+                    Image extraMoveImg = new Image(EXTRAMOVE_IMAGE_PATH);
+                    energyCubeTop = new ImageView(extraMoveImg);
+                    energyCubeBottom = null;
+                }
+                case "DEFLECTORSHIELD" -> {
+                    Image deflectorShieldImg = new Image(SHIELD_IMAGE_PATH);
+                    energyCubeBottom = new ImageView(deflectorShieldImg);
+                    energyCubeTop = null;
+                }
+                case "MELEEWEAPON" -> {
+                    Image knifeImg = new Image(KNIFE_IMAGE_PATH);
+                    energyCubeBottom = new ImageView(knifeImg);
+                    energyCubeTop = null;
+                }
+                default -> {
+                    energyCubeTop = null;
+                    energyCubeBottom = null;
+                }
+            }
+
+
+            if (energyCubeTop != null) {
+                setElementSize(energyCubeTop, smallIconSize);
+                cubeBoxtop.getChildren().add(energyCubeTop);
+            }
+            if (energyCubeBottom != null) {
+                setElementSize(energyCubeBottom, smallIconSize);
+                cubeBoxBottom.getChildren().add(energyCubeBottom);
+            }
+        }
+    }
+
+
+    /**
+     * Lille metode til at sætte størrrelsen af et billede.
+     * @param imageView billedet der skal ændre størrelse.
+     */
+    public void setElementSize(ImageView imageView, int size){
+        imageView.setFitWidth(size); //Holder billedet samme størrelse som en tile
+        imageView.setFitHeight(size);
+        imageView.setSmooth(true);
+        imageView.setCache(true); //Loader hurtigere
+    }
+
+
+    /**
      * Viser spillerens liv som hjerter. Der vises et sort hjerte for hvert liv der er mistet.
-     * Sætter først de "døde" hjerter, og derefter i normale hjerter
+     * Sætter først de "døde" hjerter, og derefter de normale hjerter
      */
     private void showPlayerHealth(){
+
         playerHealthBox = new VBox();
         Image aliveImg = new Image(HEALTH_ALIVE);
         Image deadImg = new Image(HEALTH_DEAD);
 
         for (int i = player.getHealth(); i < player.availableHealth; i++) {
             ImageView deadHeart = new ImageView(deadImg);
-            deadHeart.setFitHeight(20);
-            deadHeart.setFitWidth(20);
+            setElementSize(deadHeart, smallIconSize);
 
             playerHealthBox.getChildren().add(deadHeart);
         }
 
         for (int i = 0; i < player.getHealth(); i++) {
             ImageView heart = new ImageView(aliveImg);
-            heart.setFitHeight(20);
-            heart.setFitWidth(20);
+            setElementSize(heart, smallIconSize);
 
             playerHealthBox.getChildren().add(heart);
         }
