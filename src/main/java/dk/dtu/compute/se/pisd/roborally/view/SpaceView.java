@@ -61,6 +61,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String TOOLBOX_IMAGE_PATH = "images/tiles/toolbox.png";
     final private static String CHECKPOINT_IMAGE_PATH = "images/tiles/checkpoint";
     final private static String ENERGYCUBE_IMAGE_PATH = "images/tiles/energyCube.png";
+    final private static String SPAWN_IMAGE_PATH = "images/tiles/spawn.png";
 
     final private static String PLAYER_IMAGE_PATH = "images/robots/player";
     final private static String ALIVE = "/alive.png";
@@ -103,7 +104,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         viewLaser(space);
         LaserView.stopLaser();
 
-
+        viewSpawn(space);
 
         this.getChildren().add(laserPane);
         this.getChildren().add(overlayPane);
@@ -386,6 +387,22 @@ public class SpaceView extends StackPane implements ViewObserver {
                     System.out.println("Error loading push panel");
                 }
             }
+        }
+    }
+
+    public void viewSpawn(Space space){
+        if (space.getPlayer() != null){
+            try {
+                Image image = new Image(SPAWN_IMAGE_PATH);
+                ImageView spawnImg = new ImageView();
+                spawnImg.setImage(image);
+                setElementSize(spawnImg);
+
+                overlayPane.getChildren().add(spawnImg);
+            } catch (Exception e){
+                System.out.println("Error loading spawn point Img");
+            }
+
         }
     }
 

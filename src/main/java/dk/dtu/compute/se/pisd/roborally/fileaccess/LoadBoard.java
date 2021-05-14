@@ -79,13 +79,9 @@ public class LoadBoard {
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
 			    space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    /*for(Heading wall : spaceTemplate.walls) {
-			        space.addWall(wall);
-                }*/
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
-                    //space.getSpawns().addAll(spaceTemplate.spawns);
                 }
             }
 
