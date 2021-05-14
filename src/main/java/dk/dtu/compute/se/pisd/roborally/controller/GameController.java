@@ -293,6 +293,9 @@ public class GameController {
         }
     }
 
+    /**
+     * @param player which player to move.
+     */
     public void forward1(@NotNull Player player) {
         wall = new Wall(board);
         if (player.board == board) {
@@ -327,6 +330,12 @@ public class GameController {
         }
     }
 
+    /**
+     * @param player which player to move
+     * @param space which space the player should move to
+     * @param heading which heading the player has
+     * @throws ImpossibleMoveException if the player is unable to move there.
+     */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
@@ -452,6 +461,10 @@ public class GameController {
     }
 
 
+    /**
+     * Check if the player is dead (0 health) and then reset them, so they spawn back on their spawnpoint with full health.
+     * @param board which board is being used
+     */
     public void playerDeath(Board board){
         for (int i = 0; i < board.getPlayersNumber(); i++){
             int health = board.getPlayer(i).getHealth();

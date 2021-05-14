@@ -7,16 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayerSpawns {
 
-    //private final Space[][] spaces;
-    //final public Board board;
-    //private Space space;
-    //private Heading direction;
-    //private Heading otherDirection;
-    //private Player player;
-
-    /*public PlayerSpawns(Space[][] spaces) {
-        this.spaces = spaces;
-    }*/
     int x;
     int y;
 
