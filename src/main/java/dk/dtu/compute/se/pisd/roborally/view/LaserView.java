@@ -1,18 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
-import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -48,7 +41,7 @@ public class LaserView{
         spaces.add(space);
     }
 
-    public static void shootLaser() {
+    public static void shootLaser(){
         for (int i = 0; i < spaces.size(); i++){
             laserPaneList.get(i).getChildren().add(laserImgList.get(i));
         }

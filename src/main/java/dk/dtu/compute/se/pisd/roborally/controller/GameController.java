@@ -257,10 +257,8 @@ public class GameController {
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and TODO Forstå hvad ekkart vil her.
-            // XXX TODO This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
-            // Victor der har sat to do på her, og ikke Ekkart - er det noget vi ønkser at rette?
 
             if (player.energyCubesOptained.contains(EnergyCubeTypes.EXTRAMOVE) &&
                     !((command == Command.RIGHT) || (command == Command.LEFT) || (command == Command.UTURN)

@@ -48,16 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-/*
-* TODO Få vægge til at virke!
-* TODO Få conveyorbelts til at virke
-* TODO Få conveyorbelts til at rotere den rette vej ud fra json fil.
-* TODO Få nummer på checkpointsne, så players ved hvilken rækkefølge de skal følge (brug billerne)
-*           (Gør også så samme spiller ikke kan få flere points fra samme checkpoint
-* TODO Flyt gerne special felterne fra SpaceView over i SpecialFieldsView (virker ikke atm.)
-* TODO Add laser samt funktion og spiller health
-*
- */
+
 
 /**
  * ...
@@ -69,7 +60,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-    final private List<String>  BOARD_NAMES = Arrays.asList("defaultboard", "Board1", "Board2");
+    final private List<String>  BOARD_NAMES = Arrays.asList("Board1", "Board2");
 
     final private RoboRally roboRally;
 
@@ -121,35 +112,6 @@ public class AppController implements Observer {
                    board.addPlayer(player);
                    LoadBoard.loadPlayer(player, i);
                }
-
-            /*Checkpoint checkpoint1 = new Checkpoint(board);
-            board.addCheckpoint(checkpoint1);
-            //checkpoint1.showCheckpoint(board);
-            checkpoint1.setSpace(board.getSpace(3,5));
-
-            Checkpoint checkpoint2 = new Checkpoint(board);
-            board.addCheckpoint(checkpoint2);
-            //checkpoint1.showCheckpoint(board);
-            checkpoint2.setSpace(board.getSpace(1,0));
-
-
-            *//*Wall wall1 = new Wall(board);
-            board.addWall(wall1);
-            wall1.setDirection("NORTH");
-            wall1.setSpace(board.getSpace(3,4));
-
-            Wall wall2 = new Wall(board);
-            board.addWall(wall1);
-            wall2.setDirection("EAST");
-            wall2.setSpace(board.getSpace(2,2));*//*
-
-            ConveyorBelt1 conveyorBelt1 = new ConveyorBelt1(board);
-            board.addConveyorBelt(conveyorBelt1);
-            conveyorBelt1.setDirection("WEST");
-            conveyorBelt1.setSpace(board.getSpace(6,2));*/
-
-
-               //FieldAction fieldAction = new ConveyorBelt1();
 
                // XXX: V2
                // board.setCurrentPlayer(board.getPlayer(0));
