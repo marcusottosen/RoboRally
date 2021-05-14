@@ -22,7 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.dal;
 
 /**
- * ...
+ * hvis repository ikke findes oprettes et nyt repository med en ny connection.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *

@@ -259,8 +259,8 @@ class Repository implements IRepository {
 
 	/**
 	 * Opretter spillerne i databasen og derved alle de nødvendige informationer tilhørende spillerne.
-	 * @param game
-	 * @throws SQLException
+	 * @param game spillets board.
+	 * @throws SQLException til SQL fejl.
 	 */
 	private void createPlayersInDB(Board game) throws SQLException {
 		PreparedStatement ps = getSelectPlayersStatementU();
@@ -298,6 +298,12 @@ class Repository implements IRepository {
 		}
 	}
 
+	/**
+	 * Loader spillerne fra databasen hvor der findes alt den information som createPlayersInDB har oprettet.
+	 * Looper bla. igennem spillerens gemte kommando- og programmeringskort.
+	 * @param game spillets board.
+	 * @throws SQLException ved SQL fejl.
+	 */
 	private void loadPlayersFromDB(Board game) throws SQLException {
 		PreparedStatement ps = getSelectPlayersASCStatement();
 		ps.setInt(1, game.getGameId());
@@ -376,7 +382,12 @@ class Repository implements IRepository {
 		}
 	}
 
-
+	/**
+	 * Hvis spillet allerede er gemt, og man gemmer det igen, skal spillernes informationer opdateres.
+	 * Det sørger denne metode for.
+	 * @param game spillets board.
+	 * @throws SQLException ved SQL fejl.
+	 */
 	private void updatePlayersInDB(Board game) throws SQLException {
 		PreparedStatement ps = getSelectPlayersStatementU();
 		ps.setInt(1, game.getGameId());
@@ -395,7 +406,6 @@ class Repository implements IRepository {
 				rsalert.setHeaderText(null);
 				rsalert.setContentText("Player updated in database!");
 				rsalert.showAndWait();
-
 				rs.updateRow();
 			}
 			rs.close();

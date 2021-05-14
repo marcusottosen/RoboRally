@@ -26,18 +26,19 @@ import java.util.List;
 
 
 /**
- * ...
+ * Indeholder bredden og højden på boarded samt antallet af energyCubes.
+ * Den indeholder energyCubes da deres lokationer ikke sættes i JSON filen, men findes tilfældigt.
+ * Derudover indeholderne BoardTemplate en liste over alle spaces samt spillernes spawns.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class BoardTemplate {
-
     public int width;
     public int height;
     public int energyCubesAmount;
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
     public List<PlayerTemplate> spawns = new ArrayList<>();
-
 }

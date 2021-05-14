@@ -25,22 +25,24 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Random;
 
-import java.io.*;
-import java.util.Optional;
-
 /**
- * ...
+ * LoadBoard bruges til hhv. at loade og save boarded samt at loade spilleren fra en JSON fil.
+ * Derudover sørges der for at tilføje energyCubes på tilfældige frie tiles ved at tilføje dem til space.getActions.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  * @author Marcus Ottosen
@@ -57,6 +59,11 @@ public class LoadBoard {
     public static Space space;
     public static Board result;
 
+    /**
+     * loader boarded samt sætter energyCubes
+     * @param boardname navnet på boarded der skal loades.
+     * @return result hvilket er boarded.
+     */
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -65,31 +72,26 @@ public class LoadBoard {
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
 
-
-		// In simple cases, we can create a Gson object with new Gson():
         Adapter adapter = new Adapter<FieldAction>();
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, adapter);
         Gson gson = simpleBuilder.create();
 
-		//Board result;
-		// FileReader fileReader = null;
         JsonReader reader = null;
-		try {
-			// fileReader = new FileReader(filename);
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			template = gson.fromJson(reader, BoardTemplate.class);
+        try {
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            template = gson.fromJson(reader, BoardTemplate.class);
 
-			result = new Board(template.width, template.height);
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
+            result = new Board(template.width, template.height);
+            for (SpaceTemplate spaceTemplate: template.spaces) {
+                space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
 
-			//Finder en random tom placering til energyCube og tilføjer hver især.
+            //Finder en random tom placering til energyCube og tilføjer hver især.
             energyCubesAmount = template.energyCubesAmount;
             Random random = new Random();
             for (int i = 0; i < energyCubesAmount; i++) {
@@ -100,14 +102,14 @@ public class LoadBoard {
                     randomX = random.nextInt(template.width);
                     randomY = random.nextInt(template.height);
                     energySpace = result.getSpace(randomX, randomY);
-                } while (!energySpace.getActions().isEmpty()); //Selvølgelig skal der være frie pladser tilbage.
+                } while (!energySpace.getActions().isEmpty()); //Selvølgelig kræves det, at der er frie pladser tilbage.
                 EnergyCube energyCube = new EnergyCube();
                 energySpace.getActions().add(energyCube);
             }
 
-			reader.close();
-			return result;
-		} catch (IOException e1) {
+            reader.close();
+            return result;
+        } catch (IOException e1) {
             if (reader != null) {
                 try {
                     reader.close();
@@ -115,28 +117,34 @@ public class LoadBoard {
                 } catch (IOException ignored) {}
             }
             if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException ignored) {}
-			}
-		}
-		return null;
+                try {
+                    inputStream.close();
+                } catch (IOException ignored) {}
+            }
+        }
+        return null;
     }
 
     /**
+     * Loader spilleren.
      * @param player the player to add to the board
      * @param i the index of the loop required to spawn all players on the board. (see AppController)
      */
     public static void loadPlayer( Player player, int i ) {
-        /* i er indexet af den loop der bruges til at kalde metoden */
-            PlayerTemplate playerTemplate = template.spawns.get(i);
-                space = result.getSpace(playerTemplate.x, playerTemplate.y);
-                if (space != null) {
-                    space.getSpawns().addAll(playerTemplate.spawns);
-                }
-                player.setSpace(space);
+        // i er indexet af den loop der bruges til at kalde metoden
+        PlayerTemplate playerTemplate = template.spawns.get(i);
+        space = result.getSpace(playerTemplate.x, playerTemplate.y);
+        if (space != null) {
+            space.getSpawns().addAll(playerTemplate.spawns);
+        }
+        player.setSpace(space);
     }
 
+    /**
+     * Gemmer boarded til en JSON fil.
+     * @param board det board der skal gemmes.
+     * @param name navnet boarded skal gemmes under.
+     */
     public static void saveBoard(Board board, String name) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
@@ -147,13 +155,6 @@ public class LoadBoard {
         String filename =
                 classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 
-        // In simple cases, we can create a Gson object with new:
-        //
-        //   Gson gson = new Gson();
-        //
-        // But, if you need to configure it, it is better to create it from
-        // a builder (here, we want to configure the JSON serialisation with
-        // a pretty printer):
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
                 setPrettyPrinting();
@@ -180,5 +181,4 @@ public class LoadBoard {
             }
         }
     }
-
 }
