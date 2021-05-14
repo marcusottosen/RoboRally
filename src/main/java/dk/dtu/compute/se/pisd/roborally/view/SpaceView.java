@@ -31,8 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -70,6 +68,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final private static String DEAD = "/dead.png";
 
     private final StackPane laserPane;
+    private final StackPane overlayPane;
     private final StackPane playerPane;
     Random random = new Random();
 
@@ -85,7 +84,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         Image image = new Image(TILE_IMAGE_PATH);
 
         ImageView tile = new ImageView();
-        laserPane = new StackPane(); // Laver et nyt pane(lag) til laser emitters, så de kan stå ovenpå walls
+        laserPane = new StackPane();
+        overlayPane = new StackPane(); // Laver et nyt pane(lag) til laser emitters og pushpanels, så de kan stå ovenpå walls
         playerPane = new StackPane(); // laver et pane til robotten ovenpå alt andet.
 
         tile.setImage(image);
@@ -103,8 +103,12 @@ public class SpaceView extends StackPane implements ViewObserver {
         viewLaser(space);
         LaserView.stopLaser();
 
+
+
         this.getChildren().add(laserPane);
+        this.getChildren().add(overlayPane);
         this.getChildren().add(playerPane);
+
         updatePlayer();
     }
 
@@ -286,7 +290,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     setElementSize(laserEmitterImg);
 
                     laserEmitterImg.setRotate(((90*heading.ordinal())%360)-180);
-                    laserPane.getChildren().add(laserEmitterImg);
+                    overlayPane.getChildren().add(laserEmitterImg);
                 }catch (Exception e){
                     System.out.println("Error loading Laser Emitter");
                 }
@@ -341,7 +345,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Viser en energyCube på feltet.
      */
     public void viewEnergyCube() {
-        laserPane.getChildren().clear();
+        overlayPane.getChildren().clear();
         for (FieldAction energyCube : space.getActions()){
             if (energyCube != null) {
                 try {
@@ -355,7 +359,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     energyCubeImg.setSmooth(true);
                     energyCubeImg.setCache(true); //Loader hurtigere
 
-                    laserPane.getChildren().add(energyCubeImg);
+                    this.getChildren().add(energyCubeImg);
                 }catch (Exception e){
                     System.out.println("Error loading energyCube");
                 }
@@ -377,7 +381,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     setElementSize(pushPanelImg);
 
                     pushPanelImg.setRotate(((90*heading.ordinal())%360)-180);
-                    laserPane.getChildren().add(pushPanelImg);
+                    overlayPane.getChildren().add(pushPanelImg);
                 } catch (Exception e){
                     System.out.println("Error loading push panel");
                 }

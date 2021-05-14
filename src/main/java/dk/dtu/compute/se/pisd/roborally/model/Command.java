@@ -45,11 +45,6 @@ public enum Command {
 
     final public String displayName;
 
-    /* udkommenteret i V3
-    Command(String displayName) {
-        this.displayName = displayName;
-    }
-    */
     final private List<Command> options;
 
     Command(String displayName, Command... options) {

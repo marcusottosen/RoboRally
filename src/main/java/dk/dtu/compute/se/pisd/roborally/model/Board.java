@@ -60,6 +60,12 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    /**
+     * Creates the board
+     * @param width of the board in number of spaces
+     * @param height of the board in number of spaces
+     * @param boardName
+     */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;

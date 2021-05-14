@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
+import com.sun.source.tree.IfTree;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -22,6 +23,7 @@ public class EnergyCube extends FieldAction {
     public void setType(EnergyCubeTypes newType){
         type = newType;
     }
+
 
     /**
      * Finder random kort som bliver efterspurgt fra newCardsWindow().
@@ -49,14 +51,16 @@ public class EnergyCube extends FieldAction {
             type = EnergyCubeTypes.getRandom();
         }
 
-        //Hvis spilleren allerede har den type cube findes der en ny.
-        //Hvis spilleren har alle cubes, brydes loopet aldrig!
-        while (player.energyCubesOptained.contains(type)){
-            type = EnergyCubeTypes.getRandom();
+        //Hvis spilleren har alle cubes, gives NEWCARDS, da denne kan fås flere gange.
+        //Hvis ikke, gives en random cube. Hvis spilleren allerede har den type cube findes der en ny.
+        if (player.getEnergyCubesOptained().size() == EnergyCubeTypes.values().length){
+            type = EnergyCubeTypes.NEWCARDS;
+        }else {
+            while (player.getEnergyCubesOptained().contains(type)) {
+                type = EnergyCubeTypes.getRandom();
+            }
         }
 
-        type = EnergyCubeTypes.NEWCARDS;
-        System.out.println(type);
 
         //Giv laser til spilleren og fjern evt. fra en anden spiller.
         if (type == EnergyCubeTypes.GETLASER){
@@ -68,8 +72,10 @@ public class EnergyCube extends FieldAction {
 
         } else if (type == EnergyCubeTypes.EXTRALIFE){ //Giver spilleren mulighed for at få et 4. liv.
             player.availableHealth=4;
+
         } else if (type == EnergyCubeTypes.DEFLECTORSHIELD){ //Skjold mod laser. Kan kun bruges 1 gang.
             //Skrives hvorend skaden tages
+
         } else if (type == EnergyCubeTypes.NEWCARDS){ //Spørger spilleren om han vil have alle sine kort skiftet ud.
             PopupView view = new PopupView();
             if(view.newCardsWindow(player) == 0) {
@@ -79,9 +85,11 @@ public class EnergyCube extends FieldAction {
                     field.setVisible(true);
                 }
             }
+         }
+
+        if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.NEWCARDS)) {
             player.removeOptainedEnergyCube(EnergyCubeTypes.NEWCARDS);
         }
-
 
 
 

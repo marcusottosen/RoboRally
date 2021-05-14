@@ -21,7 +21,8 @@ public class PopupView {
     public void winningWindow(Player player){
         if (!winningWindow.isShowing()) {
             winningWindow.setTitle("WINNDER FOUND");
-            winningWindow.setContentText("Player " + player.getName() + " has won the game!");
+            winningWindow.setHeaderText(null);
+            winningWindow.setContentText("Player \"" + player.getName() + "\" has won the game!");
             winningWindow.initStyle(StageStyle.UTILITY);
             winningWindow.showAndWait();
         }
