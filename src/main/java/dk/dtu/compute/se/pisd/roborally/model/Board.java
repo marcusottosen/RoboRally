@@ -32,40 +32,35 @@ import java.util.List;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
- * ...
+ * Holder styr på en stor håndfuld ting på boarded.
+ * Holder styr på og kan ændre bla. spillets fase, count, step, boardets navn og id samt nuværende spiller mm.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class Board extends Subject {
-
     public final int width;
-
     public final int height;
-
-    public String boardName;
-
-    private Integer gameId;
-
     private final Space[][] spaces;
-
     private final List<Player> players = new ArrayList<>();
-
     private final List<Wall> walls = new ArrayList<>();
 
+    public String boardName;
+    private Integer gameId;
     private Player current;
-
     private Phase phase = INITIALISATION;
-
+    private int count;
     private int step = 0;
-
+    private Command userChoice = null;
     private boolean stepMode;
 
     /**
-     * Creates the board
-     * @param width of the board in number of spaces
-     * @param height of the board in number of spaces
-     * @param boardName
+     * Oprettet boarded med størrelse og navn fra konstruktøren
+     *
+     * @param width     bredden på boarded.
+     * @param height    højden på boarded.
+     * @param boardName navnet på boarded.
      */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
@@ -73,7 +68,7 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -83,7 +78,8 @@ public class Board extends Subject {
 
     /**
      * Sætter højden og bredden af pladen.
-     * @param width angivet i antal felter.
+     *
+     * @param width  angivet i antal felter.
      * @param height angivet i antal felter.
      */
     public Board(int width, int height) {
@@ -92,22 +88,35 @@ public class Board extends Subject {
 
     /**
      * returnerer gameID.
+     *
      * @return i form af interger.
      */
     public Integer getGameId() {
         return gameId;
     }
 
-    public void setBoardName(String boardName){
+    /**
+     * Sætter boardets navn til det i parameteren.
+     *
+     * @param boardName det ønskede navn.
+     */
+    public void setBoardName(String boardName) {
         this.boardName = boardName;
     }
-    public String getBoardName(){
+
+    /**
+     * Returnerer boardets navn.
+     *
+     * @return boardets navn.
+     */
+    public String getBoardName() {
         return boardName;
     }
 
     /**
      * Sætter spillets id til det der bliver skrevet i parameteren, hvis den ikke er null.
      * Bruges til at gemme og loade spillet. gameID kan blive set some primary key.
+     *
      * @param gameId spillets ID som int.
      */
     public void setGameId(int gameId) {
@@ -122,6 +131,7 @@ public class Board extends Subject {
 
     /**
      * bruges til at returnere et felts x og y.
+     *
      * @param x int x-koordinat.
      * @param y int y-koordinat.
      * @return feltets x og y koordinater.
@@ -135,12 +145,18 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Returnerer listen af spiller som Player objekter.
+     *
+     * @return liste over players.
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
     /**
      * Bruges til at finde antallet at spillere ved at tjekke størrelsen på arraylisten Players.
+     *
      * @return størrelsen som int.
      */
     public int getPlayersNumber() {
@@ -149,7 +165,8 @@ public class Board extends Subject {
 
     /**
      * bruges til at tilføje en spiller
-     * @param player player objektet.
+     *
+     * @param player spilleren man vil tilføje.
      */
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
@@ -160,17 +177,19 @@ public class Board extends Subject {
 
     /**
      * Væggen i parameteren bliver tilføjet til arraylisten over walls.
-     * @param wall checkpoint.
+     *
+     * @param wall væggen man vil tilføje.
      */
-    public void addWall(@NotNull Wall wall){
+    public void addWall(@NotNull Wall wall) {
         walls.add(wall);
         notifyChange();
     }
 
     /**
      * Bruges til at få fat i en bestemt spiller på.
+     *
      * @param i nummeret på spilleren man vil have fat på.
-     * @return player object.
+     * @return spilleren som et player object.
      */
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {
@@ -182,7 +201,8 @@ public class Board extends Subject {
 
     /**
      * Bruges til at finde den nuværende spiller.
-     * @return player objekt.
+     *
+     * @return den nuværende spiller som player objekt.
      */
     public Player getCurrentPlayer() {
         return current;
@@ -190,7 +210,8 @@ public class Board extends Subject {
 
     /**
      * Sætter en spiller som den nuværende. Bruges når der skal skiftes mellem spillere.
-     * @param player player objekt.
+     *
+     * @param player den spiller man vil sætte som nuværende.
      */
     public void setCurrentPlayer(Player player) {
         if (player != this.current && players.contains(player)) {
@@ -201,6 +222,7 @@ public class Board extends Subject {
 
     /**
      * Bruges til at få fat i den nuværende fase af spillet.
+     *
      * @return spillets fase som objekt.
      */
     public Phase getPhase() {
@@ -209,7 +231,8 @@ public class Board extends Subject {
 
     /**
      * Sætter spillets fase til en af de 4 faser.
-     * @param phase objekt af Phase. Inder kun de 4 faser som enum.
+     *
+     * @param phase objekt af Phase. Indeholder faserne som ENUM.
      */
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
@@ -220,6 +243,7 @@ public class Board extends Subject {
 
     /**
      * Finder spillets nuværende step. Et step stiger for hvert kort der bliver brugt.
+     *
      * @return nuværende step som int.
      */
     public int getStep() {
@@ -228,6 +252,7 @@ public class Board extends Subject {
 
     /**
      * Sætter spillets step til det i parameteren.
+     *
      * @param step den int man ønsker spillets step skal være lig.
      */
     public void setStep(int step) {
@@ -239,6 +264,7 @@ public class Board extends Subject {
 
     /**
      * Returnerer hvorvidt om spillet er i step mode eller ej.
+     *
      * @return boolean. TRUE hvis stepMode.
      */
     public boolean isStepMode() {
@@ -247,6 +273,7 @@ public class Board extends Subject {
 
     /**
      * Sætter spillets stepmode svarende til den boolean der bliver angivet i parameteren.
+     *
      * @param stepMode boolean af det ønskede stepmode.
      */
     public void setStepMode(boolean stepMode) {
@@ -258,6 +285,7 @@ public class Board extends Subject {
 
     /**
      * Returnerer spillerens nummer som int.
+     *
      * @param player objekt af den spiller man ønsker nummeret på.
      * @return Spillerens nummer som int.
      */
@@ -275,7 +303,7 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
@@ -299,11 +327,9 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
-    //PiSU P08.2
-    private Command userChoice = null;
-
     /**
      * Returnerer Command. Spillerens choice.
+     *
      * @return userChoice.
      */
     public Command getUserChoice() {
@@ -312,7 +338,8 @@ public class Board extends Subject {
 
     /**
      * Sætter userChoice til den Command i parameteren.
-     * @param userChoice Command.
+     *
+     * @param userChoice det userChoice man ønsker.
      */
     public void setUserChoice(Command userChoice) {
         if (this.userChoice != userChoice) {
@@ -321,8 +348,13 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Finder antallet af checkpoints på pladen.
+     *
+     * @return antallet af checkpoints.
+     */
     public int getCheckpointAmount() {
-        int amount=0;
+        int amount = 0;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Space space = getSpace(x, y);
@@ -333,12 +365,12 @@ public class Board extends Subject {
                 }
             }
         }
-        System.out.println("checkpoints: " + amount);
         return amount;
     }
 
     /**
-     * En kort tekst i bunden af vinduet som angiver: spillets fase og steps.
+     * En kort tekst i bunden af vinduet som angiver spillets fase og steps.
+     *
      * @return spillets fase og steps som en string.
      */
     public String getStatusMessage() {
@@ -346,12 +378,8 @@ public class Board extends Subject {
     }
 
     /**
-     * Counts the number of moves in the game
-     */
-    private int count;
-
-    /**
      * Returnerer spillets nuværende count.
+     *
      * @return count som int.
      */
     public int getCount() {
@@ -360,6 +388,7 @@ public class Board extends Subject {
 
     /**
      * Sætter spillets count til den i parameteren.
+     *
      * @param count den int man ønsker count skal være lig.
      */
     public void setCount(int count) {

@@ -21,19 +21,17 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Her initialiser de forskellige kommandoer, og vi giver dem et displayName.
+ * Her initialises de forskellige kommandokort - deres displayName sættes sammen med kortet.
+ * Der gives yderligere et displayName til dem.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public enum Command {
-
-    // This is a very simplistic way of realizing different commands.
 
     FORWARD1("Move 1"),
     FORWARD2("Move 2"),
@@ -44,18 +42,34 @@ public enum Command {
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
 
     final public String displayName;
-
     final private List<Command> options;
 
+    /**
+     * Konstruktøren på Command.
+     * Sætter de angivede værdier i parameteren til klassens variable.
+     *
+     * @param displayName på kortet.
+     * @param options     evt. options som følger med.
+     */
     Command(String displayName, Command... options) {
         this.displayName = displayName;
-        this.options = Collections.unmodifiableList(Arrays.asList(options));
+        this.options = List.of(options);
     }
 
+    /**
+     * Hvorvidt kortet kræver interaktion fra brugeren.
+     *
+     * @return true hvis kortet kræver interaktion.
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }
 
+    /**
+     * Hvilket options kortet indeholder.
+     *
+     * @return listen af options.
+     */
     public List<Command> getOptions() {
         return options;
     }

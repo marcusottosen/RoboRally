@@ -28,15 +28,14 @@ import org.jetbrains.annotations.NotNull;
  * Vi tilfølger getName metode til vores programmeringskort, med navnene fra Command.java
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 
 public class CommandCard extends Subject {
-
     final public Command command;
 
     /**
      * Sætter kommandokortet i parameteren til final public Command command.
+     *
      * @param command kommandokort.
      */
     public CommandCard(@NotNull Command command) {
@@ -49,6 +48,4 @@ public class CommandCard extends Subject {
     public String getName() {
         return command.displayName;
     }
-
-
 }

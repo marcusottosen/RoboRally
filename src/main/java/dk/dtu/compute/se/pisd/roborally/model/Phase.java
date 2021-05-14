@@ -22,10 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 /**
- * de 4 faser er navngivet her som enum.
+ * de 5 faser er navngivet her som enum.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
  */
 public enum Phase {
     INITIALISATION, PROGRAMMING, ACTIVATION, PLAYER_INTERACTION, FINISH

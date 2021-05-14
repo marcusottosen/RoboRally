@@ -25,7 +25,6 @@ package dk.dtu.compute.se.pisd.roborally.model;
  * Bruges til at definere hvad den næste (højre) og tidligere (venstre) retning er.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public enum Heading {
 
@@ -33,13 +32,16 @@ public enum Heading {
 
     /**
      * Finder den næste/højre retning.
+     *
      * @return next heading
      */
     public Heading next() {
-        return values()[(this.ordinal() + 1) % values().length]; }
+        return values()[(this.ordinal() + 1) % values().length];
+    }
 
     /**
      * Finder den tidligere/venstre retning.
+     *
      * @return prev heading
      */
     public Heading prev() {
