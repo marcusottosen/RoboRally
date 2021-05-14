@@ -183,7 +183,7 @@ public class GameController {
                 (board.getPhase() == Phase.PLAYER_INTERACTION
                         && board.getUserChoice() != null))
                 && currentPlayer != null) {
-
+            currentPlayer.intiateLaser();
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 Command userChoice = board.getUserChoice();

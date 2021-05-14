@@ -22,8 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -62,6 +65,8 @@ public class Player extends Subject {
     // Liste over spillerens energyCubes
     public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
 
+    //Spillerens laser
+    Laser playerLaser = new Laser();
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -266,5 +271,23 @@ public class Player extends Subject {
     public void removeOptainedEnergyCube(EnergyCubeTypes removeCube){
         energyCubesOptained.remove(removeCube);
     }
+
+
+    public void intiateLaser(){
+        System.out.println("initiate");
+        if (energyCubesOptained.contains(EnergyCubeTypes.GETLASER)) {
+            System.out.println("try shoot");
+            playerLaser.setHeading(getHeading());
+            getSpace().getActions().add(playerLaser);
+
+
+
+            notifyChange();
+        }
+    }
+
+
+
+
 
 }

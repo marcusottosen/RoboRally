@@ -13,7 +13,7 @@ import dk.dtu.compute.se.pisd.roborally.view.PopupView;
  */
 public class EnergyCube extends FieldAction {
 
-    private EnergyCubeTypes type;
+    private EnergyCubeTypes type = EnergyCubeTypes.GETLASER;
 
 
 
@@ -50,6 +50,7 @@ public class EnergyCube extends FieldAction {
         if (type == null){
             type = EnergyCubeTypes.getRandom();
         }
+
 
         //Hvis spilleren har alle cubes, gives NEWCARDS, da denne kan fås flere gange.
         //Hvis ikke, gives en random cube. Hvis spilleren allerede har den type cube findes der en ny.
