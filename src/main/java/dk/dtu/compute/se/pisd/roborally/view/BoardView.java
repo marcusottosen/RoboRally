@@ -118,8 +118,6 @@ public class BoardView extends VBox implements ViewObserver {
                             if (((Laser) actionType).getHeading() == Heading.WEST || ((Laser) actionType).getHeading() == Heading.NORTH){
                                 do {
                                     oldspace = newspace;
-                                    System.out.println("oldspace x: " + oldspace.x);
-                                    System.out.println("oldspace y: " + oldspace.y);
                                     laserHeading.add(((Laser) actionType).getHeading());
                                     laserSpaces.add(newspace);
                                     newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
@@ -127,8 +125,6 @@ public class BoardView extends VBox implements ViewObserver {
                             }else if (((Laser) actionType).getHeading() == Heading.EAST){
                                 do {
                                     oldspace = newspace;
-                                    System.out.println("oldspace x: " + oldspace.x);
-                                    System.out.println("oldspace y: " + oldspace.y);
                                     laserHeading.add(((Laser) actionType).getHeading());
                                     laserSpaces.add(newspace);
                                     newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
@@ -136,16 +132,12 @@ public class BoardView extends VBox implements ViewObserver {
                             }else if (((Laser) actionType).getHeading() == Heading.SOUTH){
                                 do {
                                     oldspace = newspace;
-                                    //System.out.println("oldspace x: " + newspace.x);
-                                    //System.out.println("oldspace y: " + newspace.y);
                                     laserHeading.add(((Laser) actionType).getHeading());
                                     laserSpaces.add(newspace);
                                     newspace = oldspace.board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
                                 }while(oldspace.y != 0);
                             }
                         }
-                        //System.out.println("heading: " + laserHeading.size());
-                        //System.out.println("space: " + laserSpaces.size());
                     }
                 }
             }
