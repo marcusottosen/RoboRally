@@ -87,8 +87,8 @@ public class BoardView extends VBox implements ViewObserver {
         spaceEventHandler = new SpaceEventHandler(gameController);
 
         //initiate the lasers for the given board. This is done before the SpaceView is created, to be able to prep the lasers range.
-        LaserRange laserRange = new LaserRange(board);
-        //laserRange(board);
+        Laser laser = new Laser();
+        laser.laserRange(board);
 
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
@@ -181,7 +181,7 @@ public class BoardView extends VBox implements ViewObserver {
          * @param event objekt af MouseEvent
          */
         @Override
-        public void handle(MouseEvent event) {
+        public void handle(MouseEvent event) { //TODO Fjern denne metode
             Object source = event.getSource();
             if (source instanceof SpaceView) {
                 SpaceView spaceView = (SpaceView) source;

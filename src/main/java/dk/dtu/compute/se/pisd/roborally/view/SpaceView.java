@@ -299,18 +299,22 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     /**
-     * @param space hvilken lokation skal der tilføjes en laser til. Det tjekkes også i metoden, at feltet er korrekt. Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     * @param space hvilken lokation skal der tilføjes en laser til.
+     * Det tjekkes også i metoden, at feltet er korrekt.
+     * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
      */
     public void viewLaser(Space space){
-        for (int j = 0; j < LaserRange.getLaserSpaces().size(); j++){
-            if (space == LaserRange.getLaserSpaces().get(j)){
+        //Laser laserRange = new Laser();
+        //laserRange.laserRange(space.board);
+        for (int j = 0; j < Laser.laserSpaces.size(); j++){
+            if (space == Laser.laserSpaces.get(j)){
                 try {
                     Image image = new Image(LASER_IMAGE_PATH);
                     ImageView laserImg = new ImageView();
                     laserImg.setImage(image);
                     setElementSize(laserImg);
 
-                    laserImg.setRotate(((90*LaserRange.getLaserHeading().get(j).ordinal())%360)-180);
+                    laserImg.setRotate(((90*Laser.laserHeading.get(j).ordinal())%360)-180);
                     LaserView laserView = new LaserView(laserPane, laserImg, space);
                     laserView.shootLaser();
 
