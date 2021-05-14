@@ -24,7 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A utility class reading strings from resources and arbitrary input streams.
