@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.template;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -47,6 +49,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
+    private Space laserSpace;
 
     private String name;
     private String color;
@@ -65,7 +68,7 @@ public class Player extends Subject {
     // Liste over spillerens energyCubes
     public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
     //Spillerens laser
-    Laser playerLaser = new Laser();
+    Laser laser = new Laser();
 
     /**
      * The player object
@@ -278,21 +281,38 @@ public class Player extends Subject {
     }
 
 
-    public void intiateLaser(){
+    public void initiatePlayerLaser() {
         System.out.println("initiate");
-        if (energyCubesOptained.contains(EnergyCubeTypes.GETLASER)) {
-            System.out.println("try shoot");
-            playerLaser.setHeading(getHeading());
-            getSpace().getActions().add(playerLaser);
+        System.out.println("playerspace " + getSpace().x + ", " + getSpace().y);
 
+       // if (getEnergyCubesOptained().contains(EnergyCubeTypes.GETLASER)) {
+            //board.getNeighbour(space,heading).x, board.getNeighbour(space,heading).y
+            laserSpace = board.getSpace(board.getNeighbour(space, heading).x, board.getNeighbour(space, heading).y); //Bør sættes til 1 foran spilleren
+            laser.setHeading(getHeading());
+            SpaceTemplate template = new SpaceTemplate();
+            template.actions.add(laser);
+            laserSpace.getActions().add(laser);
+            laser.laserRange(board);
 
+       /*for (SpaceTemplate spaceTemplate : template.spaces) {
+            space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
+            if (space.getActions().contains(laser)){
+                space.getActions().add(laser);
+            }
+        }*/
+            // space = board.getSpace(getSpace().x, getSpace().y);
+            // laser.setHeading(getHeading());
+            //space.getActions().add(laser);
+            //Laser laser = new Laser();
+            //Laser.laserSpaces.remove(getSpace());
 
             notifyChange();
-        }
+            laserSpace.getActions().remove(laser); //Sletter laseren for spillerens tidligere placering
+
+            System.out.println("");
+   //     }//else
+          //  laserSpace.getActions().remove(laser);
     }
-
-
-
 
 
 }

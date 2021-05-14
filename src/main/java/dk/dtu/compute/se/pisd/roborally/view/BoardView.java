@@ -24,10 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import javafx.event.EventHandler;
@@ -64,8 +61,8 @@ public class BoardView extends VBox implements ViewObserver {
     private final HBox infoView;
     private final InfoView view;
 
-    final public static List<Heading> laserHeading = new ArrayList<>();
-    final public static List<Space> laserSpaces = new ArrayList<>();
+    //final public static List<Heading> laserHeading = new ArrayList<>();
+    //final public static List<Space> laserSpaces = new ArrayList<>();
 
     /***
      * Konstruktøren
@@ -90,7 +87,8 @@ public class BoardView extends VBox implements ViewObserver {
         spaceEventHandler = new SpaceEventHandler(gameController);
 
         //initiate the lasers for the given board. This is done before the SpaceView is created, to be able to prep the lasers range.
-        laserRange(board);
+        Laser laser = new Laser();
+        laser.laserRange(board);
 
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
@@ -109,7 +107,7 @@ public class BoardView extends VBox implements ViewObserver {
      * Range of laser
      * @param board objektet
      */
-    public void laserRange(Board board){
+    /*public void laserRange(Board board){
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
@@ -151,7 +149,7 @@ public class BoardView extends VBox implements ViewObserver {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Checks to see if subject is equal to board phase
@@ -183,7 +181,7 @@ public class BoardView extends VBox implements ViewObserver {
          * @param event objekt af MouseEvent
          */
         @Override
-        public void handle(MouseEvent event) {
+        public void handle(MouseEvent event) { //TODO Fjern denne metode
             Object source = event.getSource();
             if (source instanceof SpaceView) {
                 SpaceView spaceView = (SpaceView) source;
