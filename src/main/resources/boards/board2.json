@@ -1,0 +1,95 @@
+{
+  "width": 20,
+  "height": 8,
+  "energyCubesAmount": 11,
+  "spawns": [
+    {
+      "x": 19,
+      "y": 0
+    },
+    {
+      "x": 16,
+      "y": 1
+    },
+    {
+      "x": 17,
+      "y": 2
+    },
+    {
+      "x": 18,
+      "y": 3
+    },
+    {
+      "x": 15,
+      "y": 4
+    },
+    {
+      "x": 17,
+      "y": 6
+    }
+  ],
+  "spaces": [
+    {
+      "walls": [],
+      "spawns": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.ConveyorBelt",
+          "INSTANCE": {
+            "heading": "WEST",
+            "color": "BLUE"
+          }
+        }
+      ],
+      "x": 11,
+      "y": 3
+    },
+    {
+      "walls": [
+        "NORTH"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 1
+          }
+        }
+      ],
+      "x": 1,
+      "y": 6
+    },
+    {
+      "walls": [
+        "SOUTH",
+        "WEST"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 2
+          }
+        }
+      ],
+      "x": 4,
+      "y": 1
+    },
+    {
+      "walls": [
+        "NORTH",
+        "EAST"
+      ],
+      "actions": [
+    {
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+      "INSTANCE": {
+        "number": 3
+      }
+    }
+      ],
+      "x": 4,
+      "y": 4
+    }
+  ]
+}
