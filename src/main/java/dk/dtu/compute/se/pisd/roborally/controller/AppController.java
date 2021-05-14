@@ -51,10 +51,11 @@ import java.util.Optional;
 
 
 /**
- * ...
+ * AppControlleren står hovedsageligt for dialogen mellem spillet og brugeren når der skal vælges nyt spil, load, stop og exit.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class AppController implements Observer {
 
@@ -67,13 +68,17 @@ public class AppController implements Observer {
     private GameController gameController;
     private Board board = null;
 
+    /**
+     * Konstruktøren til AppControlleren.
+     * @param roboRally roborally
+     */
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
     /**
      * Når et nyt spil startes spørger programmet om antal spillere (int) i form at en Choice Dialog.
-     * Opretter ydermere boarded på fx 8x8.
+     * Opretter ydermere en ny gamecontroller med et board.
      * Sætter farverne på spillerne ud fra et array af farverne.
      * Sætter spillernes navne til hhv. player1, player2, player3 osv.
      * Sætter spillerne på boarded 1 height felt og 1 width felt fra den tidligere.
@@ -92,38 +97,35 @@ public class AppController implements Observer {
             chooseBoard.setHeaderText("Select board");
             Optional<String> boards = chooseBoard.showAndWait();
 
-           if (boards.isPresent()){
-               if (gameController != null) {
-                   // The UI should not allow this, but in case this happens anyway.
-                   // give the user the option to save the game or abort this operation!
-                   if (!stopGame()) {
-                       return;
-                   }
-               }
+            if (boards.isPresent()){
+                if (gameController != null) {
+                    // The UI should not allow this, but in case this happens anyway.
+                    // give the user the option to save the game or abort this operation!
+                    if (!stopGame()) {
+                        return;
+                    }
+                }
 
-               //boards.get() henter det valgte board fra ovenstående Optional<String> boards
-               Board board = LoadBoard.loadBoard(boards.get());
+                //boards.get() henter det valgte board fra ovenstående Optional<String> boards
+                Board board = LoadBoard.loadBoard(boards.get());
 
-               gameController = new GameController(board);
+                gameController = new GameController(board);
 
-               int no = result.get();
-               for (int i = 0; i < no; i++) {
-                   Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                   board.addPlayer(player);
-                   LoadBoard.loadPlayer(player, i);
-               }
+                int no = result.get();
+                for (int i = 0; i < no; i++) {
+                    Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                    board.addPlayer(player);
+                    LoadBoard.loadPlayer(player, i);
+                }
 
-               // XXX: V2
-               // board.setCurrentPlayer(board.getPlayer(0));
-               gameController.startProgrammingPhase();
-               roboRally.createBoardView(gameController);
+                gameController.startProgrammingPhase();
+                roboRally.createBoardView(gameController);
 
-               //Til databasen
-               String chosen_board = boards.get();
-               board.setBoardName(chosen_board);
-
-           }
-           }
+                //Database
+                String chosen_board = boards.get();
+                board.setBoardName(chosen_board);
+            }
+        }
     }
 
     /**
@@ -131,12 +133,10 @@ public class AppController implements Observer {
      */
     public void saveGame() {
         if(gameController.board.getGameId() != null ){
-            System.out.println("Create med board == null");
             RepositoryAccess save = new RepositoryAccess();
             save.getRepository().updateGameInDB(gameController.board);
         }
         else {
-            System.out.println("Update");
             System.out.println(gameController.board.getGameId());
             RepositoryAccess update = new RepositoryAccess();
             update.getRepository().createGameInDB(gameController.board);
@@ -149,12 +149,6 @@ public class AppController implements Observer {
      * Til at loade et tidligere gemt spil.
      */
     public BoardView loadGame() {
-        // XXX needs to be implememted eventually
-        // for now, we just create a new game
-        /*if (gameController == null) {
-            newGame();
-        }*/
-
         RepositoryAccess loadgame = new RepositoryAccess();
         List<GameInDB> savegames = loadgame.getRepository().getGames();
 
@@ -167,8 +161,7 @@ public class AppController implements Observer {
             gameController = new GameController(board);
             roboRally.createBoardView(gameController);
         }
-
-    return null;
+        return null;
     }
 
     /**
@@ -227,7 +220,6 @@ public class AppController implements Observer {
 
     @Override
     public void update(Subject subject) {
-        // XXX do nothing for now
+        //Do nothing
     }
-
 }

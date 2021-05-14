@@ -24,7 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
- * ...
+ * FieldAction sørger for at alle felter med en aktion indeholder den samme doAction metoden
+ * Klassen er abstract.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *

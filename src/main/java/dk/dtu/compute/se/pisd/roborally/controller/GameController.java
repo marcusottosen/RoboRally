@@ -37,17 +37,22 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- * Den primære logik af selve spillet findes sted i GameController.
+ * Den primære logik af selve spillet.
+ * Sørger for at rykke rundt på spillerne, skifte mellem spillerne, finde vinder, og eksekvere kortene.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class GameController {
-
     final public Board board;
     private Wall wall;
-    //private final Alert window = new Alert(Alert.AlertType.INFORMATION); //Winning window
 
 
+    /**
+     * Konstruktøren til GameController. Kræver et board.
+     * @param board spillets plade.
+     */
     public GameController(@NotNull Board board) {
         this.board = board;
     }
@@ -176,6 +181,10 @@ public class GameController {
     /**
      * Udfører kommandokortene, så længe der er et næste. Alle kortene bliver kørt igennem ved 1 kort pr. person af gangen.
      * Tjekker bl.a. om et kort kræver interaktion fra spilleren.
+     * Sætter næste spillers tur.
+     * Tjekker om der er flere spillere i runden og starter en ny runde hvis alle har fået sin tur.
+     * Runden fortsætter til alle kort er spillet, eller til der kræves en interaktion fra en spiller.
+     * Starter en ny programmeringsfase når alle runder er færdige.
      */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
@@ -206,7 +215,6 @@ public class GameController {
                         }
                     }
                 }
-
                 isWinnerFound(currentPlayer);
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -234,10 +242,7 @@ public class GameController {
     }
 
     /**
-     * Sætter næste spillers tur.
-     * Tjekker om der er flere spillere i runden og starter en ny runde hvis alle har fået sin tur.
-     * Runden fortsætter til alle kort er spillet, eller til der kræves en interaktion fra en spiller.
-     * Starter en ny programmeringsfase når alle runder er færdige.
+     * Eksekverer command option - spillerens interaktion og fortsætter spillet derefter.
      * @param option .
      */
     public void executeCommandOptionAndContinue(@NotNull Command option) {
@@ -246,7 +251,6 @@ public class GameController {
         board.setUserChoice(option);
         continuePrograms();
     }
-
 
     /**
      * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
@@ -288,12 +292,17 @@ public class GameController {
                     spaceActionInit(player.getSpace());
                     break;
                 default:
-                    // DO NOTHING (for now)
+                    // DO NOTHING
             }
         }
     }
 
     /**
+     * Rykker spilleren en plads frem.
+     * Hvis der på pladsen allerede står en spiller skubbes den spiller.
+     * Hvis spilleren har et melee våben, bliver den skubbede spiller også skadet.
+     * Tjekker ydermere hvorvidt der er en væg i vejen.
+     * Spiller bliver rykket vha. moveToSpace metoden.
      * @param player which player to move.
      */
     public void forward1(@NotNull Player player) {
@@ -331,10 +340,11 @@ public class GameController {
     }
 
     /**
-     * @param player which player to move
-     * @param space which space the player should move to
-     * @param heading which heading the player has
-     * @throws ImpossibleMoveException if the player is unable to move there.
+     * Rykker spillerne til deres respektive lokationer.
+     * @param player spilleren der skal rykkes
+     * @param space feltet der skal rykkes til
+     * @param heading retningen af spilleren
+     * @throws ImpossibleMoveException hvis spilleren ikke kan rykke til feltet.
      */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
@@ -342,14 +352,14 @@ public class GameController {
         if (other != null){
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
-                // XXX Note that there might be additional problems with
+                // XXX Note that there might be additional problems with TODO forstå hvad ekkart vil her.
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
                 moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
-                assert target.getPlayer() == null : target; // make sure target is free now
+                assert target.getPlayer() == null : target; // sikre at spilleren er fri nu.
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
@@ -357,13 +367,22 @@ public class GameController {
         player.setSpace(space);
     }
 
+    /**
+     * Hvis spilleren ikke kan rykke til feltet bruges denne klasse til error-handling.
+     */
     public static class ImpossibleMoveException extends Exception {
         private Player player;
         private Space space;
         private Heading heading;
 
+        /**
+         *
+         * @param player Den omtalte spiller.
+         * @param space feltet spilleren ikke kunne rykke sig til.
+         * @param heading retningen af spilleren.
+         */
         public ImpossibleMoveException(Player player, Space space, Heading heading) {
-            super("Kan sku ikke rykke mig!");
+            super("Spiller kan ikke rykke sig! - ImpossibleMoveException!");
             this.player = player;
             this.space = space;
             this.heading = heading;
@@ -396,7 +415,6 @@ public class GameController {
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
-
 
     /**
      * Skifter spilleren heading til venstre.
@@ -440,7 +458,7 @@ public class GameController {
      * @param player spilleren der tjekkes.
      */
     public void isWinnerFound(Player player){
-        if (player.getScore() >= board.getCheckpointAmount() ){ //TODO 3-tallet bør ændres til antallet af checkpoints (ikke hard-coded)
+        if (player.getScore() >= board.getCheckpointAmount() ){
             board.setPhase(Phase.FINISH);
             PopupView view = new PopupView();
             view.winningWindow(player);
@@ -448,11 +466,10 @@ public class GameController {
     }
 
     /**
-     * tjekker hvorvidt feltet er specielt og initialiserer feltet.
+     * Tjekker hvorvidt feltet er specielt og initialiserer feltets doAction.
      * @param space object af feltet
      */
     public void spaceActionInit(@NotNull Space space) {
-
         if (space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
             System.out.println(actionType);
@@ -460,9 +477,9 @@ public class GameController {
         }
     }
 
-
     /**
-     * Check if the player is dead (0 health) and then reset them, so they spawn back on their spawnpoint with full health.
+     * Tjekker hvis en spiller er død (0 health) og resetter dem, så de re-spawner på deres originale spawn.
+     * Resetter ydermere spillerens score, heading og energyCubes.
      * @param board which board is being used
      */
     public void playerDeath(Board board){
@@ -479,4 +496,3 @@ public class GameController {
         }
     }
 }
-
