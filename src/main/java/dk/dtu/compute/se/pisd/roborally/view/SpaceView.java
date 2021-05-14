@@ -390,6 +390,9 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * @param space Which space should the spawnpoint be added to (method also checks if a player spawner on the given space)
+     */
     public void viewSpawn(Space space){
         if (space.getPlayer() != null){
             try {
