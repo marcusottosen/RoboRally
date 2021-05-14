@@ -17,6 +17,7 @@ public class PushPanel extends FieldAction {
 
     /**
      * Returnerer retningen af pushpanel.
+     *
      * @return retning som Heading.
      */
     public Heading getHeading() {
@@ -25,29 +26,29 @@ public class PushPanel extends FieldAction {
 
     /**
      * Sætter retningen af pushpanel.
+     *
      * @param heading Den ENUM Heading/retning man ønsker pushpanel skal sættes til.
      */
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
-
     /**
      * PushPanels aktion. Kører når en spillet står ved et pushPanel felt.
      * Skubber spilleren i den modsatte retning af pushpanelens heading.
      *
      * @param gameController the gameController of the respective game
-     * @param space the space this action should be executed for
-     * @return false.
+     * @param space          the space this action should be executed for
+     * @return hvorvidt doAction blev udført.
      */
     @Override
     public boolean doAction(GameController gameController, Space space) {
         try {
             Space target = gameController.board.getNeighbour(space, heading.next().next());
             gameController.moveToSpace(space.getPlayer(), target, heading.next().next());
-        } catch (GameController.ImpossibleMoveException e){
-            // catching exception.
+            return true;
+        } catch (GameController.ImpossibleMoveException e) {
+            return false;
         }
-        return false;
     }
 }

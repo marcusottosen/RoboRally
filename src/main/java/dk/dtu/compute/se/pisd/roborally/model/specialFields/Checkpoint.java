@@ -2,7 +2,6 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
@@ -18,6 +17,7 @@ public class Checkpoint extends FieldAction {
 
     /**
      * Returnerer checkpointets nummer.
+     *
      * @return checkpointets nummer som int.
      */
     public int getNumber() {
@@ -26,6 +26,7 @@ public class Checkpoint extends FieldAction {
 
     /**
      * Sætter checkpointets nummer
+     *
      * @param number den int man ønsker checkpointets nummer skal være.
      */
     public void setNumber(int number) {
@@ -37,21 +38,24 @@ public class Checkpoint extends FieldAction {
      * Giver spilleren et point hvis:
      * - Spilleren ikke allerede har været på dette checkpoint
      * - og spilleren har modtaget det tidligere checkpoint.
+     *
      * @param gameController the gameController of the respective game.
-     * @param space the space this action should be executed for.
+     * @param space          the space this action should be executed for.
      * @return false.
      */
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println("Here's a point");
-        Player player = space.getPlayer();
+        try {
+            Player player = space.getPlayer();
+            int lastCheckpoint = player.checkpointsCompleted.size();
 
-        int lastCheckpoint = player.checkpointsCompleted.size();
-
-        if (number == lastCheckpoint+1){
-            player.addCheckpointsCompleted(number);
-            player.setScore(player.getScore()+1);
+            if (number == lastCheckpoint + 1) {
+                player.addCheckpointsCompleted(number);
+                player.setScore(player.getScore() + 1);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 }
