@@ -64,10 +64,15 @@ public class Player extends Subject {
 
     // Liste over spillerens energyCubes
     public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
-
     //Spillerens laser
     Laser playerLaser = new Laser();
 
+    /**
+     * The player object
+     * @param board on which the player is
+     * @param color of the player
+     * @param name of the player
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;

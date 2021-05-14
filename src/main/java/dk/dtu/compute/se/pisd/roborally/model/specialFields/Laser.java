@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class Laser extends FieldAction{
 
+
     private Heading heading;
     final public static List<Space> laserSpaces = BoardView.laserSpaces;
 
@@ -32,6 +33,12 @@ public class Laser extends FieldAction{
         this.heading = heading;
     }
 
+    /**
+     * Laser that removes one life from the player
+     * @param gameController the gameController of the respective game
+     * @param space the space this action should be executed for
+     * @return
+     */
     @Override
     public boolean doAction(GameController gameController, Space space) {
         return false;

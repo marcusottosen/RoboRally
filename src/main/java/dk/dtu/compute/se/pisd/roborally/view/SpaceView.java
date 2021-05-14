@@ -169,7 +169,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     setElementSize(wallImg);
 
                     wallImg.setRotate(((90*wall.ordinal())%360)-180);
-                    this.getChildren().add(wallImg);
+                    overlayPane.getChildren().add(wallImg);
                 }catch (Exception e){
                     System.out.println("Error loading wall");
                 }
