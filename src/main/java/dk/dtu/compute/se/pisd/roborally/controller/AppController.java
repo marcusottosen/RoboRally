@@ -48,16 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-/*
-* TODO Få vægge til at virke!
-* TODO Få conveyorbelts til at virke
-* TODO Få conveyorbelts til at rotere den rette vej ud fra json fil.
-* TODO Få nummer på checkpointsne, så players ved hvilken rækkefølge de skal følge (brug billerne)
-*           (Gør også så samme spiller ikke kan få flere points fra samme checkpoint
-* TODO Flyt gerne special felterne fra SpaceView over i SpecialFieldsView (virker ikke atm.)
-* TODO Add laser samt funktion og spiller health
-*
- */
+
 
 /**
  * ...
@@ -69,7 +60,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-    final private List<String>  BOARD_NAMES = Arrays.asList("defaultboard", "Board1", "Board2");
+    final private List<String>  BOARD_NAMES = Arrays.asList("Board1", "Board2");
 
     final private RoboRally roboRally;
 

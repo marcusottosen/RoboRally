@@ -279,10 +279,6 @@ class Repository implements IRepository {
 				return null;
 			}
 
-			/* TODO this method needs to be implemented first
-			loadCardFieldsFromDB(game);
-			*/
-
 			return game;
 		} catch (SQLException e) {
 			Alert loadalert = new Alert(Alert.AlertType.ERROR);
@@ -298,10 +294,6 @@ class Repository implements IRepository {
 	
 	@Override
 	public List<GameInDB> getGames() {
-		// TODO when there many games in the DB, fetching all available games
-		//      from the DB is a bit extreme; eventually there should a
-		//      methods that can filter the returned games in order to
-		//      reduce the number of the returned games.
 		List<GameInDB> result = new ArrayList<>();
 		try {
 			PreparedStatement ps = getSelectGameIdsStatement();
@@ -324,43 +316,42 @@ class Repository implements IRepository {
 	}
 
 	private void createPlayersInDB(Board game) throws SQLException {
-		// TODO code should be more defensive
 		PreparedStatement ps = getSelectPlayersStatementU();
 		ps.setInt(1, game.getGameId());
-		
-		ResultSet rs = ps.executeQuery();
-		for (int i = 0; i < game.getPlayersNumber(); i++) {
-			Player player = game.getPlayer(i);
-			rs.moveToInsertRow();
-			rs.updateInt(PLAYER_GAMEID, game.getGameId());
-			rs.updateInt(PLAYER_PLAYERID, i);
-			rs.updateString(PLAYER_NAME, player.getName());
-			rs.updateString(PLAYER_COLOUR, player.getColor());
-			rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
-			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
-			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
-			rs.updateInt(PLAYER_SCORE, player.getScore());
-			rs.updateInt(PLAYER_HEALTH, player.getHealth());
-			rs.updateInt(CHECKPOINTS_REACHED, 1); //player.checkpointsCompleted.size()
+		if (game != null) {
+			ResultSet rs = ps.executeQuery();
+			for (int i = 0; i < game.getPlayersNumber(); i++) {
+				Player player = game.getPlayer(i);
+				rs.moveToInsertRow();
+				rs.updateInt(PLAYER_GAMEID, game.getGameId());
+				rs.updateInt(PLAYER_PLAYERID, i);
+				rs.updateString(PLAYER_NAME, player.getName());
+				rs.updateString(PLAYER_COLOUR, player.getColor());
+				rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
+				rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
+				rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
+				rs.updateInt(PLAYER_SCORE, player.getScore());
+				rs.updateInt(PLAYER_HEALTH, player.getHealth());
+				rs.updateInt(CHECKPOINTS_REACHED, 1); //player.checkpointsCompleted.size()
 
 
-			// Command cards
-			for (int j = 1; j <= 8 ; j++) {
-				if (player.getCardField(j-1).getCard() != null)
-					rs.updateString("comKort" + j, player.getCardField(j - 1).getCard().getName());
+				// Command cards
+				for (int j = 1; j <= 8 ; j++) {
+					if (player.getCardField(j-1).getCard() != null)
+						rs.updateString("comKort" + j, player.getCardField(j - 1).getCard().getName());
+				}
+
+				// Programming cards
+				for (int j = 1; j <=5 ; j++) {
+					if (player.getProgramField(j-1).getCard() != null)
+						rs.updateString("prokort"+j, player.getProgramField(j-1).getCard().getName());
+				}
+
+
+				rs.insertRow();
 			}
-
-			// Programming cards
-			for (int j = 1; j <=5 ; j++) {
-				if (player.getProgramField(j-1).getCard() != null)
-				rs.updateString("prokort"+j, player.getProgramField(j-1).getCard().getName());
-			}
-
-
-			rs.insertRow();
+			rs.close();
 		}
-
-		rs.close();
 	}
 	
 	private void loadPlayersFromDB(Board game) throws SQLException {
@@ -369,81 +360,82 @@ class Repository implements IRepository {
 		
 		ResultSet rs = ps.executeQuery();
 		int i = 0;
-		while (rs.next()) {
-			int playerId = rs.getInt(PLAYER_PLAYERID);
-			if (i++ == playerId) {
-				// TODO this should be more defensive
-				String name = rs.getString(PLAYER_NAME);
-				String colour = rs.getString(PLAYER_COLOUR);
-				Player player = new Player(game, colour ,name);
-				game.addPlayer(player);
-				
-				int x = rs.getInt(PLAYER_POSITION_X);
-				int y = rs.getInt(PLAYER_POSITION_Y);
-				player.setSpace(game.getSpace(x,y));
-				int heading = rs.getInt(PLAYER_HEADING);
-				player.setHeading(Heading.values()[heading]);
+		if (game != null){
+			while (rs.next()) {
+				int playerId = rs.getInt(PLAYER_PLAYERID);
+				if (i++ == playerId) {
+					String name = rs.getString(PLAYER_NAME);
+					String colour = rs.getString(PLAYER_COLOUR);
+					Player player = new Player(game, colour ,name);
+					game.addPlayer(player);
 
-				player.setScore(rs.getInt(PLAYER_SCORE));
+					int x = rs.getInt(PLAYER_POSITION_X);
+					int y = rs.getInt(PLAYER_POSITION_Y);
+					player.setSpace(game.getSpace(x,y));
+					int heading = rs.getInt(PLAYER_HEADING);
+					player.setHeading(Heading.values()[heading]);
 
-				player.setHealth(rs.getInt(PLAYER_HEALTH));
-				for (int j = 0; j < rs.getInt(CHECKPOINTS_REACHED); j++) {
-					player.addCheckpointsCompleted(j+1);
-				}
+					player.setScore(rs.getInt(PLAYER_SCORE));
+
+					player.setHealth(rs.getInt(PLAYER_HEALTH));
+					for (int j = 0; j < rs.getInt(CHECKPOINTS_REACHED); j++) {
+						player.addCheckpointsCompleted(j+1);
+					}
 
 
-				//commandskort
-				for (int j = 1; j <= 8; j++) { //8 = antallet af commandcard felter
-					if (rs.getString("comKort"+j) != null) {
-						Command[] commands = Command.values();
-						int proCardIndex = 0;
+					//commandskort
+					for (int j = 1; j <= 8; j++) { //8 = antallet af commandcard felter
+						if (rs.getString("comKort"+j) != null) {
+							Command[] commands = Command.values();
+							int proCardIndex = 0;
 
-						String proCard = rs.getString("comKort" + j);
+							String proCard = rs.getString("comKort" + j);
 
-						for (int k = 1; k <= 6; k++) { //6 = mulige kort
-							if (commands[k].displayName.equals(proCard)){
-								proCardIndex = k;
+							for (int k = 1; k <= 6; k++) { //6 = mulige kort
+								if (commands[k].displayName.equals(proCard)){
+									proCardIndex = k;
+								}
+							}
+
+							for (int k = 0; k < 8; k++) {
+								player.getCardField(j-1).setCard((new CommandCard(commands[proCardIndex])));
 							}
 						}
-
-						for (int k = 0; k < 8; k++) {
-							player.getCardField(j-1).setCard((new CommandCard(commands[proCardIndex])));
-						}
 					}
-				}
 
-				//Programmeringskort
-				for (int j = 1; j <= 5; j++) { // 5 = antallet af programkortfelter
-					if (rs.getString("proKort"+j) != null) {
-						Command[] commands = Command.values();
-						int comCardIndex = 0;
+					//Programmeringskort
+					for (int j = 1; j <= 5; j++) { // 5 = antallet af programkortfelter
+						if (rs.getString("proKort"+j) != null) {
+							Command[] commands = Command.values();
+							int comCardIndex = 0;
 
-						String proCard = rs.getString("proKort" + j);
+							String proCard = rs.getString("proKort" + j);
 
-						for (int k = 1; k <= 6; k++) { //6 = mulige kort
-							if (commands[k].displayName.equals(proCard)){
-								comCardIndex = k;
+							for (int k = 1; k <= 6; k++) { //6 = mulige kort
+								if (commands[k].displayName.equals(proCard)){
+									comCardIndex = k;
+								}
+							}
+
+							for (int k = 0; k < 5; k++) {
+								player.getProgramField(j-1).setCard((new CommandCard(commands[comCardIndex])));
 							}
 						}
-
-						for (int k = 0; k < 5; k++) {
-							player.getProgramField(j-1).setCard((new CommandCard(commands[comCardIndex])));
-						}
 					}
+
+
+				} else {
+					Alert rsalert = new Alert(Alert.AlertType.ERROR);
+					rsalert.setTitle("Loading error!");
+					rsalert.setHeaderText(null);
+					rsalert.setContentText("Game in DB does not have a player with id " + i +"!");
+					rsalert.showAndWait();
+
+					System.err.println("Game in DB does not have a player with id " + i +"!");
 				}
-
-
-			} else {
-				Alert rsalert = new Alert(Alert.AlertType.ERROR);
-				rsalert.setTitle("Loading error!");
-				rsalert.setHeaderText(null);
-				rsalert.setContentText("Game in DB does not have a player with id " + i +"!");
-				rsalert.showAndWait();
-
-				System.err.println("Game in DB does not have a player with id " + i +"!");
 			}
+			rs.close();
 		}
-		rs.close();
 	}
 
 	
@@ -452,26 +444,24 @@ class Repository implements IRepository {
 		ps.setInt(1, game.getGameId());
 		
 		ResultSet rs = ps.executeQuery();
-		while (rs.next()) {
-			int playerId = rs.getInt(PLAYER_PLAYERID);
-			// TODO should be more defensive
-			Player player = game.getPlayer(playerId);
-			rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
-			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
-			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
+		if (game != null){
+			while (rs.next()) {
+				int playerId = rs.getInt(PLAYER_PLAYERID);
+				Player player = game.getPlayer(playerId);
+				rs.updateInt(PLAYER_POSITION_X, player.getSpace().x);
+				rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
+				rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
 
-			Alert rsalert = new Alert(Alert.AlertType.ERROR);
-			rsalert.setTitle("Update error!");
-			rsalert.setHeaderText(null);
-			rsalert.setContentText("An error occurred when updating the players the database.");
-			rsalert.showAndWait();
+				Alert rsalert = new Alert(Alert.AlertType.CONFIRMATION);
+				rsalert.setTitle("Update message!");
+				rsalert.setHeaderText(null);
+				rsalert.setContentText("Player updated in database!");
+				rsalert.showAndWait();
 
-			// TODO take care of case when number of players changes, etc
-			rs.updateRow();
+				rs.updateRow();
+			}
+			rs.close();
 		}
-		rs.close();
-		
-		// TODO error handling/consistency check: check whether all players were updated
 	}
 
 	private static final String SQL_INSERT_GAME =

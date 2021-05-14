@@ -45,7 +45,7 @@ import java.util.Optional;
 public class LoadBoard {
 
     private static final String BOARDSFOLDER = "boards";
-    private static final String DEFAULTBOARD = "defaultboard";
+    private static final String DEFAULTBOARD = "board1";
     private static final String JSON_EXT = "json";
     public static int energyCubesAmount = 0;
     public static BoardTemplate template;
@@ -59,10 +59,7 @@ public class LoadBoard {
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
-        if (inputStream == null) {
-            // TODO these constants should be defined somewhere
-            return new Board(8,8);
-        }
+
 
 		// In simple cases, we can create a Gson object with new Gson():
         Adapter adapter = new Adapter<FieldAction>();
@@ -144,9 +141,7 @@ public class LoadBoard {
         }*/
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
+
         String filename =
                 classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 

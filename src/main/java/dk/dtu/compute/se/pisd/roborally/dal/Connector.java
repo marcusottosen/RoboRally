@@ -67,8 +67,6 @@ class Connector {
 
 			createDatabaseSchema();
 		} catch (SQLException e) {
-			// TODO we should try to diagnose and fix some problems here and
-			//      exit in a more graceful way
 			e.getSQLState();
 			e.printStackTrace();
 
