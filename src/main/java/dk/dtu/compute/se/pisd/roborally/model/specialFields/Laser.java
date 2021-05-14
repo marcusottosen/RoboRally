@@ -6,6 +6,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.LaserRange;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
@@ -22,7 +23,7 @@ public class Laser extends FieldAction{
 
 
     private Heading heading;
-    final public static List<Space> laserSpaces = BoardView.laserSpaces;
+    final public static List<Space> laserSpaces = LaserRange.laserSpaces;
 
 
     public Heading getHeading() {
