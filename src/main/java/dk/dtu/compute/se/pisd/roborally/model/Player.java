@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,17 +33,18 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * Viser bl.a. farver, navn, placering og retning.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Player extends Subject {
 
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
-
     final public Board board;
 
     private String name;
     private String color;
+    private int score = 0;
+    private int health = 3;
+    public int availableHealth = 3;
 
     private Space space;
     private Heading heading = SOUTH;
@@ -53,32 +52,29 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
-    private int score = 0;
     public ArrayList<Integer> checkpointsCompleted = new ArrayList<Integer>();
-    public int availableHealth = 3;
-    private int health = 3;
-
-    // Liste over spillerens energyCubes
     public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
 
     /**
-     * The player object
-     * @param board on which the player is
-     * @param color of the player
-     * @param name of the player
+     * Konstruktøren til Player som sætter boarded samt farven og navnet på spilleren.
+     *
+     * @param board der bliver brugt.
+     * @param color på spilleren.
+     * @param name  på spilleren.
      */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
-
         this.space = null;
 
+        //Sætter programmeringskort til spilleren.
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
             program[i] = new CommandCardField(this);
         }
 
+        //Giver kommandokort til spilleren.
         cards = new CommandCardField[NO_CARDS];
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
@@ -87,6 +83,7 @@ public class Player extends Subject {
 
     /**
      * Returnerer navnet af spilleren i dette objekt.
+     *
      * @return Navnet som string.
      */
     public String getName() {
@@ -95,6 +92,7 @@ public class Player extends Subject {
 
     /**
      * Hvis navnet ønskes ændret bruges denne metode.
+     *
      * @param name String af det navn man ønsker spillerens navn ændret til.
      */
     public void setName(String name) {
@@ -109,6 +107,7 @@ public class Player extends Subject {
 
     /**
      * Bruges til at finde spillerens farve.
+     *
      * @return Spillerens farve som String.
      */
     public String getColor() {
@@ -117,6 +116,7 @@ public class Player extends Subject {
 
     /**
      * Hvis farven ønskes ændret bruges denne metode.
+     *
      * @param color String af den farve man ønsker spillerens farve ændret til.
      */
     public void setColor(String color) {
@@ -129,6 +129,7 @@ public class Player extends Subject {
 
     /**
      * Spillerens placering på kortet.
+     *
      * @return Spillerens placering.
      */
     public Space getSpace() {
@@ -137,6 +138,7 @@ public class Player extends Subject {
 
     /**
      * Bruges til at ændre spillerens placering, så længe den placering ikke er null.
+     *
      * @param space Det felt man ønsker spilleren rykket til.
      */
     public void setSpace(Space space) {
@@ -156,6 +158,7 @@ public class Player extends Subject {
 
     /**
      * Returnerer retningen som spilleren vender som enten: NORTH, SOUTH, EAST eller WEST.
+     *
      * @return spillerens retning.
      */
     public Heading getHeading() {
@@ -164,6 +167,7 @@ public class Player extends Subject {
 
     /**
      * Skifter spillerens heading til det der er indtastet i parameteren.
+     *
      * @param heading Den ønskede heading.
      */
     public void setHeading(@NotNull Heading heading) {
@@ -180,13 +184,13 @@ public class Player extends Subject {
         return checkpointsCompleted;
     }
 
-    public void addCheckpointsCompleted(int checkpointNumber){
+    public void addCheckpointsCompleted(int checkpointNumber) {
         checkpointsCompleted.add(checkpointNumber);
     }
 
-
     /**
      * returnerer spillerens score.
+     *
      * @return spillerens score som int.
      */
     public int getScore() {
@@ -195,15 +199,16 @@ public class Player extends Subject {
 
     /**
      * Sætter spillerens score til det i parameteren
+     *
      * @param score den score man ønsker spilleren skal have
      */
     public void setScore(int score) {
         this.score = score;
     }
 
-
     /**
      * Bruges til at returnere et programmeringskort
+     *
      * @param i Nummeret på kortet i listen
      * @return programmeringskort
      */
@@ -212,7 +217,8 @@ public class Player extends Subject {
     }
 
     /**
-     * Bruges til at teturnere et kommandokort
+     * Bruges til at returnere et kommandokort
+     *
      * @param i Nummeret på kortet i listen
      * @return kommandokort
      */
@@ -220,34 +226,40 @@ public class Player extends Subject {
         return cards[i];
     }
 
-
     /**
      * returnerer spillerens health.
+     *
      * @return spillerens health som int.
      */
-    public int getHealth() {return health;}
+    public int getHealth() {
+        return health;
+    }
 
     /**
      * Sætter spillerens health til det i parameteren
+     *
      * @param health den health man ønsker spilleren skal have
      */
-    public void setHealth(int health) {this.health = health;}
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     /**
      * Fjerner en specifikt mængde health fra spilleren - går ikke under 0
+     *
      * @param amount mængden af liv der skal trækkes fra spilleren.
      */
-    public void takeHealth(int amount){
-        if (health-amount > 0){
-            health = health-amount;
+    public void takeHealth(int amount) {
+        if (health - amount > 0) {
+            health = health - amount;
         } else {
             health = 0;
         }
     }
 
-
     /**
      * Returnerer listen over hvilke energyCubes spilleren har
+     *
      * @return liste af spillerens energyCubes.
      */
     public ArrayList<EnergyCubeTypes> getEnergyCubesOptained() {
@@ -256,19 +268,20 @@ public class Player extends Subject {
 
     /**
      * Giver spilleren en energyCube hvis spilleren ikke allerede har den.
+     *
      * @param newCube er den type cube man ønsker spilleren skal have.
      */
-    public void setOptainedEnergyCube(EnergyCubeTypes newCube){
+    public void setOptainedEnergyCube(EnergyCubeTypes newCube) {
         if (!energyCubesOptained.contains(newCube))
-        energyCubesOptained.add(newCube);
+            energyCubesOptained.add(newCube);
     }
 
     /**
      * Fjerner den energyCube der skrives i attributten fra spilleren.
+     *
      * @param removeCube den cube man ønsker skal fjernes fra spilleren.
      */
-    public void removeOptainedEnergyCube(EnergyCubeTypes removeCube){
+    public void removeOptainedEnergyCube(EnergyCubeTypes removeCube) {
         energyCubesOptained.remove(removeCube);
     }
-
 }

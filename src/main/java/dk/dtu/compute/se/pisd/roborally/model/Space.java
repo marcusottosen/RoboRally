@@ -26,7 +26,6 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.PlayerSpawns;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ import java.util.List;
  * Indeholder spillets felter.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 
@@ -42,17 +40,17 @@ public class Space extends Subject {
 
     public final int x;
     public final int y;
+    SpaceTemplate spaceTemplate = new SpaceTemplate();
+    PlayerTemplate playerTemplate = new PlayerTemplate();
 
     private Player player;
-   // private Checkpoint checkpoint;
-    private Wall wall;
-    //private ConveyorBelt1 conveyorBelt1;
 
     /**
-     * Metode bruges til at bestemme et felt på pladen. Oprettelse af objekt.
+     * Bruges til at bestemme et felt på pladen. Oprettelse af objekt.
+     *
      * @param board Sætter boarded fra metoden til det public final board i Space.java.
-     * @param x Sætter x-koordinaten til feltet til den public final int x i Space.java.
-     * @param y Sætter y-koordinaten til feltet til den public final int y i Space.java.
+     * @param x     Sætter x-koordinaten til feltet til den public final int x i Space.java.
+     * @param y     Sætter y-koordinaten til feltet til den public final int y i Space.java.
      */
     public Space(Board board, int x, int y) {
         this.board = board;
@@ -63,6 +61,7 @@ public class Space extends Subject {
 
     /**
      * Ved brug af denne metode returneres player.
+     *
      * @return returnerer player.
      */
     public Player getPlayer() {
@@ -72,6 +71,7 @@ public class Space extends Subject {
     /**
      * Metoden bruges til, at sammenligne 2 spillere, ved at sætte player lig med oldPlayer igennem en håndfuld tjek:
      * Hvis player ikke er lig med oldPlayer og ikke er null, bliver this.player sat til = player.
+     *
      * @param player Spillerens objekt.
      */
     public void setPlayer(Player player) {
@@ -80,7 +80,7 @@ public class Space extends Subject {
                 (player == null || board == player.board)) {
             this.player = player;
             if (oldPlayer != null) {
-                // this should actually not happen
+                // Bør ikke ske
                 oldPlayer.setSpace(null);
             }
             if (player != null) {
@@ -90,154 +90,110 @@ public class Space extends Subject {
         }
     }
 
-
-    /**
-     *
-     * @return walls.
-     */
-    /*public Wall getWalls() {
-        return wall;
-    }
-*/
-    /*public void setWall(Wall wall){
-        Wall oldWall = this.wall;
-        if (wall != oldWall && (wall == null || board == wall.board));{
-            this.wall = wall;
-            if (oldWall != null){
-                oldWall.setSpace(null);
-            }
-            if (wall != null){
-                wall.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
-
-    SpaceTemplate spaceTemplate = new SpaceTemplate();
-    PlayerTemplate playerTemplate = new PlayerTemplate();
-
     /**
      * Adds a wall on a field
+     *
      * @param heading for the wall on the field
      */
-    public void addWall(Heading heading){
+    public void addWall(Heading heading) {
         spaceTemplate.walls.add(heading);
         notifyChange();
     }
 
     /**
      * Deletes a wall on the field
+     *
      * @param heading for the wall on the field
      */
-    public void deleteWall(Heading heading){
+    public void deleteWall(Heading heading) {
         spaceTemplate.walls.remove(heading);
         notifyChange();
     }
-    public List<Heading> getWalls(){
+
+    /**
+     * Returnerer listen over vægge på feltet.
+     *
+     * @return liste af Walls.
+     */
+    public List<Heading> getWalls() {
         return spaceTemplate.walls;
     }
 
-
     /**
      * Adds a checkpoint on a field
-     * @param checkpoint
+     *
+     * @param checkpoint typens fieldAction.
      */
-    public void addCheckpoint(FieldAction checkpoint){
+    public void addCheckpoint(FieldAction checkpoint) {
         spaceTemplate.actions.add(checkpoint);
         notifyChange();
     }
 
     /**
      * Deletes a checkpoint from a field
-     * @param checkpoint
+     *
+     * @param checkpoint feltets aktion.
      */
-    public void deleteCheckpoint(FieldAction checkpoint){
+    public void deleteCheckpoint(FieldAction checkpoint) {
         spaceTemplate.actions.remove(checkpoint);
         notifyChange();
     }
 
     /**
      * Adds a conveyorbelt on a field
-     * @param conveyorBelt
+     *
+     * @param conveyorBelt typens fieldAction.
      */
-    public void addConveyorBelt(FieldAction conveyorBelt){
+    public void addConveyorBelt(FieldAction conveyorBelt) {
         spaceTemplate.actions.add(conveyorBelt);
         notifyChange();
     }
 
     /**
      * Deletes a conveyorbelt from a field
-     * @param conveyorBelt
+     *
+     * @param conveyorBelt typens fieldAction.
      */
-    public void deleteConveyorBelt(FieldAction conveyorBelt){
+    public void deleteConveyorBelt(FieldAction conveyorBelt) {
         spaceTemplate.actions.remove(conveyorBelt);
         notifyChange();
     }
 
     /**
      * Adds an energycube to a field
-     * @param energyCube
+     *
+     * @param energyCube typens fieldAction.
      */
-    public void addEnergyCube(FieldAction energyCube){
+    public void addEnergyCube(FieldAction energyCube) {
         spaceTemplate.actions.add(energyCube);
         notifyChange();
     }
 
     /**
      * Removes an energycube from a field
-     * @param energyCube
+     *
+     * @param energyCube typens fieldAction.
      */
-    public void deleteEnergyCube(FieldAction energyCube){
+    public void deleteEnergyCube(FieldAction energyCube) {
         spaceTemplate.actions.remove(energyCube);
         notifyChange();
     }
 
     /**
-     *
-     * @return type af aktion.
+     * @return liste af aktioner på feltet (specialFields).
      */
-    public List<FieldAction> getActions(){ return spaceTemplate.actions; }
-
-    public List<PlayerSpawns> getSpawns(){ return playerTemplate.spawns; }
-
-
-    /* public Checkpoint getCheckpoint(){
-        return checkpoint;
-    }*/
-
-    /*public void setCheckpoint(Checkpoint checkpoint){ //skal slettes
-        Checkpoint oldCheckpoint = this.checkpoint;
-        if (checkpoint != oldCheckpoint && (checkpoint == null || board == checkpoint.board));{
-            this.checkpoint = checkpoint;
-            if (oldCheckpoint != null){
-                oldCheckpoint.setSpace(null);
-            }
-            if (checkpoint != null){
-                checkpoint.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
-    /*
-    public ConveyorBelt1 getConveyorBelt(){ //skal ændres
-        return conveyorBelt1;
+    public List<FieldAction> getActions() {
+        return spaceTemplate.actions;
     }
-    public void setConveyorBelt(ConveyorBelt1 conveyorBelt1){ //skal slettes
-        ConveyorBelt1 oldConveyorBelt1 = this.conveyorBelt1;
-        if (conveyorBelt1 != oldConveyorBelt1 && (conveyorBelt1 == null || board == conveyorBelt1.board));{
-            this.conveyorBelt1 = conveyorBelt1;
-            if (oldConveyorBelt1 != null){
-                oldConveyorBelt1.setSpace(null);
-            }
-            if (conveyorBelt1 != null){
-                conveyorBelt1.setSpace(this);
-            }
-            notifyChange();
-        }
-    }*/
 
-
-
+    /**
+     * Returnerer en liste over de spawns der er på feltet.
+     *
+     * @return liste over de spawns der er på feltet.
+     */
+    public List<PlayerSpawns> getSpawns() {
+        return playerTemplate.spawns;
+    }
 
     /**
      * This is a minor hack; since some views that are registered with the space
@@ -247,5 +203,4 @@ public class Space extends Subject {
     void playerChanged() {
         notifyChange();
     }
-
 }

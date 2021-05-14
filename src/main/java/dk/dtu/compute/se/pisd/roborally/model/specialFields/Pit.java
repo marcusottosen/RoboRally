@@ -14,21 +14,25 @@ import javafx.scene.control.Alert;
 public class Pit extends FieldAction {
 
     /**
-     * Sætter spillerens liv til 0.
+     * Sætter spillerens liv til 0 og informerer spillerne.
+     *
      * @param gameController the gameController of the respective game
-     * @param space the space this action should be executed for
-     * @return false.
+     * @param space          the space this action should be executed for
+     * @return hvorvidt doAction blev udført.
      */
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println(space.getPlayer().getName() + " fell into the abyss");
-        space.getPlayer().setHealth(0);
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText(space.getPlayer().getName() + " fell into the abyss!");
+        try {
+            space.getPlayer().setHealth(0);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText(space.getPlayer().getName() + " fell into the abyss!");
+            alert.showAndWait();
 
-        alert.showAndWait();
-        return false;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -24,32 +24,31 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 /**
- * Kommandokortene bliver styret her. Gør dem bland andet synlige.
+ * Kommandokortene bliver delvist styret her. Gør dem bland andet synlige.
  * Objekt af hvert kort.
+ * Sikrer at kortene bliver sat til de rette spillere.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class CommandCardField extends Subject {
-
     final public Player player;
-
     private CommandCard card;
-
     private boolean visible;
 
     /**
      * Dette er kommandokortfeltet.
+     *
      * @param player Objekt af spilleren.
      */
     public CommandCardField(Player player) {
         this.player = player;
-        this. card = null;
+        this.card = null;
         this.visible = true;
     }
 
     /**
      * Bruges til at finde kortet.
+     *
      * @return kortet.
      */
     public CommandCard getCard() {
@@ -58,6 +57,7 @@ public class CommandCardField extends Subject {
 
     /**
      * Sætter kortet til det kort som bliver angivet i parameteren.
+     *
      * @param card Det ønskede kort.
      */
     public void setCard(CommandCard card) {
@@ -69,6 +69,7 @@ public class CommandCardField extends Subject {
 
     /**
      * Tjekker om kortet er synligt.
+     *
      * @return bool. Hvis synligt=true.
      */
     public boolean isVisible() {
@@ -77,6 +78,7 @@ public class CommandCardField extends Subject {
 
     /**
      * Ændrer synlighedden af kortet.
+     *
      * @param visible true=synligt. False=usynligt.
      */
     public void setVisible(boolean visible) {
