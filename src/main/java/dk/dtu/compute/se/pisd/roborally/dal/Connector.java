@@ -22,9 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.dal;
 
 import com.mysql.cj.util.StringUtils;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.IOUtil;
 import javafx.scene.control.Alert;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,9 +38,10 @@ import java.sql.Statement;
  * Her indtastes bla. de nødvendige informationer ved forbindelse til databasen.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
+ * @author Rasmus Pedersen
  */
-
 
 class Connector {
 	private static final String HOST     = "localhost";
@@ -50,20 +49,18 @@ class Connector {
 	private static final String DATABASE = "roborally";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "qjf67xsm";
-
 	private static final String DELIMITER = ";;";
 
 	private Connection connection;
 
 	/**
 	 * Konstruktøren.
-	 * Opretter de nødvendige informationer til oprettelse af forbindelsen.
+	 * Opretter de nødvendige informationer til oprettelse af forbindelsen til databasen.
 	 */
 	Connector() {
-        try {
+		try {
 			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?user=root";
 			connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
-			
 
 			createDatabaseSchema();
 		} catch (SQLException e) {
@@ -75,60 +72,61 @@ class Connector {
 			connectionalert.setHeaderText(null);
 			connectionalert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.\n\nError message:\n" + e);
 			connectionalert.showAndWait();
-			// Platform.exit();
 		}
-    }
+	}
 
 	/**
 	 * Opretter forbindelsen til databasen vha. de tidligere angivede informationer.
 	 */
 	private void createDatabaseSchema() {
-    	String createTablesStatement;
-    	try {
+		String createTablesStatement;
+		try {
 			ClassLoader classLoader = Connector.class.getClassLoader();
 			URI uri = classLoader.getResource("schemas/createschema.sql").toURI();
 			byte[] bytes = Files.readAllBytes(Paths.get(uri));
 			createTablesStatement = new String(bytes);
 		} catch (URISyntaxException | IOException e){
-    		return;
+			return;
 		}
 
-    	try {
-    		connection.setAutoCommit(false);
-    		Statement statement = connection.createStatement();
-    		for (String sql : createTablesStatement.split(DELIMITER)) {
-    			if (!StringUtils.isEmptyOrWhitespaceOnly(sql)) {
-    				statement.executeUpdate(sql);
-    			}
-    		}
-
-    		statement.close();
-    		connection.commit();
-    	} catch (SQLException e) {
-    		e.printStackTrace();
+		try {
+			connection.setAutoCommit(false);
+			Statement statement = connection.createStatement();
+			for (String sql : createTablesStatement.split(DELIMITER)) {
+				if (!StringUtils.isEmptyOrWhitespaceOnly(sql)) {
+					statement.executeUpdate(sql);
+				}
+			}
+			statement.close();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
 			Alert statementalert = new Alert(Alert.AlertType.ERROR);
 			statementalert.setTitle("Connection error!");
 			statementalert.setHeaderText(null);
 			statementalert.setContentText("There was an error connecting to the database.\nPlease check your settings in connector.java and try again.\n\nError message:\n" + e);
 			statementalert.showAndWait();
-    		try {
+
+			try {
 				connection.rollback();
-			} catch (SQLException e1) {
+			} catch (SQLException ignored) {
+				//Catching exception
 			}
-    	} finally {
+		} finally {
 			try {
 				connection.setAutoCommit(true);
-			} catch (SQLException e) {
+			} catch (SQLException ignored) {
+				//Catching exception
 			}
 		}
-    }
+	}
 
 	/**
 	 * returnerer spillets connection.
 	 * @return connetion
 	 */
 	Connection getConnection() {
-    	return connection; 
-    }
-    
+		return connection;
+	}
+
 }
