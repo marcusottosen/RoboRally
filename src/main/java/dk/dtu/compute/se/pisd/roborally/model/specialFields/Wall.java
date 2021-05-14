@@ -67,6 +67,19 @@ public class Wall extends Subject {
         return false;
     }
 
+    public boolean isWall(Heading heading, Space space){
+        for (Heading wall : space.getWalls()){
+            if (space.getWalls().isEmpty()){
+                return true;
+            }else if (!space.getWalls().isEmpty()){
+                if(wall == heading){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * Væggens placering på kortet.
      * @return Væggens placering.
