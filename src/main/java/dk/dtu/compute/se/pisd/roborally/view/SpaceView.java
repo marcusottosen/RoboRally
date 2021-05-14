@@ -71,6 +71,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     private final StackPane laserPane;
     private final StackPane overlayPane;
     private final StackPane playerPane;
+
     Random random = new Random();
 
     /**
@@ -109,6 +110,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(laserPane);
         this.getChildren().add(overlayPane);
         this.getChildren().add(playerPane);
+
 
         updatePlayer();
     }
@@ -300,7 +302,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     /**
-     * @param space hvilken lokation skal der tilføjes en laser til. Det tjekkes også i metoden, at feltet er korrekt. Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     * Det tjekkes i metoden, at feltet er korrekt.
+     * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     * @param space hvilken lokation skal der tilføjes en laser til.
      */
     public void viewLaser(Space space){
         for (int j = 0; j < BoardView.laserSpaces.size(); j++){
@@ -349,6 +353,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         overlayPane.getChildren().clear();
         for (FieldAction energyCube : space.getActions()){
             if (energyCube != null) {
+                //System.out.println(space.x + ", " + space.y);
                 try {
                     Image image = new Image(ENERGYCUBE_IMAGE_PATH);
                     ImageView energyCubeImg = new ImageView();
@@ -358,9 +363,9 @@ public class SpaceView extends StackPane implements ViewObserver {
                     energyCubeImg.setFitWidth(SPACE_WIDTH/1.5);
                     energyCubeImg.setFitHeight(SPACE_HEIGHT/1.5);
                     energyCubeImg.setSmooth(true);
-                    energyCubeImg.setCache(true); //Loader hurtigere
+                    energyCubeImg.setCache(true);
 
-                    this.getChildren().add(energyCubeImg);
+                    overlayPane.getChildren().add(energyCubeImg);
                 }catch (Exception e){
                     System.out.println("Error loading energyCube");
                 }
@@ -416,7 +421,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     private void updatePlayer() {
         playerPane.getChildren().clear();
         Player player = space.getPlayer();
-        //player.board.getPlayerNumber(player)
         if (player != null) {
             try {
                 Image image = new Image(PLAYER_IMAGE_PATH + (player.board.getPlayerNumber(player) + 1) + ALIVE);

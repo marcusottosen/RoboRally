@@ -1,7 +1,7 @@
 {
   "width": 15,
   "height": 8,
-  "energyCubesAmount": 3,
+  "energyCubesAmount": 8,
   "spawns": [
     {
       "x": 2,
@@ -527,18 +527,6 @@
       ],
       "x": 12,
       "y": 0
-    },
-    {
-      "walls": [],
-      "actions": [
-        {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube",
-          "INSTANCE": {
-          }
-        }
-      ],
-      "x": 0,
-      "y": 1
     },
     {
       "walls": [

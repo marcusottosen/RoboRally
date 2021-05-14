@@ -61,7 +61,6 @@ public class EnergyCube extends FieldAction {
             }
         }
 
-
         //Giv laser til spilleren og fjern evt. fra en anden spiller.
         if (type == EnergyCubeTypes.GETLASER){
             for (Player playerCheck : gameController.board.getPlayers()){
@@ -69,13 +68,8 @@ public class EnergyCube extends FieldAction {
                     playerCheck.removeOptainedEnergyCube(type);
                 }
             }
-
         } else if (type == EnergyCubeTypes.EXTRALIFE){ //Giver spilleren mulighed for at få et 4. liv.
             player.availableHealth=4;
-
-        } else if (type == EnergyCubeTypes.DEFLECTORSHIELD){ //Skjold mod laser. Kan kun bruges 1 gang.
-            //Skrives hvorend skaden tages
-
         } else if (type == EnergyCubeTypes.NEWCARDS){ //Spørger spilleren om han vil have alle sine kort skiftet ud.
             PopupView view = new PopupView();
             if(view.newCardsWindow(player) == 0) {
@@ -87,23 +81,15 @@ public class EnergyCube extends FieldAction {
             }
          }
 
+        //NEWCARDS er single-use, så den fjernes med det samme igen.
         if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.NEWCARDS)) {
             player.removeOptainedEnergyCube(EnergyCubeTypes.NEWCARDS);
         }
 
-
-
-
-
-
-
-
-
         player.setOptainedEnergyCube(type); //Tilføjer til spillerens liste over opnået energyCubes.
 
-        //TODO Hvis energyCuben skal rykkes et andet sted hen efter den er samlet op skriv det her.
         System.out.println(space.getActions());
-        //space.deleteEnergyCube(this);
+        space.deleteEnergyCube(this);
         return false;
     }
 

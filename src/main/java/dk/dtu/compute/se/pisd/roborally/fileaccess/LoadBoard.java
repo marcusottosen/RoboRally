@@ -32,6 +32,9 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
+
+import java.util.Random;
 
 import java.io.*;
 import java.util.Optional;
@@ -40,6 +43,8 @@ import java.util.Optional;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 
 public class LoadBoard {
@@ -74,7 +79,6 @@ public class LoadBoard {
 			// fileReader = new FileReader(filename);
 			reader = gson.newJsonReader(new InputStreamReader(inputStream));
 			template = gson.fromJson(reader, BoardTemplate.class);
-            energyCubesAmount = template.energyCubesAmount;
 
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
@@ -85,6 +89,22 @@ public class LoadBoard {
                 }
             }
 
+			//Finder en random tom placering til energyCube og tilføjer hver især.
+            energyCubesAmount = template.energyCubesAmount;
+            Random random = new Random();
+            for (int i = 0; i < energyCubesAmount; i++) {
+                int randomX;
+                int randomY;
+                Space energySpace;
+                do {
+                    randomX = random.nextInt(template.width);
+                    randomY = random.nextInt(template.height);
+                    energySpace = result.getSpace(randomX, randomY);
+                } while (!energySpace.getActions().isEmpty()); //Selvølgelig skal der være frie pladser tilbage.
+                EnergyCube energyCube = new EnergyCube();
+                energySpace.getActions().add(energyCube);
+            }
+
 			reader.close();
 			return result;
 		} catch (IOException e1) {
@@ -92,12 +112,12 @@ public class LoadBoard {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException e2) {}
+                } catch (IOException ignored) {}
             }
             if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (IOException e2) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return null;
@@ -121,20 +141,6 @@ public class LoadBoard {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
-/*
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
-                if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                    SpaceTemplate spaceTemplate = new SpaceTemplate();
-                    spaceTemplate.x = space.x;
-                    spaceTemplate.y = space.y;
-                    spaceTemplate.actions.addAll(space.getActions());
-                    spaceTemplate.walls.addAll(space.getWalls());
-                    template.spaces.add(spaceTemplate);
-                }
-            }
-        }*/
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
 
@@ -165,12 +171,12 @@ public class LoadBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException e2) {}
+                } catch (IOException ignored) {}
             }
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException ignored) {}
             }
         }
     }

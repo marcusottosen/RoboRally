@@ -440,7 +440,7 @@ public class GameController {
      * @param player spilleren der tjekkes.
      */
     public void isWinnerFound(Player player){
-        if (player.getScore() >= 3 ){ //TODO 3-tallet bør ændres til antallet af checkpoints (ikke hard-coded)
+        if (player.getScore() >= board.getCheckpointAmount() ){ //TODO 3-tallet bør ændres til antallet af checkpoints (ikke hard-coded)
             board.setPhase(Phase.FINISH);
             PopupView view = new PopupView();
             view.winningWindow(player);

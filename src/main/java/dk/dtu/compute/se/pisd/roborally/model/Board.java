@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -318,6 +319,22 @@ public class Board extends Subject {
             this.userChoice = userChoice;
             notifyChange();
         }
+    }
+
+    public int getCheckpointAmount() {
+        int amount=0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Space space = getSpace(x, y);
+                for (int i = 0; i < space.getActions().size(); i++) {
+                    if (space.getActions().get(i) instanceof Checkpoint) {
+                        amount++;
+                    }
+                }
+            }
+        }
+        System.out.println("checkpoints: " + amount);
+        return amount;
     }
 
     /**

@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
+import dk.dtu.compute.se.pisd.roborally.model.EnergyCubeTypes;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -45,10 +46,13 @@ public class Laser extends FieldAction{
     }
 
     public static void laserDamage(){
-        for (int i = 0; i < laserSpaces.size(); i++){
-            Player player = laserSpaces.get(i).getPlayer();
-            if (player != null){
-                player.takeHealth(1);
+        for (Space laserSpace : laserSpaces) {
+            Player player = laserSpace.getPlayer();
+            if (player != null) {
+                if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.DEFLECTORSHIELD)) {
+                    player.removeOptainedEnergyCube(EnergyCubeTypes.DEFLECTORSHIELD);
+                } else
+                    player.takeHealth(1);
             }
         }
     }
