@@ -35,52 +35,45 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Holder primært styr på de 3 knapper som spilleren kan interagere med under spillet:
  * "Finish program", "Execute Program", "Execute Current Register".
+ * Derudover bliver der her bestemt hvilke knapper der er synlige i hvilke faser af spillet.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class PlayerView extends Tab implements ViewObserver {
 
-    private Player player;
+    private final Player player;
 
-    private VBox top;
+    private final GridPane programPane;
+    private final GridPane cardsPane;
+    private final CardFieldView[] programCardViews;
+    private final VBox buttonPanel;
 
-    private Label programLabel;
-    private GridPane programPane;
-    private Label cardsLabel;
-    private GridPane cardsPane;
-
-    private CardFieldView[] programCardViews;
-    private CardFieldView[] cardViews;
-
-    private VBox buttonPanel;
-
-    private Button finishButton;
-    private Button executeButton;
-    private Button stepButton;
-
-    private VBox playerInteractionPanel;
-
-    private GameController gameController;
+    private final Button finishButton;
+    private final Button executeButton;
+    private final Button stepButton;
+    private final VBox playerInteractionPanel;
+    private final GameController gameController;
 
     /**
      * Konstruktøren til playerView.
-     * Indeholder knapperne "Finish program", "Execute Program", "Execute Current Register"
+     * Indeholder knapperne "Finish program", "Execute Program", "Execute Current Register".
      *
      * @param gameController gameController objekt.
-     * @param player Objekt af den nuværende spiller.
+     * @param player         Objekt af den nuværende spiller.
      */
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
         this.setStyle("-fx-text-base-color: " + player.getColor() + ";");
 
-        top = new VBox();
+        VBox top = new VBox();
         this.setContent(top);
 
         this.gameController = gameController;
         this.player = player;
 
-        programLabel = new Label("Program");
+        Label programLabel = new Label("Program");
 
         programPane = new GridPane();
         programPane.setVgap(2.0);
@@ -94,33 +87,28 @@ public class PlayerView extends Tab implements ViewObserver {
             }
         }
 
-        // XXX  the following buttons should actually not be on the tabs of the individual
-        //      players, but on the PlayersView (view for all players). This should be
-        //      refactored.
-
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
 
         executeButton = new Button("Execute Program");
-        executeButton.setOnAction( e-> gameController.executePrograms());
+        executeButton.setOnAction(e -> gameController.executePrograms());
 
         stepButton = new Button("Execute Current Register");
-        stepButton.setOnAction( e-> gameController.executeStep());
+        stepButton.setOnAction(e -> gameController.executeStep());
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
         buttonPanel.setSpacing(3.0);
-        // programPane.add(buttonPanel, Player.NO_REGISTERS, 0); done in update now
 
         playerInteractionPanel = new VBox();
         playerInteractionPanel.setAlignment(Pos.CENTER_LEFT);
         playerInteractionPanel.setSpacing(3.0);
 
-        cardsLabel = new Label("Command Cards");
+        Label cardsLabel = new Label("Command Cards");
         cardsPane = new GridPane();
         cardsPane.setVgap(2.0);
         cardsPane.setHgap(2.0);
-        cardViews = new CardFieldView[Player.NO_CARDS];
+        CardFieldView[] cardViews = new CardFieldView[Player.NO_CARDS];
         for (int i = 0; i < Player.NO_CARDS; i++) {
             CommandCardField cardField = player.getCardField(i);
             if (cardField != null) {
@@ -142,6 +130,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
     /**
      * Holder styr på de 3 faser og dertil hvilke knapper der skal vises ved hver fase.
+     *
      * @param subject subject object.
      */
     @Override
@@ -150,7 +139,7 @@ public class PlayerView extends Tab implements ViewObserver {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
                         cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                     } else {
                         if (i < player.board.getStep()) {
@@ -178,8 +167,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 switch (player.board.getPhase()) {
                     case INITIALISATION -> {
                         finishButton.setDisable(true);
-                        // XXX just to make sure that there is a way for the player to get
-                        //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
                         stepButton.setDisable(true);
                     }
@@ -207,7 +194,6 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
                 }
 
-
             } else {
                 if (!programPane.getChildren().contains(playerInteractionPanel)) {
                     programPane.getChildren().remove(buttonPanel);
@@ -222,7 +208,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         if (card != null) {
                             for (Command option : card.command.getOptions()) {
                                 Button optionButton = new Button(option.displayName);
-                                optionButton.setOnAction( e -> gameController.executeCommandOptionAndContinue(option));
+                                optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(option));
                                 optionButton.setDisable(false);
                                 playerInteractionPanel.getChildren().add(optionButton);
                             }

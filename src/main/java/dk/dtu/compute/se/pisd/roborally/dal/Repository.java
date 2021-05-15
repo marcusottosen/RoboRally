@@ -523,7 +523,7 @@ class Repository implements IRepository {
 		Alert psalert = new Alert(Alert.AlertType.ERROR);
 		psalert.setTitle(title);
 		psalert.setHeaderText(null);
-		psalert.setContentText(message + e);
+		psalert.setContentText(message + "\n" + e);
 		psalert.showAndWait();
 		e.printStackTrace();
 	}

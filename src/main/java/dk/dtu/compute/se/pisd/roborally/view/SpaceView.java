@@ -23,13 +23,15 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
-import javafx.scene.layout.StackPane;
-import org.jetbrains.annotations.NotNull;
-
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -65,8 +67,6 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     final private static String PLAYER_IMAGE_PATH = "images/robots/player";
     final private static String ALIVE = "/alive.png";
-    final private static String POWERUP = "/powerUp.png";
-    final private static String DEAD = "/dead.png";
 
     private final StackPane laserPane;
     private final StackPane overlayPane;
@@ -76,41 +76,40 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Denne metode vise selve felterne, her sort og hvid.
+     *
      * @param space placeringen af feltet.
      */
     public SpaceView(@NotNull Space space, int height) {
         this.space = space;
-        SPACE_HEIGHT = 85-(height*2);
-        SPACE_WIDTH = 85-(height*2);
+        SPACE_HEIGHT = 85 - (height * 2);
+        SPACE_WIDTH = 85 - (height * 2);
 
         Image image = new Image(TILE_IMAGE_PATH);
 
         ImageView tile = new ImageView();
-        laserPane = new StackPane();
-        overlayPane = new StackPane(); // Laver et nyt pane(lag) til laser emitters og pushpanels, så de kan stå ovenpå walls
+        laserPane = new StackPane(); // Pane udelukkende til at vise laser.
+        overlayPane = new StackPane(); // Laver et nyt pane(lag) til laser emitters og pushpanels, så de kan stå ovenpå walls.
         playerPane = new StackPane(); // laver et pane til robotten ovenpå alt andet.
 
         tile.setImage(image);
         setElementSize(tile);
 
-        tile.setRotate(random.nextInt(4)*90);
-
+        tile.setRotate(random.nextInt(4) * 90);
 
         space.attach(this);
         update(space);
         this.getChildren().add(tile);
         viewBoardElements();
 
-        //prep the laser to shoot at the end of every activation phase.
+        //Prepare the laser to shoot at the end of every activation phase.
         viewLaser(space);
         LaserView.stopLaser();
 
         viewSpawn(space);
 
-        this.getChildren().add(laserPane);
         this.getChildren().add(overlayPane);
+        this.getChildren().add(laserPane);
         this.getChildren().add(playerPane);
-
 
         updatePlayer();
     }
@@ -120,8 +119,8 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Hvis det er en instans, kaldes der til den rette felttype som så vises.
      * Denne metode er kun til de felter som ikke ændrer, flytter eller fjerner sig.
      */
-    public void viewBoardElements(){
-        if(space.getActions().size() != 0) {
+    public void viewBoardElements() {
+        if (space.getActions().size() != 0) {
             for (int i = 0; i < space.getActions().size(); i++) {
                 FieldAction actionType = space.getActions().get(i);
                 if (actionType instanceof ConveyorBelt) {
@@ -151,9 +150,10 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Lille metode til at sætte størrrelsen af et billede til størrelsen af et felt.
+     *
      * @param imageView billedet der skal ændre størrelse.
      */
-    public void setElementSize(ImageView imageView){
+    public void setElementSize(ImageView imageView) {
         imageView.setFitWidth(SPACE_WIDTH); //Holder billedet samme størrelse som en tile
         imageView.setFitHeight(SPACE_HEIGHT);
         imageView.setSmooth(true);
@@ -164,7 +164,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Viser væggen.
      */
     public void viewWall() {
-        for(Heading wall : space.getWalls()) {
+        for (Heading wall : space.getWalls()) {
             if (wall != null) {
                 try {
                     Image image = new Image(WALL_IMAGE_PATH);
@@ -173,10 +173,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                     wallImg.setImage(image);
                     setElementSize(wallImg);
 
-                    wallImg.setRotate(((90*wall.ordinal())%360)-180);
+                    wallImg.setRotate(((90 * wall.ordinal()) % 360) - 180);
                     overlayPane.getChildren().add(wallImg);
-                }catch (Exception e){
-                    System.out.println("Error loading wall");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading wall", e);
                 }
             }
         }
@@ -184,11 +184,12 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Viser et conveyorbelt i den rette retning og farve.
+     *
      * @param heading conveyorbeltets heading som Heading
-     * @param color conveyorbeltets farve som String.
+     * @param color   conveyorbeltets farve som String.
      */
     public void viewConveyorbelt(Heading heading, String color) {
-        for (FieldAction conveyorBelt : space.getActions()){
+        for (FieldAction conveyorBelt : space.getActions()) {
             if (conveyorBelt != null) {
                 try {
                     Image image;
@@ -203,10 +204,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                     conveyorBeltImg.setImage(image);
                     setElementSize(conveyorBeltImg);
 
-                    conveyorBeltImg.setRotate(((90*heading.ordinal())%360)-180);
+                    conveyorBeltImg.setRotate(((90 * heading.ordinal()) % 360) - 180);
                     this.getChildren().add(conveyorBeltImg);
-                }catch (Exception e){
-                    System.out.println("Error loading conveyorbelt");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading conveyorbelt", e);
                 }
             }
         }
@@ -216,10 +217,10 @@ public class SpaceView extends StackPane implements ViewObserver {
      * tegner visuelt checkpointet.
      */
     public void viewCheckpoint(int number) {
-        for(FieldAction checkpoints : space.getActions()){
+        for (FieldAction checkpoints : space.getActions()) {
             if (checkpoints != null) {
                 try {
-                    String PATH=CHECKPOINT_IMAGE_PATH+number+".png";
+                    String PATH = CHECKPOINT_IMAGE_PATH + number + ".png";
                     Image image = new Image(PATH);
 
                     ImageView checkpointImg = new ImageView();
@@ -227,8 +228,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     checkpointImg.setImage(image);
                     setElementSize(checkpointImg);
                     this.getChildren().add(checkpointImg);
-                }catch (Exception e){
-                    System.out.println("Error loading checkpoint");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading checkpoint", e);
                 }
             }
         }
@@ -238,8 +239,8 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Viser et pit på det rette felt.
      */
     public void viewPit() {
-        for (FieldAction pit : space.getActions()){
-            if(pit != null){
+        for (FieldAction pit : space.getActions()) {
+            if (pit != null) {
                 try {
                     Image image = new Image(PIT_IMAGE_PATH);
                     ImageView pitImg = new ImageView();
@@ -247,8 +248,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     pitImg.setImage(image);
                     setElementSize(pitImg);
                     this.getChildren().add(pitImg);
-                } catch (Exception e){
-                    System.out.println("Error loading pit");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading pit", e);
                 }
             }
         }
@@ -256,16 +257,17 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Viser et gear på det rette felt i retningen af det der er angivet i parameteren.
+     *
      * @param direction retningen på gear. Skal være enten "LEFT" eller "RIGHT".
      */
-    public void viewGear(String direction){
-        for (FieldAction gear : space.getActions()){
-            if(gear != null){
+    public void viewGear(String direction) {
+        for (FieldAction gear : space.getActions()) {
+            if (gear != null) {
                 String PATH = "";
 
-                switch (direction){
-                    case "LEFT" -> PATH=LEFT_GEAR_IMAGE_PATH;
-                    case "RIGHT" -> PATH=RIGHT_GEAR_IMAGE_PATH;
+                switch (direction) {
+                    case "LEFT" -> PATH = LEFT_GEAR_IMAGE_PATH;
+                    case "RIGHT" -> PATH = RIGHT_GEAR_IMAGE_PATH;
                 }
                 try {
                     Image image = new Image(PATH);
@@ -274,8 +276,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     gearImg.setImage(image);
                     setElementSize(gearImg);
                     this.getChildren().add(gearImg);
-                } catch (Exception e){
-                    System.out.println("Error loading gear");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading gear", e);
                 }
             }
         }
@@ -283,10 +285,11 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Viser en laser emitter. Skal sættes ovenpå en væg.
+     *
      * @param heading laser emitterens retning som Heading.
      */
     public void viewLaserEmitter(Heading heading) {
-        for(FieldAction laserEmitter : space.getActions()) {
+        for (FieldAction laserEmitter : space.getActions()) {
             if (laserEmitter != null) {
                 try {
                     Image image = new Image(LASER_EMITTER_IMAGE_PATH);
@@ -294,10 +297,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                     laserEmitterImg.setImage(image);
                     setElementSize(laserEmitterImg);
 
-                    laserEmitterImg.setRotate(((90*heading.ordinal())%360)-180);
+                    laserEmitterImg.setRotate(((90 * heading.ordinal()) % 360) - 180);
                     overlayPane.getChildren().add(laserEmitterImg);
-                }catch (Exception e){
-                    System.out.println("Error loading Laser Emitter");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading Laser Emitter", e);
                 }
             }
         }
@@ -309,6 +312,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
      * Det tjekkes i metoden, at feltet er korrekt.
      * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
+     *
      * @param space hvilken lokation skal der tilføjes en laser til.
      */
     public void viewLaser(Space space){
@@ -323,9 +327,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     laserImg.setRotate(((90*Laser.laserHeading.get(j).ordinal())%360)-180);
                     LaserView laserView = new LaserView(laserPane, laserImg, space);
                     laserView.shootLaser();
-
-                } catch (Exception e){
-                    System.out.println("Error loading Laser");
+                } catch (Exception e) {
+                    //Catching.
                 }
             }
         }
@@ -335,7 +338,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Viser en toolbox på feltet.
      */
     public void viewToolbox() {
-        for (FieldAction toolbox : space.getActions()){
+        for (FieldAction toolbox : space.getActions()) {
             if (toolbox != null) {
                 try {
                     Image image = new Image(TOOLBOX_IMAGE_PATH);
@@ -344,8 +347,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     tollboxImg.setImage(image);
                     setElementSize(tollboxImg);
                     this.getChildren().add(tollboxImg);
-                }catch (Exception e){
-                    System.out.println("Error loading Toolbox");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading Toolbox", e);
                 }
             }
         }
@@ -356,7 +359,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      */
     public void viewEnergyCube() {
         overlayPane.getChildren().clear();
-        for (FieldAction energyCube : space.getActions()){
+        for (FieldAction energyCube : space.getActions()) {
             if (energyCube != null) {
                 try {
                     Image image = new Image(ENERGYCUBE_IMAGE_PATH);
@@ -364,14 +367,14 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                     energyCubeImg.setImage(image);
 
-                    energyCubeImg.setFitWidth(SPACE_WIDTH/1.5);
-                    energyCubeImg.setFitHeight(SPACE_HEIGHT/1.5);
+                    energyCubeImg.setFitWidth(SPACE_WIDTH / 1.5);
+                    energyCubeImg.setFitHeight(SPACE_HEIGHT / 1.5);
                     energyCubeImg.setSmooth(true);
                     energyCubeImg.setCache(true);
 
                     overlayPane.getChildren().add(energyCubeImg);
-                }catch (Exception e){
-                    System.out.println("Error loading energyCube");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading energyCube", e);
                 }
             }
         }
@@ -379,10 +382,11 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Viser et push panel på feltet i den retning som angivet i parameteren.
+     *
      * @param heading retningen som Heading.
      */
     public void viewPushPanel(Heading heading) {
-        for (FieldAction pushPanel : space.getActions()){
+        for (FieldAction pushPanel : space.getActions()) {
             if (pushPanel != null) {
                 try {
                     Image image = new Image(PUSHPANEL_IMAGE_PATH);
@@ -390,10 +394,10 @@ public class SpaceView extends StackPane implements ViewObserver {
                     pushPanelImg.setImage(image);
                     setElementSize(pushPanelImg);
 
-                    pushPanelImg.setRotate(((90*heading.ordinal())%360)-180);
+                    pushPanelImg.setRotate(((90 * heading.ordinal()) % 360) - 180);
                     overlayPane.getChildren().add(pushPanelImg);
-                } catch (Exception e){
-                    System.out.println("Error loading push panel");
+                } catch (Exception e) {
+                    showAlert("ERROR", "Error loading push panel", e);
                 }
             }
         }
@@ -402,8 +406,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * @param space Which space should the spawnpoint be added to (method also checks if a player spawner on the given space)
      */
-    public void viewSpawn(Space space){
-        if (space.getPlayer() != null){
+    public void viewSpawn(Space space) {
+        if (space.getPlayer() != null) {
             try {
                 Image image = new Image(SPAWN_IMAGE_PATH);
                 ImageView spawnImg = new ImageView();
@@ -411,10 +415,9 @@ public class SpaceView extends StackPane implements ViewObserver {
                 setElementSize(spawnImg);
 
                 overlayPane.getChildren().add(spawnImg);
-            } catch (Exception e){
-                System.out.println("Error loading spawn point Img");
+            } catch (Exception e) {
+                showAlert("ERROR", "Error loading spawn point Img", e);
             }
-
         }
     }
 
@@ -431,22 +434,38 @@ public class SpaceView extends StackPane implements ViewObserver {
                 ImageView playerImg = new ImageView();
 
                 playerImg.setImage(image);
-                playerImg.setFitWidth(SPACE_WIDTH-15); //Holder billedet samme størrelse som en tile
-                playerImg.setFitHeight(SPACE_HEIGHT-15);
+                playerImg.setFitWidth(SPACE_WIDTH - 15); //Holder billedet samme størrelse som en tile
+                playerImg.setFitHeight(SPACE_HEIGHT - 15);
                 playerImg.setSmooth(true);
                 playerImg.setCache(true); //Loader hurtigere
 
-                playerImg.setRotate((90*player.getHeading().ordinal())%360);
+                playerImg.setRotate((90 * player.getHeading().ordinal()) % 360);
                 playerPane.getChildren().add(playerImg);
-            } catch (Exception e){
-                System.out.println("Error loading player image");
+            } catch (Exception e) {
+                showAlert("ERROR", "Error loading player image", e);
             }
-
         }
     }
 
     /**
+     * Viser et error-vindue som brugeren kan lukke igen når det er blevet læst.
+     *
+     * @param title   titlen på vinduet
+     * @param message beskedet der skal stå i vinduet
+     * @param e       exception beskeden
+     */
+    private void showAlert(String title, String message, Exception e) {
+        Alert psalert = new Alert(Alert.AlertType.ERROR);
+        psalert.setTitle(title);
+        psalert.setHeaderText(null);
+        psalert.setContentText(message + "\n" + e);
+        psalert.showAndWait();
+        e.printStackTrace();
+    }
+
+    /**
      * motoden sikre at der befinder sig et subject på feltet før den eksekverer updatePlayer()
+     *
      * @param subject objekt af subject.
      */
     @Override

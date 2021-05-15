@@ -34,7 +34,6 @@ public class StartRoboRally {
 
     /**
      * Bruges til at starte spillet op.
-     * @param args main args.
      */
     public static void main(String[] args) {
         RoboRally.main(args);

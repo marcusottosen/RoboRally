@@ -24,7 +24,10 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import javafx.event.EventHandler;
@@ -43,7 +46,8 @@ import java.util.List;
  * Giver spillerene mulighed for at rykke rundt på spillepladen.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class BoardView extends VBox implements ViewObserver {
 
@@ -56,16 +60,14 @@ public class BoardView extends VBox implements ViewObserver {
 
     private final Label statusLabel;
 
-    private SpaceEventHandler spaceEventHandler;
-
     private final HBox infoView;
     private final InfoView view;
 
-    //final public static List<Heading> laserHeading = new ArrayList<>();
-    //final public static List<Space> laserSpaces = new ArrayList<>();
+
 
     /***
-     * Konstruktøren
+     * Konstruktøren.
+     * Tilføjer inforView, mainBoardPane, playersView & statusLabel til boarded, så de alle bliver vist.
      * @param gameController The GameController of the given game
      */
     public BoardView(@NotNull GameController gameController) {
@@ -84,7 +86,7 @@ public class BoardView extends VBox implements ViewObserver {
         this.getChildren().add(statusLabel);
 
         spaces = new SpaceView[board.width][board.height];
-        spaceEventHandler = new SpaceEventHandler(gameController);
+        SpaceEventHandler spaceEventHandler = new SpaceEventHandler(gameController);
 
         //initiate the lasers for the given board. This is done before the SpaceView is created, to be able to prep the lasers range.
         Laser laser = new Laser();
@@ -105,8 +107,10 @@ public class BoardView extends VBox implements ViewObserver {
 
     /**
      * Range of laser
+     *
      * @param board objektet
      */
+    public void laserRange(Board board) {
     /*public void laserRange(Board board){
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
@@ -153,22 +157,22 @@ public class BoardView extends VBox implements ViewObserver {
 
     /**
      * Checks to see if subject is equal to board phase
+     *
      * @param subject subject objektet
      */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
-            Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
             view.updateBox(infoView, board.getCurrentPlayer()); //Opdaterer infobaren i toppen
         }
     }
 
 
+    //TODO Remove all this:
     // XXX this handler and its uses should eventually be deleted! This is just to help test the
     //     behaviour of the game by being able to explicitly move the players on the board!
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
-
         final public GameController gameController;
 
         public SpaceEventHandler(@NotNull GameController gameController) {
@@ -176,7 +180,8 @@ public class BoardView extends VBox implements ViewObserver {
         }
 
         /**
-         *the "event" that happens when the game is initialized
+         * the "event" that happens when the game is initialized
+         *
          * @param event objekt af MouseEvent
          */
         @Override
