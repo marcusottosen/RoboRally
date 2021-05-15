@@ -134,12 +134,9 @@ public class AppController implements Observer {
             save.getRepository().updateGameInDB(gameController.board);
         }
         else {
-            System.out.println(gameController.board.getGameId());
             RepositoryAccess update = new RepositoryAccess();
             update.getRepository().createGameInDB(gameController.board);
         }
-
-
     }
 
     /**
