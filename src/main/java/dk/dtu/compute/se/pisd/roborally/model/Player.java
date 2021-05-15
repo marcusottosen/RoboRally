@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.PlayerLaser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.LaserView;
@@ -72,8 +73,14 @@ public class Player extends Subject {
 
     // Liste over spillerens energyCubes
     public ArrayList<EnergyCubeTypes> energyCubesOptained = new ArrayList<EnergyCubeTypes>();
-    //Spillerens laser
-    Laser laser = new Laser();
+
+    //Liste over spillerens laser range og heading
+    List<Heading> playerLaserHeading = new ArrayList<>();
+    List<Space> playerLaserSpaces = new ArrayList<>();
+
+    //Spacetemplate for the Player Laser
+    SpaceTemplate template = new SpaceTemplate();
+
 
     /**
      * The player object
@@ -287,65 +294,47 @@ public class Player extends Subject {
 
 
     public void initiatePlayerLaser() {
-
-        /*StackPane laserPane = LaserView.laserPane;
-        ImageView laserImg = LaserView.laserImg;
-
-        List<StackPane> laserPaneList = LaserView.laserPaneList;
-        List<ImageView> laserImgList = LaserView.laserImgList;
-        List<Space> spaces = LaserView.spaces;*/
-
         System.out.println("initiate");
         System.out.println("playerspace " + getSpace().x + ", " + getSpace().y);
+        //Spillerens laser
+        PlayerLaser laser = new PlayerLaser();
 
-       // if (getEnergyCubesOptained().contains(EnergyCubeTypes.GETLASER)) {
-            //board.getNeighbour(space,heading).x, board.getNeighbour(space,heading).y
-            laserSpace = board.getSpace(board.getNeighbour(space, heading).x, board.getNeighbour(space, heading).y); //Bør sættes til 1 foran spilleren
-            laser.setHeading(getHeading());
-            SpaceTemplate template = new SpaceTemplate();
+        Space oldspace;
+        laserSpace = board.getSpace(board.getNeighbour(space, heading).x, board.getNeighbour(space, heading).y); //Bør sættes til 1 foran spilleren
+
+        //remove last laser.
+        tearDownPlayerLaser();
+        do {
+            oldspace = laserSpace;
+            playerLaserHeading.add(getHeading());
+            playerLaserSpaces.add(laserSpace);
             template.actions.add(laser);
             laserSpace.getActions().add(laser);
+            System.out.println(laserSpace.x + ", " + laserSpace.y);
+            laserSpace = board.getNeighbour(oldspace, getHeading());
+        }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height);
+        for (int i = 0; i < playerLaserSpaces.size(); i++){
+            Laser.laserHeading.add(playerLaserHeading.get(i));
+            Laser.laserSpaces.add(playerLaserSpaces.get(i));
+            SpaceView spaceView  = new SpaceView(playerLaserSpaces.get(i), board.height);
+            BoardView.mainBoardPane.add(spaceView, playerLaserSpaces.get(i).x, playerLaserSpaces.get(i).y);
+        }
+    }
 
-            /*laserPaneList.add(laserPane);
-            laserImgList.add(laserImg);
-            spaces.add(laserSpace);*/
-
-
-
-            //
-
-            laser.laserRange(board);
-
-
-
-            SpaceView spaceView  = new SpaceView(laserSpace, board.height);
-            BoardView.mainBoardPane.add(spaceView, laserSpace.x, laserSpace.y);
-
-            //laserPane.getChildren().add(laserImg);
-            /*StackPane stackPane = new StackPane();
-            LaserView laserView = new LaserView(stackPane, laserImg, space);
-            laserView.shootLaser();*/
-            //laserPaneList.get(laserPaneList.size() - 1).getChildren().add(laserImgList.get(laserImgList.size() - 1));
-
-
-       /*for (SpaceTemplate spaceTemplate : template.spaces) {
-            space = board.getSpace(spaceTemplate.x, spaceTemplate.y);
-            if (space.getActions().contains(laser)){
-                space.getActions().add(laser);
-            }
-        }*/
-            // space = board.getSpace(getSpace().x, getSpace().y);
-            // laser.setHeading(getHeading());
-            //space.getActions().add(laser);
-            //Laser laser = new Laser();
-            //Laser.laserSpaces.remove(getSpace());
-
-            notifyChange();
-            laserSpace.getActions().remove(laser); //Sletter laseren for spillerens tidligere placering
-
-            System.out.println("");
-   //     }//else
-          //  laserSpace.getActions().remove(laser);
+    public void tearDownPlayerLaser(){
+        for (Space space : playerLaserSpaces){
+            space.getActions().remove(space.getActions().size()-1);
+        }
+        for (int i = 0; i < playerLaserSpaces.size(); i++){
+            Laser.laserHeading.remove(Laser.laserHeading.size()-1);
+            Laser.laserSpaces.remove(Laser.laserSpaces.size()-1);
+            LaserView.laserPaneList.remove(LaserView.laserPaneList.size()-1);
+            LaserView.laserImgList.remove(LaserView.laserImgList.size()-1);
+            LaserView.spaces.remove(LaserView.spaces.size()-1);
+            BoardView.mainBoardPane.getChildren().remove(BoardView.mainBoardPane.getChildren().size()-1);
+        }
+        playerLaserSpaces.clear();
+        playerLaserHeading.clear();
     }
 
 

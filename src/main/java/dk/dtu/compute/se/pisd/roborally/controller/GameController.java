@@ -125,6 +125,7 @@ public class GameController {
      * Ænder derudover fasen til ACTIVATION.
      */
     public void finishProgrammingPhase() {
+
         LaserView.stopLaser();
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);

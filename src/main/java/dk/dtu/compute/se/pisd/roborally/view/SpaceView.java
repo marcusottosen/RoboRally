@@ -137,6 +137,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     viewPushPanel(((PushPanel) actionType).getHeading());
                 } else if (actionType instanceof EnergyCube) {
                     viewEnergyCube();
+                } else if (actionType instanceof PlayerLaser){
+                    viewLaser(space);
                 }
             }
         }
