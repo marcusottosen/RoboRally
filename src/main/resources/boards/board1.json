@@ -519,7 +519,9 @@
       "y": 7
     },
     {
-      "walls": ["EAST"],
+      "walls": [
+        "EAST"
+      ],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
@@ -867,7 +869,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Toolbox",
           "INSTANCE": {
             "number": null
-          },
+          }
         }
       ],
       "x": 7,
