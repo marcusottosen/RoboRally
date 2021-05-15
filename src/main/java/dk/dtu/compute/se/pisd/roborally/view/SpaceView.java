@@ -107,8 +107,8 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         viewSpawn(space);
 
-        this.getChildren().add(overlayPane);
         this.getChildren().add(laserPane);
+        this.getChildren().add(overlayPane);
         this.getChildren().add(playerPane);
 
         updatePlayer();

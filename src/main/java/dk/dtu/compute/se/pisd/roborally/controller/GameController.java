@@ -265,10 +265,6 @@ public class GameController {
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and TODO Forstå hvad ekkart vil her.
-            //     their execution. This should eventually be done in a more elegant way
-            //     (this concerns the way cards are modelled as well as the way they are executed).
-
             if (player.energyCubesOptained.contains(EnergyCubeTypes.EXTRAMOVE) &&
                     !((command == Command.RIGHT) || (command == Command.LEFT) || (command == Command.UTURN)
             || (command == Command.OPTION_LEFT_RIGHT))){
@@ -357,13 +353,7 @@ public class GameController {
         if (other != null){
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
-                // XXX Note that there might be additional problems with TODO forstå hvad ekkart vil her.
-                //     infinite recursion here (in some special cases)!
-                //     We will come back to that!
                 moveToSpace(other, target, heading);
-
-                // Note that we do NOT embed the above statement in a try catch block, since
-                // the thrown exception is supposed to be passed on to the caller
                 assert target.getPlayer() == null : target; // sikre at spilleren er fri nu.
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
