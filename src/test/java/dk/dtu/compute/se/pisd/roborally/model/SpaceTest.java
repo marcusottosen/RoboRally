@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Test af space.
+ *
+ * @author Victor Kongsbak
+ */
 class SpaceTest {
 
     private final int TEST_WIDTH = 8;
@@ -17,14 +20,14 @@ class SpaceTest {
     Space space;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
         player = new Player(board, "red", "Player " + 1);
         space = new Space(board, 0, 0);
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         board = null;
     }
 
