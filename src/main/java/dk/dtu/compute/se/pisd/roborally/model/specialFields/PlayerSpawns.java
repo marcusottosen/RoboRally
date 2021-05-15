@@ -10,6 +10,4 @@ public class PlayerSpawns {
     int x;
     int y;
 
-
-
 }
