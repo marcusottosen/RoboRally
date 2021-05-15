@@ -28,9 +28,14 @@ import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
+import dk.dtu.compute.se.pisd.roborally.view.LaserView;
+import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.template;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
@@ -282,6 +287,14 @@ public class Player extends Subject {
 
 
     public void initiatePlayerLaser() {
+
+        /*StackPane laserPane = LaserView.laserPane;
+        ImageView laserImg = LaserView.laserImg;
+
+        List<StackPane> laserPaneList = LaserView.laserPaneList;
+        List<ImageView> laserImgList = LaserView.laserImgList;
+        List<Space> spaces = LaserView.spaces;*/
+
         System.out.println("initiate");
         System.out.println("playerspace " + getSpace().x + ", " + getSpace().y);
 
@@ -292,7 +305,28 @@ public class Player extends Subject {
             SpaceTemplate template = new SpaceTemplate();
             template.actions.add(laser);
             laserSpace.getActions().add(laser);
+
+            /*laserPaneList.add(laserPane);
+            laserImgList.add(laserImg);
+            spaces.add(laserSpace);*/
+
+
+
+            //
+
             laser.laserRange(board);
+
+
+
+            SpaceView spaceView  = new SpaceView(laserSpace, board.height);
+            BoardView.mainBoardPane.add(spaceView, laserSpace.x, laserSpace.y);
+
+            //laserPane.getChildren().add(laserImg);
+            /*StackPane stackPane = new StackPane();
+            LaserView laserView = new LaserView(stackPane, laserImg, space);
+            laserView.shootLaser();*/
+            //laserPaneList.get(laserPaneList.size() - 1).getChildren().add(laserImgList.get(laserImgList.size() - 1));
+
 
        /*for (SpaceTemplate spaceTemplate : template.spaces) {
             space = board.getSpace(spaceTemplate.x, spaceTemplate.y);

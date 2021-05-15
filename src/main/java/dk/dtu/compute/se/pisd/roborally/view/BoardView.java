@@ -49,7 +49,7 @@ public class BoardView extends VBox implements ViewObserver {
 
     private final Board board;
 
-    private GridPane mainBoardPane;
+    public static GridPane mainBoardPane;
     private SpaceView[][] spaces;
 
     private PlayersView playersView;
@@ -163,7 +163,6 @@ public class BoardView extends VBox implements ViewObserver {
             view.updateBox(infoView, board.getCurrentPlayer()); //Opdaterer infobaren i toppen
         }
     }
-
 
 
     // XXX this handler and its uses should eventually be deleted! This is just to help test the
