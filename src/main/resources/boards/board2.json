@@ -420,9 +420,7 @@
       "y": 4
     },
     {
-      "walls": [
-        "EAST"
-      ],
+      "walls": [],
       "spawns": [],
       "actions": [
         {
@@ -568,6 +566,14 @@
       "actions": [],
       "x": 14,
       "y": 3
+    },
+    {
+      "walls": [
+        "WEST"
+      ],
+      "actions": [],
+      "x": 2,
+      "y": 5
     },
     {
       "walls": [

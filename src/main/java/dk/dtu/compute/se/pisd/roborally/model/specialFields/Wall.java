@@ -59,8 +59,8 @@ public class Wall extends Subject {
 
     /**
      * .
-     * @param heading .
-     * @param space .
+     * @param heading
+     * @param space
      * @return .
      */
     public boolean isWall(Heading heading, Space space) {
