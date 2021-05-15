@@ -306,8 +306,6 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
      */
     public void viewLaser(Space space){
-        //Laser laserRange = new Laser();
-        //laserRange.laserRange(space.board);
         for (int j = 0; j < Laser.laserSpaces.size(); j++){
             if (space == Laser.laserSpaces.get(j)){
                 try {
