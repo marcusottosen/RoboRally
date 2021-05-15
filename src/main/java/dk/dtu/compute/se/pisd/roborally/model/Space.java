@@ -90,10 +90,6 @@ public class Space extends Subject {
         }
     }
 
-
-    SpaceTemplate spaceTemplate = new SpaceTemplate();
-    PlayerTemplate playerTemplate = new PlayerTemplate();
-
     /**
      * Adds a wall on a field
      *
