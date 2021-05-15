@@ -58,7 +58,6 @@ public class BoardView extends VBox implements ViewObserver {
     private final InfoView view;
 
 
-
     /***
      * Konstruktøren.
      * Tilføjer inforView, mainBoardPane, playersView & statusLabel til boarded, så de alle bliver vist.
@@ -112,7 +111,7 @@ public class BoardView extends VBox implements ViewObserver {
         }
     }
 
-        private class SpaceEventHandler implements EventHandler<MouseEvent> {
+    private class SpaceEventHandler implements EventHandler<MouseEvent> {
         final public GameController gameController;
 
         public SpaceEventHandler(@NotNull GameController gameController) {

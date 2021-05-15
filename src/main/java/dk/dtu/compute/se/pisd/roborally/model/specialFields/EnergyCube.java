@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
-import com.sun.source.tree.IfTree;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;

@@ -25,17 +25,16 @@ package dk.dtu.compute.se.pisd.roborally.dal;
  * hvis repository ikke findes oprettes et nyt repository med en ny connection.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RepositoryAccess {
-    
-	private static Repository repository;
-	
-	public static IRepository getRepository() {
-		if(repository == null) {
-			repository = new Repository(new Connector());
-		}
-		return repository;
-	}
-	
+
+    private static Repository repository;
+
+    public static IRepository getRepository() {
+        if (repository == null) {
+            repository = new Repository(new Connector());
+        }
+        return repository;
+    }
+
 }

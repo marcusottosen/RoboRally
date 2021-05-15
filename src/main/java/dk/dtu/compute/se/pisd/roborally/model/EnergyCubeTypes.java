@@ -18,6 +18,5 @@ public enum EnergyCubeTypes {
     public static EnergyCubeTypes getRandom() {
         Random random = new Random();
         return values()[random.nextInt(values().length)];
-
     }
 }

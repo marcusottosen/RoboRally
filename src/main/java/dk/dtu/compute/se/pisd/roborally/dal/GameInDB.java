@@ -25,7 +25,6 @@ package dk.dtu.compute.se.pisd.roborally.dal;
  * Sørger for spillets navn og ID til brug i databasen.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameInDB {
 
@@ -35,7 +34,8 @@ public class GameInDB {
     /**
      * Konstruktøren til GameInDB.
      * Sætter den angivede ID og Name til klassens ID og Name.
-     * @param id den ID man ønsker spillet skal have i databasen.
+     *
+     * @param id   den ID man ønsker spillet skal have i databasen.
      * @param name det navn man ønsker spillet skal have i databasen.
      */
     public GameInDB(int id, String name) {
@@ -45,6 +45,7 @@ public class GameInDB {
 
     /**
      * Simpel toString metode
+     *
      * @return klassens ID og navn.
      */
     @Override

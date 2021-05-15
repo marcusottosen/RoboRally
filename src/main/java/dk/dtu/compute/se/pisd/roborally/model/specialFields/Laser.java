@@ -2,12 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.model.specialFields;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.view.BoardView;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,43 +69,44 @@ public class Laser extends FieldAction {
 
     /**
      * Range of laser
+     *
      * @param board objektet
      */
-    public void laserRange(Board board){
+    public void laserRange(Board board) {
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 Space oldspace;
                 Space newspace = space;
                 Wall wall = new Wall(board);
-                if(space.getActions().size() != 0) {
+                if (space.getActions().size() != 0) {
                     for (int i = 0; i < space.getActions().size(); i++) {
                         FieldAction actionType = space.getActions().get(i);
-                        if (actionType instanceof Laser){
-                            if (((Laser) actionType).getHeading() == Heading.WEST || ((Laser) actionType).getHeading() == Heading.NORTH){
+                        if (actionType instanceof Laser) {
+                            if (((Laser) actionType).getHeading() == Heading.WEST || ((Laser) actionType).getHeading() == Heading.NORTH) {
                                 Heading heading = ((Laser) actionType).getHeading();
                                 do {
                                     oldspace = newspace;
                                     laserHeading.add(heading);
                                     laserSpaces.add(newspace);
                                     newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
-                                }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
-                            }else if (((Laser) actionType).getHeading() == Heading.EAST){
+                                } while (oldspace.x + 1 != board.width && oldspace.y + 1 != board.height && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
+                            } else if (((Laser) actionType).getHeading() == Heading.EAST) {
                                 Heading heading = ((Laser) actionType).getHeading();
                                 do {
                                     oldspace = newspace;
                                     laserHeading.add(heading);
                                     laserSpaces.add(newspace);
                                     newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
-                                }while(oldspace.x != 0 && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
-                            }else if (((Laser) actionType).getHeading() == Heading.SOUTH){
+                                } while (oldspace.x != 0 && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
+                            } else if (((Laser) actionType).getHeading() == Heading.SOUTH) {
                                 Heading heading = ((Laser) actionType).getHeading();
                                 do {
                                     oldspace = newspace;
                                     laserHeading.add(heading);
                                     laserSpaces.add(newspace);
                                     newspace = oldspace.board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
-                                }while(oldspace.y != 0 && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
+                                } while (oldspace.y != 0 && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
                             }
                         }
                     }
@@ -119,11 +115,11 @@ public class Laser extends FieldAction {
         }
     }
 
-    public List<Heading> getLaserHeading(){
+    public List<Heading> getLaserHeading() {
         return laserHeading;
     }
 
-    public List<Space> getLaserSpaces(){
+    public List<Space> getLaserSpaces() {
         return laserSpaces;
     }
 }

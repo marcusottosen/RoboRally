@@ -24,17 +24,12 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-
 import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -48,7 +43,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 /**
  * AppControlleren står hovedsageligt for dialogen mellem spillet og brugeren når der skal vælges nyt spil, load, stop og exit.
  *
@@ -60,7 +54,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-    final private List<String>  BOARD_NAMES = Arrays.asList("Board1", "Board2");
+    final private List<String> BOARD_NAMES = Arrays.asList("Board1", "Board2");
 
     final private RoboRally roboRally;
 
@@ -69,6 +63,7 @@ public class AppController implements Observer {
 
     /**
      * Konstruktøren til AppControlleren.
+     *
      * @param roboRally roborally
      */
     public AppController(@NotNull RoboRally roboRally) {
@@ -90,13 +85,13 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
-        if (result.isPresent()){
+        if (result.isPresent()) {
             ChoiceDialog<String> chooseBoard = new ChoiceDialog<>(BOARD_NAMES.get(0), BOARD_NAMES);
             chooseBoard.setTitle("Board name: ");
             chooseBoard.setHeaderText("Select board");
             Optional<String> boards = chooseBoard.showAndWait();
 
-            if (boards.isPresent()){
+            if (boards.isPresent()) {
                 if (gameController != null) {
                     // The UI should not allow this, but in case this happens anyway.
                     // give the user the option to save the game or abort this operation!
@@ -129,11 +124,10 @@ public class AppController implements Observer {
      * Til at gemme spillet
      */
     public void saveGame() {
-        if(gameController.board.getGameId() != null ){
+        if (gameController.board.getGameId() != null) {
             RepositoryAccess save = new RepositoryAccess();
             save.getRepository().updateGameInDB(gameController.board);
-        }
-        else {
+        } else {
             RepositoryAccess update = new RepositoryAccess();
             update.getRepository().createGameInDB(gameController.board);
         }
@@ -150,7 +144,7 @@ public class AppController implements Observer {
         load_dialog.setContentText("Chose savegame to load");
         load_dialog.getItems().addAll(savegames);
 
-        if (load_dialog.showAndWait().isPresent()){
+        if (load_dialog.showAndWait().isPresent()) {
             board = loadgame.getRepository().loadGameFromDB(((GameInDB) load_dialog.getSelectedItem()).id);
             gameController = new GameController(board);
             roboRally.createBoardView(gameController);
@@ -205,6 +199,7 @@ public class AppController implements Observer {
 
     /**
      * Hvis gamecontroller kører, er spillet igang.
+     *
      * @return boolean.
      */
     public boolean isGameRunning() {

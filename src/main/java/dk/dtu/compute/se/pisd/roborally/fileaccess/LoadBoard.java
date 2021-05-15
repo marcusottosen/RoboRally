@@ -61,6 +61,7 @@ public class LoadBoard {
 
     /**
      * loader boarded samt sætter energyCubes
+     *
      * @param boardname navnet på boarded der skal loades.
      * @return result hvilket er boarded.
      */
@@ -83,7 +84,7 @@ public class LoadBoard {
             template = gson.fromJson(reader, BoardTemplate.class);
 
             result = new Board(template.width, template.height);
-            for (SpaceTemplate spaceTemplate: template.spaces) {
+            for (SpaceTemplate spaceTemplate : template.spaces) {
                 space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                 if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
@@ -114,12 +115,14 @@ public class LoadBoard {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
         }
         return null;
@@ -127,10 +130,11 @@ public class LoadBoard {
 
     /**
      * Loader spilleren.
+     *
      * @param player the player to add to the board
-     * @param i the index of the loop required to spawn all players on the board. (see AppController)
+     * @param i      the index of the loop required to spawn all players on the board. (see AppController)
      */
-    public static void loadPlayer( Player player, int i ) {
+    public static void loadPlayer(Player player, int i) {
         // i er indexet af den loop der bruges til at kalde metoden
         PlayerTemplate playerTemplate = template.spawns.get(i);
         space = result.getSpace(playerTemplate.x, playerTemplate.y);
@@ -142,8 +146,9 @@ public class LoadBoard {
 
     /**
      * Gemmer boarded til en JSON fil.
+     *
      * @param board det board der skal gemmes.
-     * @param name navnet boarded skal gemmes under.
+     * @param name  navnet boarded skal gemmes under.
      */
     public static void saveBoard(Board board, String name) {
         BoardTemplate template = new BoardTemplate();
@@ -172,12 +177,14 @@ public class LoadBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
         }
     }

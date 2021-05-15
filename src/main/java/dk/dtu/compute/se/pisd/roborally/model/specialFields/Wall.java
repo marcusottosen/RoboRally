@@ -59,8 +59,9 @@ public class Wall extends Subject {
 
     /**
      * Metoden bruge til at tjekke hvorledes der er en væg på feltet iht. laserne på boardet
+     *
      * @param heading Heading af laseren(hvilken vej laseren skyder)
-     * @param space Hvilket felt laseren er på (og derved hvilket felt der skal tjekkes hvor væg på)
+     * @param space   Hvilket felt laseren er på (og derved hvilket felt der skal tjekkes hvor væg på)
      * @return Hvorledes der er væg eller ej (true = der er ikke en væg på feltet)
      */
     public boolean isWall(Heading heading, Space space) {

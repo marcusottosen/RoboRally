@@ -22,23 +22,18 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.EnergyCube;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.PlayerLaser;
 import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.LaserView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.template;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -320,7 +315,7 @@ public class Player extends Subject {
         //remove last laser.
         tearDownPlayerLaser();
         //Add new laser
-        if (getHeading() == Heading.EAST || getHeading() == Heading.SOUTH){
+        if (getHeading() == Heading.EAST || getHeading() == Heading.SOUTH) {
             do {
                 oldspace = laserSpace;
                 playerLaserHeading.add(getHeading());
@@ -328,8 +323,8 @@ public class Player extends Subject {
                 template.actions.add(laser);
                 laserSpace.getActions().add(laser);
                 laserSpace = board.getNeighbour(oldspace, getHeading());
-            }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
-        } else if (getHeading() == Heading.WEST){
+            } while (oldspace.x + 1 != board.width && oldspace.y + 1 != board.height && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
+        } else if (getHeading() == Heading.WEST) {
             do {
                 oldspace = laserSpace;
                 playerLaserHeading.add(getHeading());
@@ -338,7 +333,7 @@ public class Player extends Subject {
                 laserSpace.getActions().add(laser);
                 laserSpace = board.getNeighbour(oldspace, getHeading());
             } while (oldspace.x != 0 && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
-        } else if (getHeading() == Heading.NORTH){
+        } else if (getHeading() == Heading.NORTH) {
             do {
                 oldspace = laserSpace;
                 playerLaserHeading.add(getHeading());
@@ -348,25 +343,25 @@ public class Player extends Subject {
                 laserSpace = board.getNeighbour(oldspace, getHeading());
             } while (oldspace.y != 0 && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
         }
-        for (int i = 0; i < playerLaserSpaces.size(); i++){
+        for (int i = 0; i < playerLaserSpaces.size(); i++) {
             Laser.laserHeading.add(playerLaserHeading.get(i));
             Laser.laserSpaces.add(playerLaserSpaces.get(i));
-            SpaceView spaceView  = new SpaceView(playerLaserSpaces.get(i), board.height);
+            SpaceView spaceView = new SpaceView(playerLaserSpaces.get(i), board.height);
             BoardView.mainBoardPane.add(spaceView, playerLaserSpaces.get(i).x, playerLaserSpaces.get(i).y);
         }
     }
 
-    public void tearDownPlayerLaser(){
-        for (Space space : playerLaserSpaces){
-            space.getActions().remove(space.getActions().size()-1);
+    public void tearDownPlayerLaser() {
+        for (Space space : playerLaserSpaces) {
+            space.getActions().remove(space.getActions().size() - 1);
         }
-        for (int i = 0; i < playerLaserSpaces.size(); i++){
-            Laser.laserHeading.remove(Laser.laserHeading.size()-1);
-            Laser.laserSpaces.remove(Laser.laserSpaces.size()-1);
-            LaserView.laserPaneList.remove(LaserView.laserPaneList.size()-1);
-            LaserView.laserImgList.remove(LaserView.laserImgList.size()-1);
-            LaserView.spaces.remove(LaserView.spaces.size()-1);
-            BoardView.mainBoardPane.getChildren().remove(BoardView.mainBoardPane.getChildren().size()-1);
+        for (int i = 0; i < playerLaserSpaces.size(); i++) {
+            Laser.laserHeading.remove(Laser.laserHeading.size() - 1);
+            Laser.laserSpaces.remove(Laser.laserSpaces.size() - 1);
+            LaserView.laserPaneList.remove(LaserView.laserPaneList.size() - 1);
+            LaserView.laserImgList.remove(LaserView.laserImgList.size() - 1);
+            LaserView.spaces.remove(LaserView.spaces.size() - 1);
+            BoardView.mainBoardPane.getChildren().remove(BoardView.mainBoardPane.getChildren().size() - 1);
         }
         playerLaserSpaces.clear();
         playerLaserHeading.clear();

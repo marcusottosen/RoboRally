@@ -21,18 +21,13 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.specialFields.*;
-import dk.dtu.compute.se.pisd.roborally.view.InfoView;
-import dk.dtu.compute.se.pisd.roborally.view.PopupView;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser;
+import dk.dtu.compute.se.pisd.roborally.model.specialFields.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.LaserView;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+import dk.dtu.compute.se.pisd.roborally.view.PopupView;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
-import javafx.stage.StageStyle;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -49,6 +44,7 @@ public class GameController {
 
     /**
      * Konstruktøren til GameController. Kræver et board.
+     *
      * @param board spillets plade.
      */
     public GameController(@NotNull Board board) {
@@ -77,7 +73,7 @@ public class GameController {
      */
     public void startProgrammingPhase() {
         for (Player player : board.getPlayers()) {
-            if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.GETLASER)){
+            if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.GETLASER)) {
                 player.initiatePlayerLaser();
             }
         }
@@ -109,6 +105,7 @@ public class GameController {
 
     /**
      * Finder random kort som bliver efterspurgt fra StartProgrammingPhase().
+     *
      * @return nyt random kommandokort
      */
     private CommandCard generateRandomCommandCard() {
@@ -132,6 +129,7 @@ public class GameController {
 
     /**
      * Bliver brugt i bl.a. finishProgrammingPhase til at enten vise (1) eller skjule (0) programming fields.
+     *
      * @param register int.
      */
     private void makeProgramFieldsVisible(int register) {
@@ -199,7 +197,7 @@ public class GameController {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 Command userChoice = board.getUserChoice();
-                if (currentPlayer.getHealth()>=1) {
+                if (currentPlayer.getHealth() >= 1) {
                     if (userChoice != null) {
                         board.setUserChoice(null);
                         board.setPhase(Phase.ACTIVATION);
@@ -246,6 +244,7 @@ public class GameController {
 
     /**
      * Eksekverer command option - spillerens interaktion og fortsætter spillet derefter.
+     *
      * @param option .
      */
     public void executeCommandOptionAndContinue(@NotNull Command option) {
@@ -258,15 +257,17 @@ public class GameController {
     /**
      * Overfører kortets navn til kortets funktion og udfører metoden til kortet.
      * Hvis spilleren har EXTRAMOVE energyCuben, bliver der rykket en ekstra frem.
-     * @param player Spillerens objekt
+     *
+     * @param player  Spillerens objekt
      * @param command Objekt af kommandokortet.
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
             if (player.energyCubesOptained.contains(EnergyCubeTypes.EXTRAMOVE) &&
                     !((command == Command.RIGHT) || (command == Command.LEFT) || (command == Command.UTURN)
-            || (command == Command.OPTION_LEFT_RIGHT))){
-                forward1(player);}
+                            || (command == Command.OPTION_LEFT_RIGHT))) {
+                forward1(player);
+            }
 
             switch (command) {
                 case FORWARD1:
@@ -302,6 +303,7 @@ public class GameController {
      * Hvis spilleren har et melee våben, bliver den skubbede spiller også skadet.
      * Tjekker ydermere hvorvidt der er en væg i vejen.
      * Spiller bliver rykket vha. moveToSpace metoden.
+     *
      * @param player which player to move.
      */
     public void forward1(@NotNull Player player) {
@@ -316,8 +318,9 @@ public class GameController {
                     try {
                         if (!wall.checkForWall(player)) {
                             if (target.getPlayer() != null) {
-                                if (player.energyCubesOptained.contains(EnergyCubeTypes.MELEEWEAPON)){
-                                    target.getPlayer().takeHealth(1);}
+                                if (player.energyCubesOptained.contains(EnergyCubeTypes.MELEEWEAPON)) {
+                                    target.getPlayer().takeHealth(1);
+                                }
                                 if (!wall.checkForWall(target.getPlayer())) {
                                     moveToSpace(player, target, heading);
                                 } else if (wall.checkForWall(target.getPlayer())) {
@@ -340,15 +343,16 @@ public class GameController {
 
     /**
      * Rykker spillerne til deres respektive lokationer.
-     * @param player spilleren der skal rykkes
-     * @param space feltet der skal rykkes til
+     *
+     * @param player  spilleren der skal rykkes
+     * @param space   feltet der skal rykkes til
      * @param heading retningen af spilleren
      * @throws ImpossibleMoveException hvis spilleren ikke kan rykke til feltet.
      */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
-        if (other != null){
+        if (other != null) {
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 moveToSpace(other, target, heading);
@@ -369,9 +373,8 @@ public class GameController {
         private Heading heading;
 
         /**
-         *
-         * @param player Den omtalte spiller.
-         * @param space feltet spilleren ikke kunne rykke sig til.
+         * @param player  Den omtalte spiller.
+         * @param space   feltet spilleren ikke kunne rykke sig til.
          * @param heading retningen af spilleren.
          */
         public ImpossibleMoveException(Player player, Space space, Heading heading) {
@@ -384,6 +387,7 @@ public class GameController {
 
     /**
      * Flytter spilleren frem 2 felter ved at kalde forward1 metoden 2 gange.
+     *
      * @param player Spillerens objekt.
      */
     public void forward2(@NotNull Player player) {
@@ -393,6 +397,7 @@ public class GameController {
 
     /**
      * Flytter spilleren frem 3 felter ved at kalde forward1 metoden 3 gange.
+     *
      * @param player Spillerens objekt.
      */
     public void forward3(@NotNull Player player) {
@@ -403,6 +408,7 @@ public class GameController {
 
     /**
      * Skifter spillerens heading til højre.
+     *
      * @param player Spillerens objekt.
      */
     public void turnRight(@NotNull Player player) {
@@ -411,6 +417,7 @@ public class GameController {
 
     /**
      * Skifter spilleren heading til venstre.
+     *
      * @param player Spillerens objekt.
      */
     public void turnLeft(@NotNull Player player) {
@@ -419,15 +426,17 @@ public class GameController {
 
     /**
      * Skifter spillerens heading to gange til højre og altså vender spilleren i den modsatte retning.
+     *
      * @param player Spillerens objekt.
      */
-    public void uTurn(@NotNull Player player){
+    public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
         player.setHeading(player.getHeading().next());
     }
 
     /**
      * Tjekker om kortet er et move card eller ej.
+     *
      * @param source CommandCardField
      * @param target CommandCardField
      * @return returnerer true/false
@@ -448,10 +457,11 @@ public class GameController {
      * Tjekker hvorvidt en spillet har vundet.
      * Hvis en spiller har vundet, vises en ny boks som fortæller spillerne hvem der har vundet.
      * Derudover ændres fasen til FINISH som skjuler knapper og kort.
+     *
      * @param player spilleren der tjekkes.
      */
-    public void isWinnerFound(Player player){
-        if (player.getScore() >= board.getCheckpointAmount() ){
+    public void isWinnerFound(Player player) {
+        if (player.getScore() >= board.getCheckpointAmount()) {
             board.setPhase(Phase.FINISH);
             PopupView view = new PopupView();
             view.winningWindow(player);
@@ -460,6 +470,7 @@ public class GameController {
 
     /**
      * Tjekker hvorvidt feltet er specielt og initialiserer feltets doAction.
+     *
      * @param space object af feltet
      */
     public void spaceActionInit(@NotNull Space space) {
@@ -472,13 +483,14 @@ public class GameController {
     /**
      * Tjekker hvis en spiller er død (0 health) og resetter dem, så de re-spawner på deres originale spawn.
      * Resetter ydermere spillerens score, heading og energyCubes.
+     *
      * @param board which board is being used
      */
-    public void playerDeath(Board board){
-        for (int i = 0; i < board.getPlayersNumber(); i++){
+    public void playerDeath(Board board) {
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
             int health = board.getPlayer(i).getHealth();
             Player player = board.getPlayer(i);
-            if (health <= 0){
+            if (health <= 0) {
                 int x = LoadBoard.template.spawns.get(i).x;
                 int y = LoadBoard.template.spawns.get(i).y;
                 player.setSpace(board.getSpace(x, y));

@@ -184,14 +184,18 @@ public class Space extends Subject {
     /**
      * @return liste af aktioner på feltet (specialFields).
      */
-    public List<FieldAction> getActions() { return spaceTemplate.actions; }
+    public List<FieldAction> getActions() {
+        return spaceTemplate.actions;
+    }
 
     /**
      * Returnerer en liste over de spawns der er på feltet.
      *
      * @return liste over de spawns der er på feltet.
      */
-    public List<PlayerSpawns> getSpawns() { return playerTemplate.spawns; }
+    public List<PlayerSpawns> getSpawns() {
+        return playerTemplate.spawns;
+    }
 
     /**
      * This is a minor hack; since some views that are registered with the space

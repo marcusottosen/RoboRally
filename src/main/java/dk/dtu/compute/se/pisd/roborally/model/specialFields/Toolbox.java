@@ -27,6 +27,6 @@ public class Toolbox extends FieldAction {
             player.setHealth(player.getHealth() + 1);
             return true;
         } else
-        return false;
+            return false;
     }
 }

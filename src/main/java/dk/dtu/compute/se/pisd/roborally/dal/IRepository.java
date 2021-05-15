@@ -29,16 +29,15 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public interface IRepository {
-	
- 	boolean createGameInDB(Board game);
-	
-	boolean updateGameInDB(Board game);
-	
-	Board loadGameFromDB(int id);
-	
-	List<GameInDB> getGames();
+
+    boolean createGameInDB(Board game);
+
+    boolean updateGameInDB(Board game);
+
+    Board loadGameFromDB(int id);
+
+    List<GameInDB> getGames();
 
 }

@@ -31,7 +31,6 @@ import java.util.List;
  * indeholder lister over alle banens vægge samt alle aktionsfelter.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class SpaceTemplate {
     public List<Heading> walls = new ArrayList<>();
