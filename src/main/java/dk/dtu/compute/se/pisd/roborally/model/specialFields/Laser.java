@@ -72,10 +72,6 @@ public class Laser extends FieldAction {
         }
     }
 
-
-
-
-
     /**
      * Range of laser
      * @param board objektet
@@ -91,17 +87,12 @@ public class Laser extends FieldAction {
                     for (int i = 0; i < space.getActions().size(); i++) {
                         FieldAction actionType = space.getActions().get(i);
                         if (actionType instanceof Laser){
-
-                            //System.out.println(space.getActions().toString() + " " + i);
-                            System.out.println("laser " + i + ": " + space.x + ", " + space.y);
-
                             if (((Laser) actionType).getHeading() == Heading.WEST || ((Laser) actionType).getHeading() == Heading.NORTH){
                                 Heading heading = ((Laser) actionType).getHeading();
                                 do {
                                     oldspace = newspace;
                                     laserHeading.add(heading);
                                     laserSpaces.add(newspace);
-                                    //System.out.println(newspace.x + ", " + newspace.y);
                                     newspace = board.getNeighbour(oldspace, ((Laser) actionType).getHeading().next().next());
                                 }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height && wall.isWall(heading, newspace) && wall.isWall(heading.next().next(), oldspace));
                             }else if (((Laser) actionType).getHeading() == Heading.EAST){
