@@ -61,6 +61,32 @@
       "y": 2
     },
     {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 4
+          }
+        }
+      ],
+      "x": 14,
+      "y": 5
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Checkpoint",
+          "INSTANCE": {
+            "number": 5
+          }
+        }
+      ],
+      "x": 15,
+      "y": 1
+    },
+    {
       "walls": [
         "NORTH"
       ],
@@ -107,9 +133,7 @@
       "y": 3
     },
     {
-      "walls": [
-        "EAST"
-      ],
+      "walls": [],
       "spawns": [],
       "actions": [
         {
@@ -526,6 +550,45 @@
       "walls": [],
       "actions": [
         {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
+          "INSTANCE": {
+            "heading": "NORTH"
+          }
+        }
+      ],
+      "x": 14,
+      "y": 6
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
+          "INSTANCE": {
+            "heading": "WEST"
+          }
+        }
+      ],
+      "x": 15,
+      "y": 5
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Laser",
+          "INSTANCE": {
+            "heading": "WEST"
+          }
+        }
+      ],
+      "x": 14,
+      "y": 2
+    },
+    {
+      "walls": [],
+      "actions": [
+        {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.model.specialFields.Gear",
           "INSTANCE": {
             "direction": "RIGHT"
@@ -545,6 +608,14 @@
     },
     {
       "walls": [
+        "EAST"
+      ],
+      "actions": [],
+      "x": 7,
+      "y": 4
+    },
+    {
+      "walls": [
         "WEST"
       ],
       "actions": [],
@@ -558,6 +629,14 @@
       "actions": [],
       "x": 15,
       "y": 1
+    },
+    {
+      "walls": [
+        "SOUTH"
+      ],
+      "actions": [],
+      "x": 14,
+      "y": 7
     },
     {
       "walls": [
@@ -610,8 +689,7 @@
     },
     {
       "walls": [
-        "WEST",
-        "SOUTH"
+        "WEST"
       ],
       "actions": [],
       "x": 14,
