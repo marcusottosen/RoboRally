@@ -21,7 +21,6 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-//import dk.dtu.compute.se.pisd.roborally.dal.*;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
@@ -105,8 +104,6 @@ public class AppController implements Observer {
                         return;
                     }
                 }
-
-                //boards.get() henter det valgte board fra ovenstående Optional<String> boards
                 Board board = LoadBoard.loadBoard(boards.get());
 
                 gameController = new GameController(board);

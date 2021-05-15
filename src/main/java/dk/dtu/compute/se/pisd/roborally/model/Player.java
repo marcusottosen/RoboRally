@@ -311,8 +311,6 @@ public class Player extends Subject {
 
 
     public void initiatePlayerLaser() {
-        System.out.println("initiate");
-        System.out.println("playerspace " + getSpace().x + ", " + getSpace().y);
         //Spillerens laser
         PlayerLaser laser = new PlayerLaser();
         Wall wall = new Wall(board);
@@ -321,6 +319,7 @@ public class Player extends Subject {
 
         //remove last laser.
         tearDownPlayerLaser();
+        //Add new laser
         if (getHeading() == Heading.EAST || getHeading() == Heading.SOUTH){
             do {
                 oldspace = laserSpace;
@@ -328,7 +327,6 @@ public class Player extends Subject {
                 playerLaserSpaces.add(laserSpace);
                 template.actions.add(laser);
                 laserSpace.getActions().add(laser);
-                System.out.println(laserSpace.x + ", " + laserSpace.y);
                 laserSpace = board.getNeighbour(oldspace, getHeading());
             }while(oldspace.x+1 != board.width && oldspace.y+1 != board.height && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
         } else if (getHeading() == Heading.WEST){
@@ -338,7 +336,6 @@ public class Player extends Subject {
                 playerLaserSpaces.add(laserSpace);
                 template.actions.add(laser);
                 laserSpace.getActions().add(laser);
-                System.out.println(laserSpace.x + ", " + laserSpace.y);
                 laserSpace = board.getNeighbour(oldspace, getHeading());
             } while (oldspace.x != 0 && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
         } else if (getHeading() == Heading.NORTH){
@@ -348,7 +345,6 @@ public class Player extends Subject {
                 playerLaserSpaces.add(laserSpace);
                 template.actions.add(laser);
                 laserSpace.getActions().add(laser);
-                System.out.println(laserSpace.x + ", " + laserSpace.y);
                 laserSpace = board.getNeighbour(oldspace, getHeading());
             } while (oldspace.y != 0 && wall.isWall(getHeading().next().next(), laserSpace) && wall.isWall(getHeading(), oldspace));
         }

@@ -46,8 +46,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GameController {
     final public Board board;
-    private Wall wall;
-
 
     /**
      * Konstruktøren til GameController. Kræver et board.
@@ -323,13 +321,13 @@ public class GameController {
                                 if (!wall.checkForWall(target.getPlayer())) {
                                     moveToSpace(player, target, heading);
                                 } else if (wall.checkForWall(target.getPlayer())) {
-                                    System.out.println("Der står en spiller i vejen, som ikke kan skubbes");
+                                    //Der står en spiller i vejen, som ikke kan skubbes
                                 }
                             } else {
                                 moveToSpace(player, target, heading);
                             }
                         } else if (wall.checkForWall(player)) {
-                            System.out.println("Du kan ikke rykke igennem en væg");
+                            //Du kan ikke rykke igennem en væg
                         }
                     } catch (ImpossibleMoveException e) {
                         // Catching exception
@@ -467,7 +465,6 @@ public class GameController {
     public void spaceActionInit(@NotNull Space space) {
         if (space.getActions().size() != 0) {
             FieldAction actionType = space.getActions().get(0);
-            System.out.println(actionType);
             actionType.doAction(this, space);
         }
     }
