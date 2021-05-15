@@ -78,6 +78,12 @@ public class GameController {
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */
     public void startProgrammingPhase() {
+        for (Player player : board.getPlayers()) {
+            if (player.getEnergyCubesOptained().contains(EnergyCubeTypes.GETLASER)){
+                player.initiatePlayerLaser();
+            }
+        }
+
         LaserView.shootLaser();
         Laser.laserDamage();
         playerDeath(board);
@@ -192,7 +198,6 @@ public class GameController {
                 (board.getPhase() == Phase.PLAYER_INTERACTION
                         && board.getUserChoice() != null))
                 && currentPlayer != null) {
-
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 Command userChoice = board.getUserChoice();
@@ -306,7 +311,7 @@ public class GameController {
      * @param player which player to move.
      */
     public void forward1(@NotNull Player player) {
-        wall = new Wall(board);
+        Wall wall = new Wall(board);
         if (player.board == board) {
             if ((player.getHealth() >= 1)) {
                 Space space = player.getSpace();
@@ -492,6 +497,16 @@ public class GameController {
                 player.setSpace(board.getSpace(x, y));
                 player.setHealth(3);
                 player.setHeading(Heading.SOUTH);
+                player.getEnergyCubesOptained().clear();
+                player.getCheckpointsCompleted().clear();
+                player.setScore(0);
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle(null);
+                alert.setHeaderText(null);
+                alert.setContentText(player.getName() + " just died!");
+
+                alert.showAndWait();
             }
         }
     }

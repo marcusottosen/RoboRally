@@ -139,6 +139,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                     viewPushPanel(((PushPanel) actionType).getHeading());
                 } else if (actionType instanceof EnergyCube) {
                     viewEnergyCube();
+                } else if (actionType instanceof PlayerLaser){
+                    viewLaser(space);
                 }
             }
         }
@@ -305,21 +307,24 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     /**
+     * @param space hvilken lokation skal der tilføjes en laser til.
+     * Det tjekkes også i metoden, at feltet er korrekt.
+     * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
      * Det tjekkes i metoden, at feltet er korrekt.
      * Derfor looper man metoden igennem alle felter, for at tjekke og der skal være laser.
      *
      * @param space hvilken lokation skal der tilføjes en laser til.
      */
-    public void viewLaser(Space space) {
-        for (int j = 0; j < BoardView.laserSpaces.size(); j++) {
-            if (space == BoardView.laserSpaces.get(j)) {
+    public void viewLaser(Space space){
+        for (int j = 0; j < Laser.laserSpaces.size(); j++){
+            if (space == Laser.laserSpaces.get(j)){
                 try {
                     Image image = new Image(LASER_IMAGE_PATH);
                     ImageView laserImg = new ImageView();
                     laserImg.setImage(image);
                     setElementSize(laserImg);
 
-                    laserImg.setRotate(((90 * BoardView.laserHeading.get(j).ordinal()) % 360) - 180);
+                    laserImg.setRotate(((90*Laser.laserHeading.get(j).ordinal())%360)-180);
                     LaserView laserView = new LaserView(laserPane, laserImg, space);
                     laserView.shootLaser();
                 } catch (Exception e) {
