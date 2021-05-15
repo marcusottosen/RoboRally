@@ -33,6 +33,8 @@ import java.util.List;
  * Indeholder spillets felter.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Ottosen
+ * @author Victor Kongsbak
  */
 public class Space extends Subject {
 

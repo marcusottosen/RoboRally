@@ -4,21 +4,21 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.EnergyCubeTypes;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 /**
  * InfoView viser spillets top-bar som indeholder alle spillers robot, navn, score og liv.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
  * @author Marcus Ottosen
  */
-public class InfoView{
+public class InfoView {
 
     private final Board board;
     private Player player;
@@ -32,11 +32,10 @@ public class InfoView{
     final private static String LASER_IMAGE_PATH = "images/energyCubeIcons/laser.png";
     final private static String SHIELD_IMAGE_PATH = "images/energyCubeIcons/shield.png";
 
-    HBox playerView;
     ImageView playerImageView;
+    HBox playerView;
     VBox playerInfoBox;
     VBox playerHealthBox;
-
     HBox cubeBoxtop;
     HBox cubeBoxBottom;
 
@@ -46,8 +45,9 @@ public class InfoView{
      * Konstruktøren af klassen.
      * Opretter mængden af HBoxe som der vil blive brugt.
      * Hvis boxene ikke bliver oprettet her, resulterer det i index out of bounds når de blive ændret længere nede.
+     *
      * @param allInfoBox HBoxen som viser hele top-baren.
-     * @param board spillets board.
+     * @param board      spillets board.
      */
     public InfoView(HBox allInfoBox, Board board) {
         this.board = board;
@@ -61,11 +61,12 @@ public class InfoView{
      * Opdaterer og viser alle informationerne i top-baren.
      * Der laves et playerView HBox til hver spiller som indeholder spillerens robot, navn, score og liv.
      * Hver playerView HBox bliver tilføjet til containeren som så viser dem alle.
+     *
      * @param allInfoBox HBoxen som viser hele top-baren.
-     * @param player Den nuværende spiller.
+     * @param player     Den nuværende spiller.
      */
-    public void updateBox(HBox allInfoBox, Player player){
-        if (player!=null) {
+    public void updateBox(HBox allInfoBox, Player player) {
+        if (player != null) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 playerView = new HBox();
 
@@ -74,10 +75,10 @@ public class InfoView{
                 //Sætter farven på baggrunden til spillerens farve
                 Color color = getColor(board.getPlayer(i).getColor());
                 playerView.setBackground(new Background(new BackgroundFill(color, null, null)));
-                playerView.setStyle("-fx-border-width:2;"+"-fx-border-color: black;");
+                playerView.setStyle("-fx-border-width:2;" + "-fx-border-color: black;");
 
                 if (board.getPlayerNumber(player) == i && !board.getPhase().name().equals("PROGRAMMING")) {
-                    playerView.setStyle("-fx-border-width:2;"+"-fx-border-color: MEDIUMSPRINGGREEN;");
+                    playerView.setStyle("-fx-border-width:2;" + "-fx-border-color: MEDIUMSPRINGGREEN;");
                 }
 
                 showPlayer();
@@ -85,24 +86,23 @@ public class InfoView{
                 showPlayerHealth();
                 playerView.getChildren().setAll(playerImageView, playerInfoBox, playerHealthBox);
 
-                allInfoBox.setMinHeight(smallIconSize*4+5);
+                allInfoBox.setMinHeight(smallIconSize * 4 + 5);
                 allInfoBox.getChildren().set(i, playerView);
             }
         }
     }
 
     /**
-     *
      * @param playerColor Spillerens farve som string
      * @return spillerens farve som rette Color object.
      */
-    private Color getColor(String playerColor){
+    private Color getColor(String playerColor) {
         Color color = Color.web(playerColor);
 
         color = Color.rgb(
-                (int)(color.getRed()*255),
-                (int)(color.getGreen()*255),
-                (int)(color.getBlue()*255),
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255),
                 0.25
         );
         return color;
@@ -111,12 +111,11 @@ public class InfoView{
     /**
      * Viser spillerens robot
      */
-    private void showPlayer(){
+    private void showPlayer() {
         Image playerImg = new Image(PLAYER_IMAGE_PATH + (player.board.getPlayerNumber(player) + 1) + ALIVE);
         playerImageView = new ImageView();
 
         playerImageView.setImage(playerImg);
-
         setElementSize(playerImageView, 50);
     }
 
@@ -125,10 +124,9 @@ public class InfoView{
      * Derudover tilføjer den også cubeBoxTop og cubeBoxBottom til playerInfoBox.
      * Dette er for at alt ovenstående information er i samme box i HBoxen "allInfoBox".
      */
-    private void showPlayerInfo(){
+    private void showPlayerInfo() {
         cubeBoxtop = new HBox();
         cubeBoxBottom = new HBox();
-
 
         playerInfoBox = new VBox();
         playerInfoBox.getChildren().clear();
@@ -146,7 +144,6 @@ public class InfoView{
      * Tilføjer billeder til hhv. cubeBoxTop og cubeBoxBottom.
      */
     public void cubeBoxes() {
-        //System.out.println(player.getEnergyCubesOptained());
         ImageView energyCubeTop = null;
         ImageView energyCubeBottom = null;
         for (EnergyCubeTypes type : player.energyCubesOptained) {
@@ -177,7 +174,6 @@ public class InfoView{
                 }
             }
 
-
             if (energyCubeTop != null) {
                 setElementSize(energyCubeTop, smallIconSize);
                 cubeBoxtop.getChildren().add(energyCubeTop);
@@ -189,24 +185,23 @@ public class InfoView{
         }
     }
 
-
     /**
      * Lille metode til at sætte størrrelsen af et billede.
+     *
      * @param imageView billedet der skal ændre størrelse.
      */
-    public void setElementSize(ImageView imageView, int size){
+    public void setElementSize(ImageView imageView, int size) {
         imageView.setFitWidth(size); //Holder billedet samme størrelse som en tile
         imageView.setFitHeight(size);
         imageView.setSmooth(true);
         imageView.setCache(true); //Loader hurtigere
     }
 
-
     /**
      * Viser spillerens liv som hjerter. Der vises et sort hjerte for hvert liv der er mistet.
      * Sætter først de "døde" hjerter, og derefter de normale hjerter
      */
-    private void showPlayerHealth(){
+    private void showPlayerHealth() {
 
         playerHealthBox = new VBox();
         Image aliveImg = new Image(HEALTH_ALIVE);

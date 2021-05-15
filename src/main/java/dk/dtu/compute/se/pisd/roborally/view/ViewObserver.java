@@ -29,12 +29,10 @@ import javafx.application.Platform;
  * Bruges til at update subject.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public interface ViewObserver extends Observer {
 
     /**
-     *
      * @param subject objekt af Subject.
      */
     void updateView(Subject subject);
@@ -43,6 +41,7 @@ public interface ViewObserver extends Observer {
      * This default implementation of the update method makes sure that ViewObserver implementations
      * are doing the update only in the FX application thread. The update of the view is instead
      * done in the updateView() method;
+     *
      * @param subject the subject which changed
      */
     @Override

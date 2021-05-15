@@ -42,36 +42,29 @@ import org.jetbrains.annotations.NotNull;
  * Giver spilleren mulighed for at vælge og benytte kommandokort.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class CardFieldView extends GridPane implements ViewObserver {
-
-    // This data format helps avoiding transfers of e.g. Strings from other
-    // programs which can copy/paste Strings.
-    final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
+    final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
     final public static int CARDFIELD_WIDTH = 65;
     final public static int CARDFIELD_HEIGHT = 100;
 
     final public static Border BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
-
     final public static Background BG_DEFAULT = new Background(new BackgroundFill(Color.WHITE, null, null));
     final public static Background BG_DRAG = new Background(new BackgroundFill(Color.GRAY, null, null));
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
-
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
-    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
+    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
-    private CommandCardField field;
-
-    private Label label;
-
-    private GameController gameController;
+    private final CommandCardField field;
+    private final Label label;
+    private final GameController gameController;
 
     /**
+     * Sætter bla. størrelsen på et kort og forbereder kortet til at man kan trække det rundt mm.
      *
-     * @param gameController
-     * @param field
+     * @param gameController spillets gameController
+     * @param field          feltet for kortet.
      */
     public CardFieldView(@NotNull GameController gameController, @NotNull CommandCardField field) {
         this.gameController = gameController;
@@ -107,7 +100,6 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     *
      * @param cardField viser de specifikke kommandokort der kan benyttes af spillere.
      * @return Retunerer to strings, hvis CommandCardField stemmer overens med cardField.
      */
@@ -131,12 +123,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
         }
         return null;
-
     }
 
     /**
      * Registrerer om der er kommandokort, og tildeler evt. manglende.
-     * @param rep
+     *
+     * @param rep den string på kortet.
      * @return null
      */
     private CommandCardField cardFieldFromRepresentation(String rep) {
@@ -159,8 +151,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     /**
-     * Opdaterer view
-     * @param subject objekt af subject.
+     * Opdaterer view ved kortene.
+     *
+     * @param subject kort.
      */
     @Override
     public void updateView(Subject subject) {
@@ -174,12 +167,15 @@ public class CardFieldView extends GridPane implements ViewObserver {
         }
     }
 
-
+    /**
+     * Tjekker om man i programmeringsfasen begynder at trække et kort.
+     */
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {
 
         /**
          * Giver spillere mulighed for at benytte musen til at trykke og vælge et kommandokort.
          * Placere også kommandokort i Program og holder kortene fast.
+         *
          * @param event registrere klik på kommandokort med musen.
          */
         @Override
@@ -206,7 +202,6 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
 
     private class OnDragOverHandler implements EventHandler<DragEvent> {
@@ -230,12 +225,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
 
+    /**
+     * Holder styr på hvorvidt man bevæger et kort rundt.
+     */
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
         /**
-         *
          * @param event Tjekker om der er trykket på et kommandokort.
          */
         @Override
@@ -256,12 +252,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
 
+    /**
+     * Når et kort slippes igen.
+     */
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
         /**
-         *
          * @param event Tjekker om der ikke længere klikkes på et kommandokort.
          */
         @Override
@@ -282,12 +279,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
 
+    /**
+     * Når man smider et kort på en plads.
+     */
     private class OnDragDroppedHandler implements EventHandler<DragEvent> {
         /**
-         *
          * @param event
          */
         @Override
@@ -309,12 +307,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         if (object instanceof String) {
                             CommandCardField source = cardFieldFromRepresentation((String) object);
                             if (source != null && gameController.moveCards(source, cardField)) {
-                                // CommandCard card = source.getCard();
-                                // if (card != null) {
-                                // if (gameController.moveCards(source, cardField)) {
-                                    // cardField.setCard(card);
-                                    success = true;
-                                // }
+
+                                success = true;
                             }
                         }
                     }
@@ -324,13 +318,14 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
 
+    /**
+     * Når man er færdig med at trække i kortet.
+     */
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
         /**
-         *
-         * @param event
+         * @param event er hvad der skal ske når man er færdig med at trække i kortet.
          */
         @Override
         public void handle(DragEvent event) {
@@ -341,11 +336,5 @@ public class CardFieldView extends GridPane implements ViewObserver {
             }
             event.consume();
         }
-
     }
-
 }
-
-
-
-

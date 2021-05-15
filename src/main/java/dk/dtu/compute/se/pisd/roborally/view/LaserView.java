@@ -8,29 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Står for at fjerne og tilføje laser til et StackPane indeholdende laseren.
  *
  * @author Victor Kongsbak
  */
 
-public class LaserView{
+public class LaserView {
 
     public static StackPane laserPane;
     public static ImageView laserImg;
     public static Space space;
 
-
     public static List<StackPane> laserPaneList = new ArrayList<>();
     public static List<ImageView> laserImgList = new ArrayList<>();
     public static List<Space> spaces = new ArrayList<>();
 
-    // Tegn en rød linje i den ønskede Heading indtil den rammer en væg, spiller eller kommer ud for banen.
-    // Brug en delay metode så laseren vises i fx 1 sekund.
-
-    // Find koordinaterne for laseren et andet sted og få dem herind.
-    // LaserView kan måske også bare skrives i SpaceView(?) - helst her though.
-
-    // Thumbs up hvis vi kan få det til at virke med laserCross.png også
     public LaserView(StackPane laserPane, ImageView laserImg, Space space) {
         this.laserPane = laserPane;
         this.laserImg = laserImg;
@@ -41,14 +33,20 @@ public class LaserView{
         spaces.add(space);
     }
 
-    public static void shootLaser(){
-        for (int i = 0; i < spaces.size(); i++){
+    /**
+     * For hver space i listen, tilføjes der en rød streg som repræsenterer en laser
+     */
+    public static void shootLaser() {
+        for (int i = 0; i < spaces.size(); i++) {
             laserPaneList.get(i).getChildren().add(laserImgList.get(i));
         }
     }
 
+    /**
+     * Det der blev tilføjet i shootLaser, bliver fjernet her.
+     */
     public static void stopLaser() {
-        for (int i = 0; i < spaces.size(); i++){
+        for (int i = 0; i < spaces.size(); i++) {
             laserPaneList.get(i).getChildren().remove(laserImgList.get(i));
         }
     }

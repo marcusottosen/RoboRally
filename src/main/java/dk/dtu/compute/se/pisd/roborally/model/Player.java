@@ -33,6 +33,8 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * Viser bl.a. farver, navn, placering og retning.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Ottosen
+ * @author Frederik Nissen
  */
 public class Player extends Subject {
 

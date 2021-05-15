@@ -30,52 +30,43 @@ import javafx.scene.control.MenuItem;
  * Spillets menubar. Sørger for knapperne: file, new game, stop game, save game, load game og exit.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRallyMenuBar extends MenuBar {
-
-    private AppController appController;
-
-    private Menu controlMenu;
-
-    private MenuItem saveGame;
-
-    private MenuItem newGame;
-
-    private MenuItem loadGame;
-
-    private MenuItem stopGame;
-
-    private MenuItem exitApp;
+    private final AppController appController;
+    private final MenuItem saveGame;
+    private final MenuItem newGame;
+    private final MenuItem loadGame;
+    private final MenuItem stopGame;
 
     /**
      * Viser alle knapper i menuen.
+     *
      * @param appController objekt af appControlleren.
      */
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
-        controlMenu = new Menu("File");
+        Menu controlMenu = new Menu("File");
         this.getMenus().add(controlMenu);
 
         newGame = new MenuItem("New Game");
-        newGame.setOnAction( e -> this.appController.newGame());
+        newGame.setOnAction(e -> this.appController.newGame());
         controlMenu.getItems().add(newGame);
 
         stopGame = new MenuItem("Stop Game");
-        stopGame.setOnAction( e -> this.appController.stopGame());
+        stopGame.setOnAction(e -> this.appController.stopGame());
         controlMenu.getItems().add(stopGame);
 
         saveGame = new MenuItem("Save Game");
-        saveGame.setOnAction( e -> this.appController.saveGame());
+        saveGame.setOnAction(e -> this.appController.saveGame());
         controlMenu.getItems().add(saveGame);
 
         loadGame = new MenuItem("Load Game");
-        loadGame.setOnAction( e -> this.appController.loadGame());
+        loadGame.setOnAction(e -> this.appController.loadGame());
         controlMenu.getItems().add(loadGame);
 
-        exitApp = new MenuItem("Exit");
-        exitApp.setOnAction( e -> this.appController.exit());
+        MenuItem exitApp = new MenuItem("Exit");
+        exitApp.setOnAction(e -> this.appController.exit());
         controlMenu.getItems().add(exitApp);
 
         controlMenu.setOnShowing(e -> update());
