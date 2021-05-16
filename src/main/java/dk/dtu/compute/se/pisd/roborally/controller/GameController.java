@@ -51,22 +51,6 @@ public class GameController {
     }
 
     /**
-     * This is just some dummy controller operation to make a simple move to see something
-     * happening on the board. This method should eventually be deleted!
-     *
-     * @param space the space to which the current player should move
-     */
-    public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        Player current = board.getCurrentPlayer();
-        if (space.getPlayer() == null && current != null) {
-            current.setSpace(space);
-            int number = board.getPlayerNumber(current);
-            board.setCurrentPlayer(board.getPlayer((number + 1) % board.getPlayersNumber()));
-            board.setCount(board.getCount() + 1);
-        }
-    }
-
-    /**
      * Starter programmeringsfasen, skifter til den første spiller og sætter steps til 0
      * Gør eventuelle kort visuelle for alle brugere samt giver random kort vha. generateRandomCommandCard().
      */

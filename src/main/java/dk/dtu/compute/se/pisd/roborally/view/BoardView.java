@@ -48,9 +48,6 @@ public class BoardView extends VBox implements ViewObserver {
     private final Board board;
 
     public static GridPane mainBoardPane;
-    private SpaceView[][] spaces;
-
-    private PlayersView playersView;
 
     private final Label statusLabel;
 
@@ -67,7 +64,7 @@ public class BoardView extends VBox implements ViewObserver {
         board = gameController.board;
 
         mainBoardPane = new GridPane();
-        playersView = new PlayersView(gameController);
+        PlayersView playersView = new PlayersView(gameController);
         statusLabel = new Label("<no status>");
 
         infoView = new HBox();
@@ -78,8 +75,7 @@ public class BoardView extends VBox implements ViewObserver {
         this.getChildren().add(playersView);
         this.getChildren().add(statusLabel);
 
-        spaces = new SpaceView[board.width][board.height];
-        SpaceEventHandler spaceEventHandler = new SpaceEventHandler(gameController);
+        SpaceView[][] spaces = new SpaceView[board.width][board.height];
 
         //initiate the lasers for the given board. This is done before the SpaceView is created, to be able to prep the lasers range.
         Laser laser = new Laser();
@@ -91,7 +87,6 @@ public class BoardView extends VBox implements ViewObserver {
                 SpaceView spaceView = new SpaceView(space, board.height);
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
-                spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
         board.attach(this);
@@ -108,34 +103,6 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             statusLabel.setText(board.getStatusMessage());
             view.updateBox(infoView, board.getCurrentPlayer()); //Opdaterer infobaren i toppen
-        }
-    }
-
-    private class SpaceEventHandler implements EventHandler<MouseEvent> {
-        final public GameController gameController;
-
-        public SpaceEventHandler(@NotNull GameController gameController) {
-            this.gameController = gameController;
-        }
-
-        /**
-         * the "event" that happens when the game is initialized
-         *
-         * @param event objekt af MouseEvent
-         */
-        @Override
-        public void handle(MouseEvent event) { //TODO Fjern denne metode
-            Object source = event.getSource();
-            if (source instanceof SpaceView) {
-                SpaceView spaceView = (SpaceView) source;
-                Space space = spaceView.space;
-                Board board = space.board;
-
-                if (board == gameController.board) {
-                    gameController.moveCurrentPlayerToSpace(space);
-                    event.consume();
-                }
-            }
         }
     }
 }
