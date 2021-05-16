@@ -24,7 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess.model;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Indeholder bredden og højden på boarded samt antallet af energyCubes.
  * Den indeholder energyCubes da deres lokationer ikke sættes i JSON filen, men findes tilfældigt.

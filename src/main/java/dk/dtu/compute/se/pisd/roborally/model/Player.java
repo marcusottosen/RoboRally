@@ -73,7 +73,6 @@ public class Player extends Subject {
     //Spacetemplate for the Player Laser
     SpaceTemplate template = new SpaceTemplate();
 
-
     /**
      * Konstruktøren til Player som sætter boarded samt farven og navnet på spilleren.
      *
@@ -303,7 +302,6 @@ public class Player extends Subject {
     public void removeOptainedEnergyCube(EnergyCubeTypes removeCube) {
         energyCubesOptained.remove(removeCube);
     }
-
 
     public void initiatePlayerLaser() {
         //Spillerens laser

@@ -135,7 +135,6 @@ public class LoadBoard {
      * @param i      the index of the loop required to spawn all players on the board. (see AppController)
      */
     public static void loadPlayer(Player player, int i) {
-        // i er indexet af den loop der bruges til at kalde metoden
         PlayerTemplate playerTemplate = template.spawns.get(i);
         space = result.getSpace(playerTemplate.x, playerTemplate.y);
         if (space != null) {

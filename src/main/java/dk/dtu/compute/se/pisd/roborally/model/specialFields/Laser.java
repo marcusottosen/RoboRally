@@ -18,9 +18,10 @@ public class Laser extends FieldAction {
 
     final static public List<Heading> laserHeading = new ArrayList<>();
 
-    //laserSpaces indeholder koordinaterne på alle de felter en laser skal vises på.
+    /**
+     * laserSpaces indeholder koordinaterne på alle de felter en laser skal vises på.
+     */
     final static public List<Space> laserSpaces = new ArrayList<>();
-
 
     /**
      * returnerer laserens heading.

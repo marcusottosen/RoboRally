@@ -30,7 +30,6 @@ import dk.dtu.compute.se.pisd.roborally.view.PopupView;
 import javafx.scene.control.Alert;
 import org.jetbrains.annotations.NotNull;
 
-
 /**
  * Den primære logik af selve spillet.
  * Sørger for at rykke rundt på spillerne, skifte mellem spillerne, finde vinder, og eksekvere kortene.
@@ -233,11 +232,9 @@ public class GameController {
                 }
 
             } else {
-                // this should not happen
                 assert false;
             }
         } else {
-            // this should not happen
             assert false;
         }
     }
@@ -292,7 +289,6 @@ public class GameController {
                     spaceActionInit(player.getSpace());
                     break;
                 default:
-                    // DO NOTHING
             }
         }
     }
@@ -323,14 +319,10 @@ public class GameController {
                                 }
                                 if (!wall.checkForWall(target.getPlayer())) {
                                     moveToSpace(player, target, heading);
-                                } else if (wall.checkForWall(target.getPlayer())) {
-                                    //Der står en spiller i vejen, som ikke kan skubbes
                                 }
                             } else {
                                 moveToSpace(player, target, heading);
                             }
-                        } else if (wall.checkForWall(player)) {
-                            //Du kan ikke rykke igennem en væg
                         }
                     } catch (ImpossibleMoveException e) {
                         // Catching exception

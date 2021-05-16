@@ -163,8 +163,6 @@ public class AppController implements Observer {
      */
     public boolean stopGame() {
         if (gameController != null) {
-
-            // here we save the game (without asking the user).
             saveGame();
 
             gameController = null;
@@ -186,12 +184,10 @@ public class AppController implements Observer {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (!result.isPresent() || result.get() != ButtonType.OK) {
-                return; // return without exiting the application
+                return;
             }
         }
 
-        // If the user did not cancel, the RoboRally application will exit
-        // after the option to save the game
         if (gameController == null || stopGame()) {
             Platform.exit();
         }
@@ -205,7 +201,6 @@ public class AppController implements Observer {
     public boolean isGameRunning() {
         return gameController != null;
     }
-
 
     @Override
     public void update(Subject subject) {

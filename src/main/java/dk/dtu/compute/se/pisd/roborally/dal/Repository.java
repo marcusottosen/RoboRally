@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ...
+ * Er med til at tilegne de forskellige værdier ved hhv. create, load og save game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  * @author Marcus Ottosen
@@ -58,7 +58,7 @@ class Repository implements IRepository {
     private static final String PLAYER_HEALTH = "health";
     private static final String CHECKPOINTS_REACHED = "checkpointsReached";
 
-    private Connector connector;
+    private final Connector connector;
 
     /**
      * Klassens konstruktør.
@@ -81,10 +81,9 @@ class Repository implements IRepository {
      */
     @Override
     public boolean createGameInDB(Board game) {
-        //Brugerangivet navne på saves
         TextInputDialog savegamename_dialog = new TextInputDialog();
         savegamename_dialog.setContentText("Enter name for your save");
-        Optional<String> savegamename = savegamename_dialog.showAndWait();
+        Optional<String> savegamename = savegamename_dialog.showAndWait(); //Brugerangivet navne på saves
 
         if (game.getGameId() == null || savegamename.isPresent()) {
             Connection connection = connector.getConnection();
@@ -228,7 +227,6 @@ class Repository implements IRepository {
                         "An error occurred when loading the saved current player from the database.");
                 return null;
             }
-
             return game;
         } catch (SQLException e) {
             showAlert("Loading error!",
@@ -351,7 +349,6 @@ class Repository implements IRepository {
                                     proCardIndex = k;
                                 }
                             }
-
                             for (int k = 0; k < 8; k++) {
                                 player.getCardField(j - 1).setCard((new CommandCard(commands[proCardIndex])));
                             }
@@ -377,8 +374,6 @@ class Repository implements IRepository {
                             }
                         }
                     }
-
-
                 } else {
                     showAlert("Loading error!",
                             "Game in DB does not have a player with id " + i + "!");
@@ -490,7 +485,6 @@ class Repository implements IRepository {
         if (select_players_asc_stmt == null) {
             Connection connection = connector.getConnection();
             try {
-                // This statement does not need to be updatable
                 select_players_asc_stmt = connection.prepareStatement(
                         SQL_SELECT_PLAYERS_ASC);
             } catch (SQLException e) {
